@@ -1,6 +1,7 @@
 # How to run (from root of project)
 
 **`python3 -m interface.map_maker`**
+
 **`python3 -m interface.visualization`**
 
 # Pathfinding Visualization Tools
