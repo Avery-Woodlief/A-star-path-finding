@@ -7,9 +7,9 @@ import re
 
 pygame.init()
 
-map_name = "maze.json"
+#map_name = "obstacle_course1.json"
 
-with open(map_name, "r") as file:
+with open(f"{input('choose a map: ')}.json", "r") as file:
     world_map = json.load(file)
 
 #print(world_map)
