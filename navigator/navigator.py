@@ -1,7 +1,57 @@
 from navigator.obstacle import Obstacle
 from navigator.node import Node
 from itertools import product
-from math import floor, sqrt, dist
+from math import floor, ceil, sqrt, dist
+from pygame import Rect
+
+nint = lambda x: (floor(x + 0.5) + ceil((2*x - 1)/4) - floor((2*x - 1)/4) - 1) # nearest integer function
+
+'''
+x_sols = line_intersection_circle_x(
+                                    h=11, 
+                                    k=13, 
+                                    m=5, 
+                                    s_1=10, 
+                                    r=60, 
+                                    s_2=70
+                                )
+
+
+print(get_points_from_solved_x(m=5, x_sols=x_sols, s_1=10, s_2=70))
+'''
+
+
+def line_intersection_circle_x(h, k, m, s_1, r, s_2):
+
+    '''
+    This function returns the solutions for x after plugging
+        y = s_2_ + m*(x - s_1_) into
+        (x - h)^2 + (y - k)^2 = r^2
+    '''
+
+    x1 = '''({h} + {k}*{m} + {m}**2*{s_1} - {m}*{s_2} - sqrt(-{h}**2*{m}**2 + 2*{h}*{k}*{m} + 2*{h}*{m}**2*{s_1} - 2*{h}*{m}*{s_2} - {k}**2 - 2*{k}*{m}*{s_1} + 2*{k}*{s_2} + {m}**2*{r}**2 - {m}**2*{s_1}**2 + 2*{m}*{s_1}*{s_2} + {r}**2 - {s_2}**2))/({m}**2 + 1)'''
+    x1_exe = x1.format(
+                        h=h,
+                        k=k,
+                        m=m,
+                        s_1=s_1,
+                        r=r,
+                        s_2=s_2)
+    x2 = '''({h} + {k}*{m} + {m}**2*{s_1} - {m}*{s_2} + sqrt(-{h}**2*{m}**2 + 2*{h}*{k}*{m} + 2*{h}*{m}**2*{s_1} - 2*{h}*{m}*{s_2} - {k}**2 - 2*{k}*{m}*{s_1} + 2*{k}*{s_2} + {m}**2*{r}**2 - {m}**2*{s_1}**2 + 2*{m}*{s_1}*{s_2} + {r}**2 - {s_2}**2))/({m}**2 + 1)'''
+    x2_exe = x2.format(
+                        h=h,
+                        k=k,
+                        m=m,
+                        s_1=s_1,
+                        r=r,
+                        s_2=s_2)
+    return [eval(x1_exe), eval(x2_exe)]
+
+def get_points_from_solved_x(m, x_sols, s_1, s_2):
+    y1 = s_2 + m * (x_sols[0] - s_1)
+    y2 = s_2 + m * (x_sols[1] - s_1)
+    
+    return [(x_sols[0], y1), (x_sols[1], y2)]
 
 
 class BaseNavigationShape:
@@ -27,6 +77,16 @@ class BaseNavigationShape:
     def get_integer_points(self):
         pass
 
+class Line:
+
+    def __init__(self, start_point, end_point):
+        self.start = start_point
+        self.end = end_point
+
+    def colliderect(self, rect : Rect) -> bool:
+        return bool(rect.clipline(self.start, self.end))
+
+'''
 class Line (BaseNavigationShape):
 
     def __init__(self, start_point, end_point):
@@ -85,6 +145,7 @@ class Line (BaseNavigationShape):
         else: # the line is a single point, i.e., Navigator has reached its destination
             return
         return
+'''
 
 class Circle (BaseNavigationShape):
 
