@@ -1,4 +1,4 @@
-from navigator import *
+from navigator.navigator import *
 
 import pygame
 from random import randint
@@ -9,7 +9,7 @@ pygame.init()
 
 #map_name = "obstacle_course1.json"
 
-with open(f"{input('choose a map: ')}.json", "r") as file:
+with open(f"maps/{input('choose a map: ')}.json", "r") as file:
     world_map = json.load(file)
 
 #print(world_map)
@@ -108,6 +108,11 @@ while (running):
                             counter += 1
                         else:
                             nav.step()
+                        if (event.type == pygame.KEYDOWN):
+                            if (event.key == pygame.K_c and event.mod & pygame.KMOD_LCTRL):
+                                # emergency abort
+                                print("aborting current path simulation")
+                                break
                         #print(nav.current)
                         
                         pygame.draw.circle(screen, colors[color_pool[randint(2, 3)]], nav.current.point, 5)

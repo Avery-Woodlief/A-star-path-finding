@@ -1,4 +1,5 @@
-from obstacle import Obstacle, Node
+from navigator.obstacle import Obstacle
+from navigator.node import Node
 
 
 

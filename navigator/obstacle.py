@@ -1,5 +1,5 @@
 from pygame import Rect
-from node import *
+from navigator.node import Node
 
 class Obstacle (Rect):
 

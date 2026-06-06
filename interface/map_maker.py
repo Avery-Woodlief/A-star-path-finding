@@ -1,4 +1,4 @@
-from obstacle import Obstacle
+from navigator.obstacle import Obstacle
 import json
 import pygame
 
@@ -62,6 +62,8 @@ focused_rect = None
 dx = None
 dy = None
 
+skip_map = False
+
 while (running):
 
     
@@ -70,7 +72,7 @@ while (running):
         if (event.type == pygame.WINDOWLEAVE):
             print("No come back!")
         if (began_drag and not end_drag):
-            print("dragging")
+            #print("dragging")
             if (event.type == pygame.MOUSEMOTION):
                 width = abs(start[0] - event.pos[0])
                 height = abs(start[1] - event.pos[1])
@@ -78,7 +80,7 @@ while (running):
                 overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
                 screen.blit(overlay, (min(start[0], event.pos[0]),min(start[1], event.pos[1])))
         elif (edit_began_drag and not edit_end_drag):
-            print("edit dragging")
+            #print("edit dragging")
             edit_dragging = True
             screen.fill(colors["white"])
             try:
@@ -102,6 +104,7 @@ while (running):
         if (event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN]):
             if (event.type == pygame.MOUSEBUTTONDOWN):
                 if (event.button == 1 and more_control):
+                    print("began edit dragging")
                     #edit_index = 0
                     #i = 0
                     for obj in obstacles:
@@ -122,6 +125,7 @@ while (running):
                         
                 if (event.button == 3):
                     if (not began_drag):
+                        print("began dragging")
                         end_drag = False
                         began_drag = True
                         start = event.pos
@@ -156,6 +160,7 @@ while (running):
                         pass
                 elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
                     more_control = not more_control
+                
                 elif (event.key == pygame.K_DELETE and (not (focused_rect == None))):
                     try:
                         obstacles.pop(focused_rect)
@@ -180,10 +185,11 @@ file_ = {}
 for obj, color in obstacles.items():
     file_[f"{obj}"] = f"{color}"
 
-
 file_name = input("name your map: ")
 
-with open(f"{file_name}.json", "w") as file:
+
+
+with open(f"maps/{file_name}.json", "w") as file:
     json.dump(file_, file, indent=4)
 
 pygame.quit()
