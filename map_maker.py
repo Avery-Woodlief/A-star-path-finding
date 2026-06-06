@@ -156,6 +156,12 @@ while (running):
                         pass
                 elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
                     more_control = not more_control
+                elif (event.key == pygame.K_DELETE and (not (focused_rect == None))):
+                    try:
+                        obstacles.pop(focused_rect)
+                        focused_rect = None
+                    except (KeyError):
+                        pass
             if (event.key == pygame.K_ESCAPE):
                 running = False
             
