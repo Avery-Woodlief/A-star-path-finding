@@ -1,15 +1,9 @@
-# How to run (from root of project)
-
-**`python3 -m interface.map_maker`**
-
-**`python3 -m interface.visualization`**
-
 # Pathfinding Visualization Tools
 
-This project contains two primary utilities:
+This project contains two primary utilities (use from root of project):
 
-* **`map_maker.py`** – Create and edit obstacle maps.
-* **`visualization.py`** – Visualize pathfinding behavior using the `Navigator` class.
+* **`python3 -m interface.map_maker`** – Create and edit obstacle maps.
+* **`python3 -m interface.visualization`** – Visualize pathfinding behavior using the `Navigator` class.
 
 ---
 
