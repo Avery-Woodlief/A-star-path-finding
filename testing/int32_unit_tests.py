@@ -1,4 +1,9 @@
-from int32 import Int32, Int32Base
+import sys
+#from pathlib import Path
+
+#sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from a_star_path_finding.int32 import Int32, Int32Base
 
 Int32_operations = dict(Int32.__dict__)
 Int32_operations.pop("__module__")
