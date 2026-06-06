@@ -67,4 +67,3 @@ This workflow prevents the Navigator from immediately linking the new path to a 
 * Obstacles are represented as rectangles.
 * The visualizer can be used to test pathfinding behavior on exported maps.
 * Start and End anchors may be placed in either order.
-
