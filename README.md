@@ -1,3 +1,8 @@
+# How to run (from root of project)
+
+**`python3 -m interface.map_maker`**
+**`python3 -m interface.visualization`**
+
 # Pathfinding Visualization Tools
 
 This project contains two primary utilities:
@@ -19,6 +24,7 @@ Use the map maker to create obstacle layouts that can be exported and later load
 | Undo last obstacle            | **Left Ctrl + Z**                              |
 | Enable edit mode              | **Left Shift + E**                             |
 | Move an obstacle (edit mode)  | **Click and drag** a rectangle                 |
+| del obstacle (edit mode)      | **DEL**                                        |
 | Quit map maker                | **Escape**                                     |
 
 ## Exporting
