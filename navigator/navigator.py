@@ -4,12 +4,94 @@ from itertools import product
 from math import floor, sqrt, dist
 
 
-class Circle:
+class BaseNavigationShape:
+
+    def __init__(self):
+        self.nodes = []
+
+    def __contains__(self, node : Node) -> bool:
+        return node in self.nodes
+
+    def __iter__(self) -> iter:
+        return iter(self.nodes)
+
+    def __str__(self) -> str:
+        try:
+            string = f"{self.nodes[0]}"
+        except (IndexError):
+            return ""
+        for i in range(1, len(self.nodes)):
+            string += f", {self.nodes[i]}"
+        return string
+
+    def get_integer_points(self):
+        pass
+
+class Line (BaseNavigationShape):
+
+    def __init__(self, start_point, end_point):
+        super().__init__()
+        self.start = start_point
+        self.end = end_point
+        
+        self.slope = (int(end_point[1]) - int(start_point[1]))/(int(end_point[0]) - int(start_point[0])) # keep as float
+        self.x1 = start_point[0]
+        self.y1 = end_point[0]
+
+        self.get_integer_points()
+
+    def collidepoint(self, point):
+        x, y = point
+        value = self.slope * x + (self.y1 - ((self.slope) * (self.x1)))
+        if (abs(float(y)-value) < 0.0001):
+            return True
+        return False
+
+    def get_integer_points(self):
+        x_range = None
+        y_range = None
+        if (self.start[0] > self.end[0]):
+            x_range = [self.end[0], self.start[0]]
+        elif (self.start[0] < self.end[0]):
+            x_range = [self.start[0], self.end[0]]
+        else: # they are equal
+            x_range = None
+
+        if (self.start[1] > self.end[1]):
+            y_range = [self.end[1], self.start[1]]
+        elif (self.start[1] < self.end[1]):
+            y_range = [self.start[1], self.end[1]]
+        else: # they are equal
+            y_range = None
+    
+        if (not ((x_range == None) or (y_range == None))):
+            for x in range(x_range[0], x_range[1] + 1):
+                for y in range(y_range[0], y_range[1]):
+                    point = (x, y)
+                    if (self.collidepoint(point)):
+                        self.nodes.append(Node(point))
+        elif ((x_range == None) and not (y_range == None)):
+            x = self.start[0]
+            for y in range(y_range[0], y_range[1]):
+                point = (x, y)
+                if (self.collidepoint(point)):
+                    self.nodes.append(Node(point))
+        elif ((not (x_range == None)) and (y_range == None)):
+            y = self.start[1]
+            for x in range(x_range[0], x_range[1]):
+                point = (x, y)
+                if (self.collidepoint(point)):
+                    self.nodes.append(Node(point))
+        else: # the line is a single point, i.e., Navigator has reached its destination
+            return
+        return
+
+class Circle (BaseNavigationShape):
 
     def __init__(self, center, radius):
+        super().__init__()
         self.center = center
         self.radius = radius
-        self.nodes = []
         self.get_integer_points()
         #print(self.nodes, self.center, self.radius)
 
@@ -19,21 +101,6 @@ class Circle:
         if (p1-x)**2 + (p2-y)**2 <= (self.radius)**2:
             return True
         return False
-
-    def __contains__(self, node : Node) -> bool:
-        return node in self.nodes
-
-    def __iter__(self) -> iter:
-        return iter(self.nodes)
-
-    def __str__(self):
-        try:
-            string = f"{self.nodes[0]}"
-        except (IndexError):
-            return ""
-        for i in range(1, len(self.nodes)):
-            string += f", {self.nodes[i]}"
-        return string
 
     def get_integer_points(self):
         #for point in product(range(-(self.radius**2), ((self.radius + 1)**2)), repeat=2):
