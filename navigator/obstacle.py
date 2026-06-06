@@ -6,8 +6,13 @@ class Obstacle (Rect):
     def __init__(self, *args):
         super().__init__(*args)
 
-    def collidepoint(self, node : Node):
-        point = node.point
+    def collidepoint(self, node : Node | tuple | list) -> bool:
+        if (isinstance(node, Node)):
+            point = node.point
+        elif (isinstance(node, (tuple, list))):
+            point = node
+        else:
+            raise TypeError(f"In {self.collidepoint}, argument node is of typle {type(node)}")
         return super().collidepoint(point)
 
     def __hash__(self):

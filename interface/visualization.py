@@ -98,16 +98,11 @@ while (running):
                     continue
                 nav = Navigator(start, end, list(obstacles.keys()))
                 pygame.draw.circle(screen, colors["blue"], start, 5)
-                counter = 0
                 if (nav):
                     while (not (nav.start == nav.target)):
                         prev = nav.current.point
 
-                        if (counter < 100):
-                            nav.step(stride = 5)
-                            counter += 1
-                        else:
-                            nav.step()
+                        nav.step()
                         if (event.type == pygame.KEYDOWN):
                             if (event.key == pygame.K_c and event.mod & pygame.KMOD_LCTRL):
                                 # emergency abort
