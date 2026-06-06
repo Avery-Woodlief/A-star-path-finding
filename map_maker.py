@@ -175,7 +175,9 @@ for obj, color in obstacles.items():
     file_[f"{obj}"] = f"{color}"
 
 
-with open("map.json", "w") as file:
+file_name = input("name your map: ")
+
+with open(f"{file_name}.json", "w") as file:
     json.dump(file_, file, indent=4)
 
 pygame.quit()
