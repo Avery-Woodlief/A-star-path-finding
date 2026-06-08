@@ -40,7 +40,8 @@ class NodeHelper:
 class Node (NodeHelper):
 
     def __init__(self, point : tuple | list):
-        self.point = Int32(point)
+        #self.point = Int32(point)
+        self.point = point
         self.G_cost = -1.0
         self.H_cost = -1.0
         self.F_cost = -1.0
@@ -67,6 +68,9 @@ class Node (NodeHelper):
 
     def __str__(self):
         return f"{self.point}"
+
+    def __getitem__(self, index):
+        return self.point[index % len(self.point)]
 
     def __hash__(self):
         return (self.point[0], self.point[1]).__hash__()
