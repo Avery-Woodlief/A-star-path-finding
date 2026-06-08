@@ -4,6 +4,7 @@ import pygame
 from random import randint
 import json
 import re
+import os
 
 pygame.init()
 
@@ -55,7 +56,9 @@ colors = {
             "red" : pygame.Color(255, 0, 0),
             "green" : pygame.Color(0, 255, 0),
             "blue" : pygame.Color(0, 0, 255),
-            "black" : pygame.Color(0, 0, 0)
+            "black" : pygame.Color(0, 0, 0),
+            "soft pink": pygame.Color(255, 174, 201),
+            "light purple": pygame.Color(127, 0, 127)
         }
 
 screen = pygame.display.set_mode((1000, 800))
@@ -71,6 +74,27 @@ start = None
 end = None
 stop_drawing = False
 running = True
+
+
+clock = pygame.time.Clock()
+nav_log = NavigatorLog(None)
+
+
+
+def draw_world(nav, start, end):
+
+    for obstacle, color in obstacles.items():
+        pygame.draw.rect(screen, color, obstacle)
+
+    
+    pygame.draw.circle(screen, colors["blue"], start, 5)
+    pygame.draw.circle(screen, colors["green"], end, 5)
+    #screen.blit(nav.radar_surface, (nav.current.point[0] - nav.search_radius, nav.current.point[1] - nav.search_radius))
+    pygame.draw.circle(screen,colors["soft pink"],(nav.center_x, nav.center_y),nav.search_radius,3) # radar
+    pygame.draw.line(screen, colors["black"], nav.next_point_for_drawing.point, nav.current.point, width=3)
+    pygame.draw.circle(screen, colors["light purple"], nav.current.point, 5)
+    return
+
 while (running):
 
     for obstacle, color in obstacles.items():
@@ -97,23 +121,38 @@ while (running):
                 if (stop_drawing):
                     continue
                 nav = Navigator(start, end, list(obstacles.keys()))
-                pygame.draw.circle(screen, colors["blue"], start, 5)
+                #nav_log = NavigatorLog(nav)
+                nav_log.change_nav(nav)
+                
                 if (nav):
                     while (not (nav.start == nav.target)):
                         prev = nav.current.point
 
-                        nav.step()
+                        nav_log.write_step_info()
+                        os.system("clear")
+                        nav_log.print_to_console()
+                        try:
+                            nav.step()
+                        except (ZeroDivisionError, ValueError):
+                            continue
+                        
                         if (event.type == pygame.KEYDOWN):
                             if (event.key == pygame.K_c and event.mod & pygame.KMOD_LCTRL):
                                 # emergency abort
                                 print("aborting current path simulation")
                                 break
                         #print(nav.current)
-                        
-                        pygame.draw.circle(screen, colors[color_pool[randint(2, 3)]], nav.current.point, 5)
-                        #pygame.draw.line(screen, colors["green"], prev, nav.current.point, width = 2)                        
+
+                        screen.fill(colors["white"])
+
+                        draw_world(nav, start, end)
+                        #pygame.draw.line(screen, colors["blue"], start, end, width=1)
+                        #pygame.draw.line(screen, colors["green"], prev, nav.current.point, width = 2) 
+                        clock.tick(60)                 
                         pygame.display.flip()
-                        if (nav.current == nav.target):
+                        if(dist(nav.current.point, nav.target.point) < nav.search_radius/2):#if (nav.current == nav.target):
+                            nav_log.write_step_info()
+                            nav_log.upload_info()
                             break
                 nav = None
                 print("completed path")
@@ -130,6 +169,7 @@ while (running):
                         print("started drawing!")
         elif (event.type == pygame.QUIT):
             running = False
+    clock.tick(60)
     pygame.display.flip()
 
 pygame.quit()
