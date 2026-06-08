@@ -1,6 +1,7 @@
 from navigator.obstacles import *
 import json
 import pygame
+import math
 
 pygame.init()
 
@@ -31,8 +32,18 @@ class MapMaker:
         self.began_drag = False
         self.end_drag = False
         self.start = None
+
+        # rect params
+
         self.width = None
         self.height = None
+
+        # circle params
+
+        self.radius = None
+        self.center = None
+
+
         self.more_control = False
         self.edit_began_drag = False
         self.edit_end_drag = False
@@ -44,16 +55,33 @@ class MapMaker:
         self.dx = None
         self.dy = None
         self.skip_map = False
+        self.selected_shape_type = "ObstacleRect"
 
     def dragging_check(self, event):
         if (self.began_drag and not self.end_drag):
             #print("dragging")
             if (event.type == pygame.MOUSEMOTION):
-                self.width = abs(self.start[0] - event.pos[0])
-                self.height = abs(self.start[1] - event.pos[1])
-                overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
-                overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
-                self.screen.blit(overlay, (min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])))
+                if (self.selected_shape_type == "ObstacleRect"):
+                    self.width = abs(self.start[0] - event.pos[0])
+                    self.height = abs(self.start[1] - event.pos[1])
+                    overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+                    overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
+                    self.screen.blit(overlay, (min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])))
+                elif (self.selected_shape_type == "ObstacleCircle"):
+
+                    ''' self.radius = abs(self.start[0] - event.pos[0])
+                        self.center = self.start
+                        new_circle = ObstacleCircle(self.center, self.radius)
+                        self.obstacles_[new_circle] = self.colors["black"]
+                    '''
+
+
+                    self.radius = math.dist(self.center, event.pos)
+                    overlay = pygame.Surface((self.radius * 2 + 10, self.radius * 2 + 10), pygame.SRCALPHA)
+                    #overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
+                    pygame.draw.circle(overlay, (0, 0, 0, 1), (self.radius, self.radius), self.radius)
+                    self.screen.blit(overlay, (self.center[0] - self.radius, self.center[1] - self.radius)) # TODO
+                    
         elif (self.edit_began_drag and not self.edit_end_drag):
             #print("edit dragging")
             self.edit_dragging = True
@@ -73,25 +101,68 @@ class MapMaker:
         else:
             self.screen.fill(self.colors["white"])
 
+    def handle_rect_in_mouse_event(self, event):
+        #print(self.obstacles_)
+        for obj in self.obstacles_:
+            if (not isinstance(obj, ObstacleRect)):
+                continue
+            mouse_pos = event.pos
+            if (pygame.Rect(obj).collidepoint(mouse_pos)):
+                if (not self.edit_began_drag):
+                    self.edit_end_drag = False
+                    self.edit_began_drag = True
+                    self.focused_obj = obj
+                    self.obstacles_.pop(obj)
+                    self.edit_width = self.focused_obj.width
+                    self.edit_height = self.focused_obj.height
+                    self.dx = mouse_pos[0] - self.focused_obj.x
+                    self.dy = mouse_pos[1] - self.focused_obj.y
+                    break
+
+    def handle_circle_in_mouse_event(self, event):
+        for obj in self.obstacles_:
+            if (not isinstance(obj, ObstacleCircle)):
+                continue
+            mouse_pos = event.pos
+            if (obj.collidepoint(mouse_pos)):
+                if (not self.edit_began_drag):
+                    self.edit_end_drag = False
+                    self.edit_began_drag = True
+                    self.focused_obj = obj
+                    self.obstacles_.pop(obj)
+                    #self.edit_width = self.focused_obj.width
+                    #self.edit_height = self.focused_obj.height
+                    self.dx = mouse_pos[0] - self.focused_obj.center[0]
+                    self.dy = mouse_pos[1] - self.focused_obj.center[1]
+                    break
+        return
+
+    def make_new_rect_obj(self, event):
+        self.width = abs(self.start[0] - event.pos[0])
+        self.height = abs(self.start[1] - event.pos[1])
+        size = (self.width, self.height)
+        
+        new_rect = ObstacleRect((min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])), size)
+        self.obstacles_[new_rect] = self.colors["black"]
+        return
+
+    def make_new_circle_obj(self, event):
+        self.radius = math.dist(self.start, event.pos)
+        self.center = self.start
+        new_circle = ObstacleCircle(self.center, self.radius)
+        self.obstacles_[new_circle] = self.colors["black"]
+        return
+
     def handle_mouse_event(self, event):
         if (event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN]):
-            print("mouse moving")
+            #print("mouse moving")
             if (event.type == pygame.MOUSEBUTTONDOWN):
                 if (event.button == 1 and self.more_control):
                     print("began edit dragging")
-                    for obj in self.obstacles_:
-                        mouse_pos = event.pos
-                        if (pygame.Rect(obj).collidepoint(mouse_pos)):
-                            if (not self.edit_began_drag):
-                                self.edit_end_drag = False
-                                self.edit_began_drag = True
-                                self.focused_obj = obj
-                                self.obstacles_.pop(obj)
-                                self.edit_width = self.focused_obj.width
-                                self.edit_height = self.focused_obj.height
-                                self.dx = mouse_pos[0] - self.focused_obj.x
-                                self.dy = mouse_pos[1] - self.focused_obj.y
-                                break
+                    if (self.selected_shape_type == "ObstacleRect"):
+                        self.handle_rect_in_mouse_event(event)
+                    elif (self.selected_shape_type == "ObstacleCircle"):
+                        self.handle_circle_in_mouse_event(event)
                         
                         
                 if (event.button == 3):
@@ -100,6 +171,7 @@ class MapMaker:
                         self.end_drag = False
                         self.began_drag = True
                         self.start = event.pos
+                        self.center = self.start
         elif event.type == pygame.MOUSEBUTTONUP:
             if (self.edit_began_drag):
                 self.edit_began_drag = False
@@ -109,12 +181,10 @@ class MapMaker:
             if (self.began_drag):
                 self.began_drag = False
                 self.end_drag = True
-                self.width = abs(self.start[0] - event.pos[0])
-                self.height = abs(self.start[1] - event.pos[1])
-                size = (self.width, self.height)
-                
-                new_rect = ObstacleRect((min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])), size)
-                self.obstacles_[new_rect] = self.colors["black"]
+                if (self.selected_shape_type == "ObstacleRect"):
+                    self.make_new_rect_obj(event)
+                elif (self.selected_shape_type == "ObstacleCircle"):    
+                    self.make_new_circle_obj(event)
 
     def handle_key_event(self, event):
         if (event.type in [pygame.KEYDOWN, pygame.KEYUP]):
@@ -128,8 +198,10 @@ class MapMaker:
                         pass
                 elif (event.key == pygame.K_1):
                     print("pressed 1")
+                    self.selected_shape_type = "ObstacleRect"
                 elif (event.key == pygame.K_2):
                     print("pressed 2")
+                    self.selected_shape_type = "ObstacleCircle"
                 elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
                     self.more_control = not self.more_control
                 
@@ -144,6 +216,7 @@ class MapMaker:
 
     def running_loop(self):
         while (self.running):
+            #print(self.selected_shape_type)
             for event in pygame.event.get():
                 if (event.type == pygame.WINDOWLEAVE):
                     print("No come back!")
@@ -157,18 +230,24 @@ class MapMaker:
                     self.running = False
                 
                 for obj in self.obstacles_.keys():
-                    pygame.draw.rect(self.screen, self.obstacles_[obj], obj)
+                    if (isinstance(obj, ObstacleRect)):
+                        pygame.draw.rect(self.screen, self.obstacles_[obj], obj)
+                    elif (isinstance(obj, ObstacleCircle)):
+                        pygame.draw.circle(self.screen, self.obstacles_[obj], obj.center, obj.radius)
                 pygame.display.flip()
 
         pygame.quit()
 
 game_map = MapMaker(1000, 800)
 game_map.running_loop()
-file_ = {"Rect":{}}
+file_ = {"Rect":{}, "Circle":{}}
 
 
 for obj, color in game_map.obstacles_.items():
-    file_["Rect"][f"{obj}"] = f"{color}"
+    if isinstance(obj, ObstacleRect):
+        file_["Rect"][f"{obj}"] = f"{color}"
+    elif isinstance(obj, ObstacleCircle):
+        file_["Circle"][f"{obj}"] = f"{color}"
 
 file_name = input("name your map: ")
 
