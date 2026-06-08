@@ -1,23 +1,23 @@
-from navigator.obstacle import Obstacle
+from navigator.obstacles import *
 import json
 import pygame
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 800))
 
-obstacles = {}
-
-
-
-color_pool = {
+class MapMaker:
+    
+    def __init__(self, screen_width, screen_height):
+        
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.obstacles_ = {}
+        self.color_pool = {
                 0 : "white",
                 1 : "red",
                 2 : "green",
                 3 : "blue",
                 4 : "black"          
              }
-
-colors = {
+        self.colors = {
             "white" : pygame.Color(255, 255, 255),
             "red" : pygame.Color(255, 0, 0),
             "green" : pygame.Color(0, 255, 0),
@@ -25,165 +25,150 @@ colors = {
             "black" : pygame.Color(0, 0, 0)
         }
 
+        self.screen.fill(self.colors["white"])
 
+        self.running = True
+        self.began_drag = False
+        self.end_drag = False
+        self.start = None
+        self.width = None
+        self.height = None
+        self.more_control = False
+        self.edit_began_drag = False
+        self.edit_end_drag = False
+        self.edit_dragging = False
+        self.edit_pos = None
+        self.edit_width = None
+        self.edit_height = None
+        self.focused_obj = None
+        self.dx = None
+        self.dy = None
+        self.skip_map = False
 
-
-running = True
-began_drag = False
-end_drag = False
-start = None
-width = None
-height = None
-
-screen.fill(colors["white"])
-
-
-more_control = False
-
-
-edit_began_drag = False
-edit_end_drag = False
-
-
-edit_dragging = False
-edit_pos = None
-
-edit_width = None
-edit_height = None
-
-focused_rect = None
-
-#edit_index = -1
-
-
-#last_drawn_rect = None
-
-
-dx = None
-dy = None
-
-skip_map = False
-
-while (running):
-
-    
-
-    for event in pygame.event.get():
-        if (event.type == pygame.WINDOWLEAVE):
-            print("No come back!")
-        if (began_drag and not end_drag):
+    def dragging_check(self, event):
+        if (self.began_drag and not self.end_drag):
             #print("dragging")
             if (event.type == pygame.MOUSEMOTION):
-                width = abs(start[0] - event.pos[0])
-                height = abs(start[1] - event.pos[1])
-                overlay = pygame.Surface((width, height), pygame.SRCALPHA)
+                self.width = abs(self.start[0] - event.pos[0])
+                self.height = abs(self.start[1] - event.pos[1])
+                overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
                 overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
-                screen.blit(overlay, (min(start[0], event.pos[0]),min(start[1], event.pos[1])))
-        elif (edit_began_drag and not edit_end_drag):
+                self.screen.blit(overlay, (min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])))
+        elif (self.edit_began_drag and not self.edit_end_drag):
             #print("edit dragging")
-            edit_dragging = True
-            screen.fill(colors["white"])
+            self.edit_dragging = True
+            self.screen.fill(self.colors["white"])
             try:
                 try:
-                    obstacles.pop(focused_rect)
+                    self.obstacles_.pop(self.focused_obj)
                 except (KeyError):
                     pass
                 mouse_pos = event.pos
                
-                #edit_pos = (mouse_pos[0] - focused_rect.w//2, mouse_pos[1] - focused_rect.h//2)
-                edit_pos = (mouse_pos[0] - dx, mouse_pos[1] - dy)
-                focused_rect.move(edit_pos)
-                obstacles[focused_rect] = colors["blue"]
-                #last_drawn_rect = focused_rect
+                self.edit_pos = (mouse_pos[0] - self.dx, mouse_pos[1] - self.dy)
+                self.focused_obj.move(self.edit_pos)
+                self.obstacles_[self.focused_obj] = self.colors["blue"]
             except(AttributeError):
-                continue
-            
-            
+                raise AttributeError
         else:
-            screen.fill(colors["white"])
+            self.screen.fill(self.colors["white"])
+
+    def handle_mouse_event(self, event):
         if (event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN]):
+            print("mouse moving")
             if (event.type == pygame.MOUSEBUTTONDOWN):
-                if (event.button == 1 and more_control):
+                if (event.button == 1 and self.more_control):
                     print("began edit dragging")
-                    #edit_index = 0
-                    #i = 0
-                    for obj in obstacles:
+                    for obj in self.obstacles_:
                         mouse_pos = event.pos
                         if (pygame.Rect(obj).collidepoint(mouse_pos)):
-                            if (not edit_began_drag):
-                                edit_end_drag = False
-                                edit_began_drag = True
-                                focused_rect = obj
-                                #obstacles[obj] = colors["blue"]
-                                obstacles.pop(obj)
-                                edit_width = focused_rect.width
-                                edit_height = focused_rect.height
-                                dx = mouse_pos[0] - focused_rect.x
-                                dy = mouse_pos[1] - focused_rect.y
+                            if (not self.edit_began_drag):
+                                self.edit_end_drag = False
+                                self.edit_began_drag = True
+                                self.focused_obj = obj
+                                self.obstacles_.pop(obj)
+                                self.edit_width = self.focused_obj.width
+                                self.edit_height = self.focused_obj.height
+                                self.dx = mouse_pos[0] - self.focused_obj.x
+                                self.dy = mouse_pos[1] - self.focused_obj.y
                                 break
                         
                         
                 if (event.button == 3):
-                    if (not began_drag):
+                    if (not self.began_drag):
                         print("began dragging")
-                        end_drag = False
-                        began_drag = True
-                        start = event.pos
+                        self.end_drag = False
+                        self.began_drag = True
+                        self.start = event.pos
         elif event.type == pygame.MOUSEBUTTONUP:
-            if (edit_began_drag):
-                edit_began_drag = False
-                edit_end_drag = True
-                #obstacles.pop(edit_index)
-                #obstacles.insert(edit_index, Obstacle(event.pos,(edit_width, edit_height)))
-                obstacles[focused_rect] = colors["black"]
-                #edit_index = -1
-            if (began_drag):
-                began_drag = False
-                end_drag = True
-                width = abs(start[0] - event.pos[0])
-                height = abs(start[1] - event.pos[1])
-                size = (width, height)
+            if (self.edit_began_drag):
+                self.edit_began_drag = False
+                self.edit_end_drag = True
+                self.obstacles_[self.focused_obj] = self.colors["black"]
+
+            if (self.began_drag):
+                self.began_drag = False
+                self.end_drag = True
+                self.width = abs(self.start[0] - event.pos[0])
+                self.height = abs(self.start[1] - event.pos[1])
+                size = (self.width, self.height)
                 
-                #obstacles.append()
-                new_rect = Obstacle((min(start[0], event.pos[0]),min(start[1], event.pos[1])), size)
-                obstacles[new_rect] = colors["black"]
-                #last_drawn_rect = new_rect
+                new_rect = ObstacleRect((min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])), size)
+                self.obstacles_[new_rect] = self.colors["black"]
+
+    def handle_key_event(self, event):
         if (event.type in [pygame.KEYDOWN, pygame.KEYUP]):
         
             if (event.type == pygame.KEYDOWN):
                 if (event.key == pygame.K_z and event.mod & pygame.KMOD_LCTRL):
                     try:
-                        #obstacles.pop(last_drawn_rect)
-                        popped_key = list(obstacles.keys()).pop()
-                        obstacles.pop(popped_key)
+                        popped_key = list(self.obstacles_.keys()).pop()
+                        self.obstacles_.pop(popped_key)
                     except (IndexError, KeyError):
                         pass
+                elif (event.key == pygame.K_1):
+                    print("pressed 1")
+                elif (event.key == pygame.K_2):
+                    print("pressed 2")
                 elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
-                    more_control = not more_control
+                    self.more_control = not self.more_control
                 
-                elif (event.key == pygame.K_DELETE and (not (focused_rect == None))):
+                elif (event.key == pygame.K_DELETE and (not (self.focused_obj == None))):
                     try:
-                        obstacles.pop(focused_rect)
-                        focused_rect = None
+                        self.obstacles_.pop(self.focused_obj)
+                        self.focused_obj = None
                     except (KeyError):
                         pass
             if (event.key == pygame.K_ESCAPE):
-                running = False
-            
-        elif (event.type == pygame.QUIT):
-            running = False
-    
-    for obj in obstacles.keys():
-        pygame.draw.rect(screen, obstacles[obj], obj)
-    
-    pygame.display.flip()
+                self.running = False
+
+    def running_loop(self):
+        while (self.running):
+            for event in pygame.event.get():
+                if (event.type == pygame.WINDOWLEAVE):
+                    print("No come back!")
+                try:
+                    self.dragging_check(event)
+                except (AttributeError):
+                    continue
+                self.handle_mouse_event(event)
+                self.handle_key_event(event)
+                if (event.type == pygame.QUIT):
+                    self.running = False
+                
+                for obj in self.obstacles_.keys():
+                    pygame.draw.rect(self.screen, self.obstacles_[obj], obj)
+                pygame.display.flip()
+
+        pygame.quit()
+
+game_map = MapMaker(1000, 800)
+game_map.running_loop()
+file_ = {"Rect":{}}
 
 
-file_ = {}
-
-
-for obj, color in obstacles.items():
-    file_[f"{obj}"] = f"{color}"
+for obj, color in game_map.obstacles_.items():
+    file_["Rect"][f"{obj}"] = f"{color}"
 
 file_name = input("name your map: ")
 
@@ -191,5 +176,3 @@ file_name = input("name your map: ")
 
 with open(f"maps/{file_name}.json", "w") as file:
     json.dump(file_, file, indent=4)
-
-pygame.quit()

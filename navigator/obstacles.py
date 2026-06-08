@@ -1,7 +1,7 @@
 from pygame import Rect
 from navigator.node import Node
 
-class Obstacle (Rect):
+class ObstacleRect (Rect):
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -24,3 +24,26 @@ class Obstacle (Rect):
     
     def __str__(self):
         return f"{self.x}, {self.y}, {self.w}, {self.h}"
+
+class ObstacleCircle:
+
+    def __init__(self, center, radius):
+        self.center = center
+        self.radius = radius
+
+    def collidepoint(self, node : Node) -> bool:
+        x, y = node.point
+        cx, cy = self.center
+        if ((((cx - x)*(cx - x)) + ((cy - y)*(cy - y))) <= (self.radius*self.radius)):
+            return True
+        return False
+        
+    def __hash__(self):
+        return hash((self.center, self.radius))
+
+    def move(self, new_loc):
+        self.center = new_loc
+        return
+
+    def __str__(self):
+        return f"{self.center}, {self.radius}"

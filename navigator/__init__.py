@@ -1,9 +1,10 @@
 from .node import Node
 from .navigator import Navigator
-from .obstacle import Obstacle
+from .obstacles import ObstacleRect, ObstacleCircle
 
 __all__ = [
             "Node",
             "Navigator",
-            "Obstacle"
+            "ObstacleRect",
+            "ObstacleCircle"
           ]

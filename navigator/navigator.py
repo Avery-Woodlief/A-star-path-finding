@@ -1,4 +1,4 @@
-from navigator.obstacle import Obstacle
+from navigator.obstacles import *
 from navigator.node import Node
 from itertools import product
 from math import floor, ceil, sqrt
@@ -129,14 +129,14 @@ class Navigator:
         self.start = None
         self.target = None
         if (obstacles != None):
-            if (not isinstance(obstacles, (list, tuple))):
-                raise TypeError(f" obstacles type is {type(obstacles)}\n\tNeither tuple nor list")
+            if (not isinstance(obstacles, dict)):
+                raise TypeError(f" obstacles type is {type(obstacles)}\n\tNot a dict")
             else:
-                if (len(obstacles) > 0):
-                    for obstacle in obstacles:
-                        if (not isinstance(obstacle, Obstacle)):
-                            raise TypeError(f"bad obstacle type in nonempty {type(obstacles)}\n\tExpected: {type(Obstacle)}\n\tFound: {type(obstacle)}")
-                else: # if empty list or empty tuple then set to None
+                if (len(obstacles["Rect"].keys()) > 0):
+                    for rect in obstacles["Rect"]:
+                        if (not isinstance(rect, ObstacleRect)):
+                            raise TypeError(f"bad obstacle rect type in nonempty {type(obstacles)}\n\tExpected: {type(ObstacleRect)}\n\tFound: {type(rect)}")        
+                else: # if empty dict then set to None
                     obstacles = None
         self.obstacles = obstacles
         
@@ -248,13 +248,13 @@ class Navigator:
         self.optimize_costs(nodes)
 
     def node_collides(self, node : Node | tuple | list) -> bool:
-        for obstacle in self.obstacles:
+        for obstacle in self.obstacles["Rect"]:
             if (obstacle.collidepoint(node)):
                 return True
         return False
 
     def line_collides(self, line : Line) -> bool:
-        for obstacle in self.obstacles:
+        for obstacle in self.obstacles["Rect"]:
             if (line.colliderect(obstacle)):
                 return True
         return False

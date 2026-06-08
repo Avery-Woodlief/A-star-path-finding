@@ -17,11 +17,12 @@ with open(f"maps/{input('choose a map: ')}.json", "r") as file:
 
 
 
-rect_args = None
-color_args = None
+#rect_args = None
+#color_args = None
 
-obstacles = {}
+obstacles = {"Rect":{}}
 
+'''
 for r, c in world_map.items():
     a1 = re.findall(r"\d+", r)
     a1_map = map(int, a1)
@@ -36,12 +37,26 @@ for r, c in world_map.items():
     for i in a2_map:
         color_args.append(i)
 
-    obstacles[Obstacle(topleft, size)] = tuple(color_args)
-    #obstacles.append(Obstacle(topleft, size))
+    obstacles[ObstacleRect(topleft, size)] = tuple(color_args)
+'''
 
 
-
-
+for obstacle_type, instances in world_map.items():
+    if (obstacle_type == "Rect"):
+        for rect, color in instances.items():
+            a1 = re.findall(r"\d+", rect)
+            a1_map = map(int, a1)
+            rect_args = []
+            for i in a1_map:
+                rect_args.append(i)
+            topleft = (rect_args[0], rect_args[1])
+            size = (rect_args[2], rect_args[3])
+            a2 = re.findall(r"\d+", color)
+            a2_map = map(int, a2)
+            color_args = []
+            for i in a2_map:
+                color_args.append(i)
+            obstacles["Rect"][ObstacleRect(topleft, size)] = tuple(color_args)
 
 color_pool = {
                 0 : "white",
@@ -83,8 +98,14 @@ nav_log = NavigatorLog(None)
 
 def draw_world(nav, start, end):
 
+    for obstacle_type, instances in obstacles.items():
+        if (obstacle_type == "Rect"):
+            for rect, color in instances.items():
+                pygame.draw.rect(screen, color, rect)
+    '''
     for obstacle, color in obstacles.items():
         pygame.draw.rect(screen, color, obstacle)
+    '''
 
     
     pygame.draw.circle(screen, colors["blue"], start, 5)
@@ -98,8 +119,10 @@ def draw_world(nav, start, end):
 
 while (running):
 
-    for obstacle, color in obstacles.items():
-        pygame.draw.rect(screen, color, obstacle)
+    for obstacle_type, instances in obstacles.items():
+        if (obstacle_type == "Rect"):
+            for rect, color in instances.items():
+                pygame.draw.rect(screen, color, rect)
 
     for event in pygame.event.get():
         if (event.type == pygame.WINDOWLEAVE):
@@ -121,7 +144,7 @@ while (running):
                     continue
                 if (stop_drawing):
                     continue
-                nav = Navigator(start, end, list(obstacles.keys()))
+                nav = Navigator(start, end, obstacles)
                 #nav_log = NavigatorLog(nav)
                 nav_log.change_nav(nav)
                 
