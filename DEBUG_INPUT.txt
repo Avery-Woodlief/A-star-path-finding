@@ -1,1 +1,1 @@
-corners
+maze
