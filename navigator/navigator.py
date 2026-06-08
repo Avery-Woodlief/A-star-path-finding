@@ -160,7 +160,7 @@ class Navigator:
 
         self.current = self.start                                                   
         self.search_radius = 50                                                                                                     
-        self.exploration_radius = 100                                               
+        self.exploration_radius = 30                                               
         self.greedy_radius = 50                                                     
         self.center_x, self.center_y = self.current.point                           
         self.radar = Circle(self.current.point, self.search_radius)                 
