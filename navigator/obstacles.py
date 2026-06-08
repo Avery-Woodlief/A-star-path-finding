@@ -31,8 +31,13 @@ class ObstacleCircle:
         self.center = center
         self.radius = radius
 
-    def collidepoint(self, node : Node) -> bool:
-        x, y = node.point
+    def collidepoint(self, node : Node | tuple) -> bool:
+        if (isinstance(node, Node)):
+            x, y = node.point
+        elif (isinstance(node, tuple)):
+            x, y = node
+        else:
+            raise ValueError(f"node is of type {type(node)}\nWhich is neither of type {type(Node)} nor of type {type(tuple)}\n")
         cx, cy = self.center
         if ((((cx - x)*(cx - x)) + ((cy - y)*(cy - y))) <= (self.radius*self.radius)):
             return True
@@ -46,4 +51,4 @@ class ObstacleCircle:
         return
 
     def __str__(self):
-        return f"{self.center}, {self.radius}"
+        return f"{self.center[0]}, {self.center[1]}, {self.radius}"
