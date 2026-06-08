@@ -82,7 +82,8 @@ class Circle (BaseNavigationShape):
         super().__init__()
         self.center = center
         self.radius = radius
-        self.get_integer_points()
+        #self.get_integer_points()
+        self.get_integer_border_points()
         #print(self.nodes, self.center, self.radius)
 
     def collidepoint(self, point):
@@ -91,6 +92,21 @@ class Circle (BaseNavigationShape):
         if (p1-x)**2 + (p2-y)**2 <= (self.radius)**2:
             return True
         return False
+
+    def on_border(self, point):
+        cx, cy = self.center
+        x, y = point
+        if (((cx - x)**2 + (cy - y)**2) == (self.radius)**2):
+            return True
+        return False
+
+    def get_integer_border_points(self):
+        cx, cy = self.center
+        for x in range(cx - self.radius, cx + self.radius + 1):
+            for y in range(cy - self.radius, cy + self.radius + 1):
+                point = (x, y)
+                if self.on_border(point):
+                    self.nodes.append(Node(point))
 
     def get_integer_points(self):
         #for point in product(range(-(self.radius**2), ((self.radius + 1)**2)), repeat=2):
