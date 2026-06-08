@@ -198,10 +198,10 @@ class MapMaker:
                     except (IndexError, KeyError):
                         pass
                 elif (event.key == pygame.K_1):
-                    print("pressed 1")
+                    print("Rectangle type selected")
                     self.selected_shape_type = "ObstacleRect"
                 elif (event.key == pygame.K_2):
-                    print("pressed 2")
+                    print("Circle type selected")
                     self.selected_shape_type = "ObstacleCircle"
                 elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
                     self.more_control = not self.more_control
