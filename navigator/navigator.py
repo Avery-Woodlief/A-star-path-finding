@@ -149,6 +149,9 @@ class Navigator:
         self.movement = self.curr_dist_to_target - self.prev_dist_to_target
         self.progress = 0
         self.dist_moved = 0
+        self.stuck_counter = 0
+        self.stuck_limit = 5
+        self.escaping = False
         self.path = [self.start]
 
         #self.radar_surface = pygame.Surface((2*self.search_radius, 2*self.search_radius))
@@ -186,6 +189,14 @@ class Navigator:
         return nodes
 
     
+    def update_movement(self, next):
+        self.prev_dist_to_target = self.curr_dist_to_target
+        self.dist_moved = dist(self.current.point, next.point)
+        self.path.append(next)
+        self.current = next
+        self.curr_dist_to_target = dist(self.current.point, self.target.point)
+        
+        self.movement = abs(self.curr_dist_to_target - self.prev_dist_to_target)
 
     def optimize_costs(self, nodes):
         
@@ -195,23 +206,9 @@ class Navigator:
         except (ValueError):
             return
         next = f_costs[min_f_cost]
-        #self.radar_surface.fill(pygame.Color(255, 255, 255))
-        
-        #pygame.draw.line(self.radar_surface, pygame.Color(255, 0, 0), self.current.point, next.point, width=20)
-
-        self.prev_dist_to_target = self.curr_dist_to_target   
-
+          
+        self.update_movement(next)
        
-            
-            
-        self.dist_moved = dist(self.current.point, next.point)
-        self.path.append(next)
-        self.current = next
-        self.curr_dist_to_target = dist(self.current.point, self.target.point)
-        
-        self.movement = abs(self.curr_dist_to_target - self.prev_dist_to_target)
-        
-        
         return
 
 
@@ -297,6 +294,30 @@ class Navigator:
         self.optimize_costs(allowed_nodes)
         return
 
+    def explore(self, stride, index):
+        #self.update_radar(stride)
+        # TODO
+        nodes = self.get_neighbors_of_current(stride)
+        try:
+            most_recent_node = self.path[index]
+        except (IndexError):
+            return
+        
+        distances_from_most_recent = {}
+
+        for node in nodes:
+            distances_from_most_recent[dist(node.point, most_recent_node.point)] = node
+        furthest_distance = max(list(distances_from_most_recent.keys()))
+        furthest_node = distances_from_most_recent[furthest_distance]
+
+        if ((not self.node_collides(furthest_node)) and (furthest_node not in self.path)):
+            #self.current = furthest_node
+            self.update_movement(furthest_node)
+            return
+        else:
+            self.explore(stride, index - 1)
+        return
+
     def step(self):
 
         try:
@@ -304,19 +325,33 @@ class Navigator:
         except (ZeroDivisionError):
             self.progress = "NA"
 
-        if ((self.step_count > 0) and (self.movement < 10)):
-                self.is_stuck = True
+        if ((self.step_count > 0) and (self.movement < 20)):
+                if (self.stuck_counter >= self.stuck_limit):
+                    self.is_stuck = True
+                    self.stuck_counter = 0
+                else:
+                    self.stuck_counter += 1
         self.step_count += 1
         if (not self.obstacles):
             self.obstacle_free(stride = 1)
             return
         else:
-            if (dist(self.current.point, self.target.point) > self.tolerance):
+            if (self.is_stuck):
+                self.escaping = True
+                saved_search_radius = self.search_radius
+                self.search_radius = 10
+                self.explore(stride = 10, index=-1)
+                self.search_radius = saved_search_radius
+            elif (dist(self.current.point, self.target.point) > self.tolerance):
                 self.careful_step(stride = 10)
             else:
                 self.careful_step(stride = 1)
+
+            if (self.is_stuck):
+                self.is_stuck = self.movement > 30
             
             return
+        
 
     def __str__(self):
         string = f"{self.start}"
@@ -404,6 +439,10 @@ class NavigatorLog:
             self.string += (
                 f'{"STUCK:":<30}'
                 f'{f"{self.focused_nav.is_stuck}":>{self.chars_occupied}}\n'
+                f'{"STUCK COUNTER:":<30}'
+                f'{f"{self.focused_nav.stuck_counter}":>{self.chars_occupied}}\n'
+                f'{"ESCAPING?:":<30}'
+                f'{f"{self.focused_nav.escaping}":>{self.chars_occupied}}\n'
             )
 
     def write_points(self) -> None:
@@ -456,7 +495,7 @@ class NavigatorLog:
         if self.bits["WRITE STEP COUNTER"]:
             self.update_chars_occupied("step #")
             self.string += (
-                f'{"STEP #:":<30}{self.step_counter:<{self.chars_occupied}}\n'
+                f'{"STEP COUNTER:":<30}{self.step_counter:<{self.chars_occupied}}\n'
             )
 
         self.step_counter += 1
