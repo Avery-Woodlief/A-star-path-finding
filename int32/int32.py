@@ -1,5 +1,7 @@
 from functools import wraps
 
+class Int32:pass
+
 class Int32Base(int):
     max_value = (2 ** 31) - 1
     min_value = -(2 ** 31)
@@ -23,9 +25,9 @@ class Int32Base(int):
                 return cls.type_check(v)
         if (isinstance(value, str)):
             return int(value)
-        if (not isinstance(value, (int, Int32Base))):
+        if (not isinstance(value, (int, Int32, Int32Base))):
             #print(type(value))
-            raise TypeError("argument must be int or Int32")
+            raise TypeError("argument must be int or Int32 or Int32Base")
         return value
 
     @classmethod
@@ -57,6 +59,8 @@ class Int32Base(int):
         @wraps(func)
         def wrapper(self, other):
             cls.check_overflow(self) # type check done with overflow check
+            if (isinstance(other, Int32)):
+                print(f"TYPE OF OTHER: {type(other)}")
             other = cls.check_overflow(other)
             
 
@@ -120,10 +124,9 @@ class Int32(Int32Base):
         return super().__pow__(other)
 
     def __str__(self):
-        return super().__str__(self)
+        return super().__str__()
 
     def __hash__(self):
         return super().__hash__()
-
 
 
