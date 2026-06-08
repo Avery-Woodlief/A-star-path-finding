@@ -4,6 +4,7 @@ from itertools import product
 from math import floor, ceil, sqrt, dist, pi
 from pygame import Rect
 from random import randint
+from itertools import combinations
 #import pygame
 
 nint = lambda x: (floor(x + 0.5) + ceil((2*x - 1)/4) - floor((2*x - 1)/4) - 1) # nearest integer function
@@ -147,9 +148,15 @@ class Navigator:
         self.prev_dist_to_target = dist(self.current.point, self.target.point)
 
         self.movement = self.curr_dist_to_target - self.prev_dist_to_target
+        self.recent_improvements = []
+        self.stuck_window = 10
+        self.min_window_improvement = 100
         self.progress = 0
         self.dist_moved = 0
         self.stuck_counter = 0
+        self.dist_improvement = 0
+        self.optimizing_attempt_sum = 0
+        self.chosen_nodes = []
         self.stuck_limit = 5
         self.escaping = False
         self.path = [self.start]
@@ -191,12 +198,18 @@ class Navigator:
     
     def update_movement(self, next):
         self.prev_dist_to_target = self.curr_dist_to_target
+
         self.dist_moved = dist(self.current.point, next.point)
+
         self.path.append(next)
         self.current = next
+
         self.curr_dist_to_target = dist(self.current.point, self.target.point)
+
+        self.dist_improvement = self.prev_dist_to_target - self.curr_dist_to_target
+        self.movement = abs(self.dist_improvement)
         
-        self.movement = abs(self.curr_dist_to_target - self.prev_dist_to_target)
+
 
     def optimize_costs(self, nodes):
         
@@ -294,63 +307,91 @@ class Navigator:
         self.optimize_costs(allowed_nodes)
         return
 
-    def explore(self, stride, index):
-        #self.update_radar(stride)
-        # TODO
-        nodes = self.get_neighbors_of_current(stride)
-        try:
-            most_recent_node = self.path[index]
-        except (IndexError):
-            return
-        
-        distances_from_most_recent = {}
 
-        for node in nodes:
-            distances_from_most_recent[dist(node.point, most_recent_node.point)] = node
-        furthest_distance = max(list(distances_from_most_recent.keys()))
-        furthest_node = distances_from_most_recent[furthest_distance]
+    def explore(self, stride):
+        self.update_radar(stride)
+        allowed_nodes = []
+        self.next_point_for_drawing = self.current
+        for node in self.radar:
+            
+            
+            if (node == self.current):
+                continue
+            if (not (node[0] == self.current[0])):
+                line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
 
-        if ((not self.node_collides(furthest_node)) and (furthest_node not in self.path)):
-            #self.current = furthest_node
-            self.update_movement(furthest_node)
-            return
-        else:
-            self.explore(stride, index - 1)
+                x_sols = line_intersection_circle_x(self.current.point, line_slope, self.search_radius)
+                end_points = get_points_from_solved_x(line_slope, x_sols, self.current.point)
+
+                line_southern_hem = Line(self.current.point, end_points[0])
+                line_northern_hem = Line(self.current.point, end_points[1])
+
+
+                southern_hem_collide = self.line_collides(line_southern_hem)
+                northern_hem_collide = self.line_collides(line_northern_hem)
+                
+                
+
+                southern_hem_node = Node(end_points[0])
+                nothern_hem_node = Node(end_points[1])
+
+                if ((not southern_hem_collide) and not (southern_hem_node in self.path)):
+                    allowed_nodes.append(southern_hem_node)
+
+                if ((not northern_hem_collide) and not (nothern_hem_node in self.path)):
+                    allowed_nodes.append(nothern_hem_node)
+
+        next = allowed_nodes[randint(0, len(allowed_nodes)-1)]
+        self.update_movement(next)
+        #self.optimize_improvements(allowed_nodes)
         return
 
     def step(self):
-
         try:
-            self.progress = (self.dist_moved/self.initial_dist)*100
-        except (ZeroDivisionError):
+            self.progress = (self.dist_moved / self.initial_dist) * 100
+        except ZeroDivisionError:
             self.progress = "NA"
 
-        if ((self.step_count > 0) and (self.movement < 20)):
+        if not self.obstacles:
+            self.obstacle_free(stride=1)
+        else:
+            if self.is_stuck:
+                #saved_search_radius = self.search_radius
+                #self.search_radius = 70
+                
+                self.escaping = True
+                self.explore(stride=10)
+
+                #self.search_radius = saved_search_radius
+
+            elif dist(self.current.point, self.target.point) > self.tolerance:
+                self.careful_step(stride=10)
+            else:
+                self.careful_step(stride=1)
+            
+        # update stuck state AFTER movement happens
+        self.recent_improvements.append(self.dist_improvement)
+
+        if len(self.recent_improvements) > self.stuck_window:
+            self.recent_improvements.pop(0)
+
+        if len(self.recent_improvements) == self.stuck_window:
+            total_improvement = sum(self.recent_improvements)
+
+            if total_improvement < 0:
                 if (self.stuck_counter >= self.stuck_limit):
                     self.is_stuck = True
+                    #self.recent_improvements = []
                     self.stuck_counter = 0
                 else:
                     self.stuck_counter += 1
-        self.step_count += 1
-        if (not self.obstacles):
-            self.obstacle_free(stride = 1)
-            return
-        else:
-            if (self.is_stuck):
-                self.escaping = True
-                saved_search_radius = self.search_radius
-                self.search_radius = 10
-                self.explore(stride = 10, index=-1)
-                self.search_radius = saved_search_radius
-            elif (dist(self.current.point, self.target.point) > self.tolerance):
-                self.careful_step(stride = 10)
             else:
-                self.careful_step(stride = 1)
+                self.is_stuck = False
+                self.escaping = False
+                
 
-            if (self.is_stuck):
-                self.is_stuck = self.movement > 30
-            
-            return
+        self.step_count += 1
+        return
         
 
     def __str__(self):
@@ -445,6 +486,11 @@ class NavigatorLog:
                 f'{f"{self.focused_nav.escaping}":>{self.chars_occupied}}\n'
             )
 
+            try:
+                self.string += f'{f"{self.focused_nav.chosen_nodes[0]}{self.focused_nav.chosen_nodes[1]}":>{self.chars_occupied}}\n'
+            except (IndexError):
+                pass
+
     def write_points(self) -> None:
         if (self.bits["WRITE CURRENT POINT"]):
             self.update_chars_occupied("current point")
@@ -523,7 +569,9 @@ class NavigatorLog:
 
         self.update_chars_occupied("movement")
         self.string += (
-            f'{"MOVEMENT:":<30}{self.focused_nav.movement:>{self.chars_occupied}}\n'
+            f'{"MOVEMENT:":<30}{self.focused_nav.dist_moved:>{self.chars_occupied}}\n'
+            f'{"DISTANCE IMPROVEMENT:":<30}{self.focused_nav.dist_improvement:>{self.chars_occupied}}\n'
+            f'{"RECENT IMPROVEMENTS:":<30}{sum(self.focused_nav.recent_improvements):>{self.chars_occupied}}\n'
         )
 
         self.update_chars_occupied("roll")

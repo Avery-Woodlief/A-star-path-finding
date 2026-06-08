@@ -4,122 +4,2647 @@ NOT FREE RANGE
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 0                             
-TARGET DIST:                               422.5221887664599
-MOVEMENT:                                                0.0
+TARGET DIST:                               91.93475947648963
+MOVEMENT:                                                  0
+DISTANCE IMPROVEMENT:                                      0
+RECENT IMPROVEMENTS:                                       0
 ROLLING MOVEMENT AVERAGE:                                0.0
 PROGRESS:                                                 0%
-CURRENT POINT:                                    (164, 738)
-NEXT POINT:                                       (164, 738)
+CURRENT POINT:                                    (450, 247)
+NEXT POINT:                                       (450, 247)
 STUCK:                                                 False
 STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 STATE:                                             IMPATIENT
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 1                             
-TARGET DIST:                              372.07526120396665
-MOVEMENT:                                  50.44692756249327
-ROLLING MOVEMENT AVERAGE:                 25.223463781246636
+TARGET DIST:                               41.72529209005013
+MOVEMENT:                                  50.20956084253277
+DISTANCE IMPROVEMENT:                       50.2094673864395
+RECENT IMPROVEMENTS:                        50.2094673864395
+ROLLING MOVEMENT AVERAGE:                  25.10473369321975
 PROGRESS:                                               0.0%
-CURRENT POINT:                                    (196, 699)
-NEXT POINT:                                       (164, 738)
+CURRENT POINT:                                    (415, 283)
+NEXT POINT:                                       (450, 247)
 STUCK:                                                 False
 STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 2                             
-TARGET DIST:                               326.0061349115995
-MOVEMENT:                                  46.06912629236717
-ROLLING MOVEMENT AVERAGE:                  32.17201795162015
-PROGRESS:                                11.939726330065426%
-CURRENT POINT:                                    (240, 675)
-NEXT POINT:                                       (196, 699)
+TARGET DIST:                               7.810249675906654
+MOVEMENT:                                  49.49747468305833
+DISTANCE IMPROVEMENT:                      33.91504241414348
+RECENT IMPROVEMENTS:                       84.12450980058298
+ROLLING MOVEMENT AVERAGE:                 28.041503266860996
+PROGRESS:                                  54.6143386119075%
+CURRENT POINT:                                    (380, 318)
+NEXT POINT:                                       (415, 283)
 STUCK:                                                 False
 STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+STATE:                                               PATIENT
+FINAL MOVEMENT AVERAGE:                   28.041503266860996
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 3                             
-TARGET DIST:                               298.9648808806814
-MOVEMENT:                                 27.041254030918083
-ROLLING MOVEMENT AVERAGE:                 30.889326971444632
-PROGRESS:                                11.862064922765358%
-CURRENT POINT:                                    (290, 675)
-NEXT POINT:                                       (240, 675)
+TARGET DIST:                               213.4689672996991
+MOVEMENT:                                                  0
+DISTANCE IMPROVEMENT:                                      0
+RECENT IMPROVEMENTS:                                       0
+ROLLING MOVEMENT AVERAGE:                 21.031127450145746
+PROGRESS:                                                 0%
+CURRENT POINT:                                    (361, 525)
+NEXT POINT:                                       (361, 525)
 STUCK:                                                 False
 STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 4                             
-TARGET DIST:                               278.3522947633089
-MOVEMENT:                                 20.612586117372473
-ROLLING MOVEMENT AVERAGE:                   28.8339788006302
-PROGRESS:                                11.833698046953087%
-CURRENT POINT:                                    (340, 675)
-NEXT POINT:                                       (290, 675)
+TARGET DIST:                              163.11039206623224
+MOVEMENT:                                  50.35871324805669
+DISTANCE IMPROVEMENT:                     50.358575233466865
+RECENT IMPROVEMENTS:                      50.358575233466865
+ROLLING MOVEMENT AVERAGE:                  26.89661700680997
+PROGRESS:                                               0.0%
+CURRENT POINT:                                    (367, 475)
+NEXT POINT:                                       (361, 525)
 STUCK:                                                 False
 STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 5                             
-TARGET DIST:                              263.69679558159214
-MOVEMENT:                                 14.655499181716777
-ROLLING MOVEMENT AVERAGE:                  26.47089886414463
-PROGRESS:                                11.833698046953087%
-CURRENT POINT:                                    (390, 673)
-NEXT POINT:                                       (340, 675)
+TARGET DIST:                              112.75194011634566
+MOVEMENT:                                  50.35871324805669
+DISTANCE IMPROVEMENT:                      50.35845194988657
+RECENT IMPROVEMENTS:                      100.71702718335344
+ROLLING MOVEMENT AVERAGE:                 30.806922830656067
+PROGRESS:                                23.590648273177678%
+CURRENT POINT:                                    (373, 425)
+NEXT POINT:                                       (367, 475)
 STUCK:                                                 False
 STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 6                             
-TARGET DIST:                              214.04905979704745
-MOVEMENT:                                  49.64773578454469
-ROLLING MOVEMENT AVERAGE:                 29.781875567058925
-PROGRESS:                                11.843161221633675%
-CURRENT POINT:                                    (398, 624)
-NEXT POINT:                                       (390, 673)
+TARGET DIST:                               63.56099432828282
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      49.19094578806285
+RECENT IMPROVEMENTS:                      149.90797297141629
+ROLLING MOVEMENT AVERAGE:                  33.43321182457132
+PROGRESS:                                23.590648273177678%
+CURRENT POINT:                                    (372, 375)
+NEXT POINT:                                       (373, 425)
 STUCK:                                                 False
-STUCK COUNTER:                                             1
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 7                             
-TARGET DIST:                              164.40194646049662
-MOVEMENT:                                  49.64711333655083
-ROLLING MOVEMENT AVERAGE:                  32.26503028824541
-PROGRESS:                                11.750570187609231%
-CURRENT POINT:                                    (406, 575)
-NEXT POINT:                                       (398, 624)
+TARGET DIST:                              16.278820596099706
+MOVEMENT:                                  50.08991914547278
+DISTANCE IMPROVEMENT:                      47.28217373218311
+RECENT IMPROVEMENTS:                       197.1901467035994
+ROLLING MOVEMENT AVERAGE:                   35.1643320630228
+PROGRESS:                                23.427292328626184%
+CURRENT POINT:                                    (375, 325)
+NEXT POINT:                                       (372, 375)
 STUCK:                                                 False
-STUCK COUNTER:                                             1
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+FINAL MOVEMENT AVERAGE:                     35.1643320630228
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 8                             
-TARGET DIST:                              114.75626344561765
-MOVEMENT:                                  49.64568301487897
-ROLLING MOVEMENT AVERAGE:                  34.19621392453803
-PROGRESS:                                11.750570187609231%
-CURRENT POINT:                                    (414, 526)
-NEXT POINT:                                       (406, 575)
+TARGET DIST:                              227.06827167175956
+MOVEMENT:                                                  0
+DISTANCE IMPROVEMENT:                                      0
+RECENT IMPROVEMENTS:                                       0
+ROLLING MOVEMENT AVERAGE:                 31.257184056020265
+PROGRESS:                                                 0%
+CURRENT POINT:                                    (408, 539)
+NEXT POINT:                                       (408, 539)
 STUCK:                                                 False
-STUCK COUNTER:                                             1
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
 
 
 SEARCH RADIUS:                                            50
 STEP COUNTER:                 9                             
-TARGET DIST:                               64.93843238021688
-MOVEMENT:                                  49.81783106540077
-ROLLING MOVEMENT AVERAGE:                   35.7583756386243
-PROGRESS:                                11.750570187609231%
-CURRENT POINT:                                    (423, 477)
-NEXT POINT:                                       (414, 526)
+TARGET DIST:                              176.81911661356077
+MOVEMENT:                                  50.24937810560445
+DISTANCE IMPROVEMENT:                     50.249155058198795
+RECENT IMPROVEMENTS:                      50.249155058198795
+ROLLING MOVEMENT AVERAGE:                  33.15638115623811
+PROGRESS:                                               0.0%
+CURRENT POINT:                                    (403, 489)
+NEXT POINT:                                       (408, 539)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 10                            
+TARGET DIST:                              137.81872151489435
+MOVEMENT:                                  50.44799302251776
+DISTANCE IMPROVEMENT:                      39.00039509866642
+RECENT IMPROVEMENTS:                       89.24955015686521
+ROLLING MOVEMENT AVERAGE:                  33.68765515100433
+PROGRESS:                                22.129634288247395%
+CURRENT POINT:                                    (371, 450)
+NEXT POINT:                                       (403, 489)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 11                            
+TARGET DIST:                               87.96590248499699
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                      49.85281902989736
+RECENT IMPROVEMENTS:                       139.1023691867626
+ROLLING MOVEMENT AVERAGE:                  35.03475214091208
+PROGRESS:                                22.217103539433847%
+CURRENT POINT:                                    (373, 400)
+NEXT POINT:                                       (371, 450)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 12                            
+TARGET DIST:                               39.56008088970496
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     48.405821595292025
+RECENT IMPROVEMENTS:                       187.5081907820546
+ROLLING MOVEMENT AVERAGE:                 36.063295945095156
+PROGRESS:                                22.037417929142887%
+CURRENT POINT:                                    (372, 350)
+NEXT POINT:                                       (373, 400)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 13                            
+TARGET DIST:                               9.848857801796104
+MOVEMENT:                                  49.39635614091387
+DISTANCE IMPROVEMENT:                      29.71122308790886
+RECENT IMPROVEMENTS:                      217.21941386996346
+ROLLING MOVEMENT AVERAGE:                 35.609576455296136
+PROGRESS:                                22.024212644068704%
+CURRENT POINT:                                    (390, 304)
+NEXT POINT:                                       (372, 350)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+FINAL MOVEMENT AVERAGE:                   35.609576455296136
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 14                            
+TARGET DIST:                              234.95744295510198
+MOVEMENT:                                                  0
+DISTANCE IMPROVEMENT:                                      0
+RECENT IMPROVEMENTS:                                       0
+ROLLING MOVEMENT AVERAGE:                  33.23560469160972
+PROGRESS:                                                 0%
+CURRENT POINT:                                    (499, 519)
+NEXT POINT:                                       (499, 519)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 15                            
+TARGET DIST:                              184.83776670366908
+MOVEMENT:                                  50.11985634456667
+DISTANCE IMPROVEMENT:                      50.11967625143291
+RECENT IMPROVEMENTS:                       50.11967625143291
+ROLLING MOVEMENT AVERAGE:                  34.29085916409868
+PROGRESS:                                               0.0%
+CURRENT POINT:                                    (475, 475)
+NEXT POINT:                                       (499, 519)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 16                            
+TARGET DIST:                              146.75149062275312
+MOVEMENT:                                  50.08991914547278
+DISTANCE IMPROVEMENT:                      38.08627608091595
+RECENT IMPROVEMENTS:                       88.20595233234886
+ROLLING MOVEMENT AVERAGE:                 34.514118982734985
+PROGRESS:                                21.331461440080478%
+CURRENT POINT:                                    (430, 453)
+NEXT POINT:                                       (475, 475)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 17                            
+TARGET DIST:                              140.12851244482687
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.622978177926257
+RECENT IMPROVEMENTS:                       94.82893051027511
+ROLLING MOVEMENT AVERAGE:                  32.96461116024561
+PROGRESS:                                21.318719899009313%
+CURRENT POINT:                                    (380, 453)
+NEXT POINT:                                       (430, 453)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 18                            
+TARGET DIST:                               147.7057886475679
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -7.5772762027410465
+RECENT IMPROVEMENTS:                       87.25165430753407
+ROLLING MOVEMENT AVERAGE:                 31.628435636166422
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (430, 454)
+NEXT POINT:                                       (380, 453)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 19                            
+TARGET DIST:                              141.12760183606892
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.578186811498995
+RECENT IMPROVEMENTS:                       93.82984111903306
+ROLLING MOVEMENT AVERAGE:                  30.37592319493305
+PROGRESS:                                 21.28470516669538%
+CURRENT POINT:                                    (380, 454)
+NEXT POINT:                                       (430, 454)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 20                            
+TARGET DIST:                              148.66068747318505
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      -7.53308563711613
+RECENT IMPROVEMENTS:                       86.29675548191693
+ROLLING MOVEMENT AVERAGE:                 29.288169025513202
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (430, 455)
+NEXT POINT:                                       (380, 454)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 21                            
+TARGET DIST:                              142.12670403551894
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.533983437666109
+RECENT IMPROVEMENTS:                       92.83073891958304
+ROLLING MOVEMENT AVERAGE:                 28.253887862429245
+PROGRESS:                                 21.28470516669538%
+CURRENT POINT:                                    (380, 455)
+NEXT POINT:                                       (430, 455)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 22                            
+TARGET DIST:                              149.61617559608987
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -7.489471560570934
+RECENT IMPROVEMENTS:                       85.34126735901211
+ROLLING MOVEMENT AVERAGE:                 27.351087153652795
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (430, 456)
+NEXT POINT:                                       (380, 455)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 23                            
+TARGET DIST:                               143.1258187749506
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.490356821139272
+RECENT IMPROVEMENTS:                       91.83162418015138
+ROLLING MOVEMENT AVERAGE:                  26.48189005646473
+PROGRESS:                                 21.28470516669538%
+CURRENT POINT:                                    (380, 456)
+NEXT POINT:                                       (430, 456)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 24                            
+TARGET DIST:                              150.57224179774968
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -7.446423022799081
+RECENT IMPROVEMENTS:                        84.3852011573523
+ROLLING MOVEMENT AVERAGE:                 25.720471375118105
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (430, 457)
+NEXT POINT:                                       (380, 456)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 25                            
+TARGET DIST:                              144.12494579357175
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.447296004177929
+RECENT IMPROVEMENTS:                       40.71282091009732
+ROLLING MOVEMENT AVERAGE:                  24.97919539931271
+PROGRESS:                                 21.28470516669538%
+CURRENT POINT:                                    (380, 457)
+NEXT POINT:                                       (430, 457)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 26                            
+TARGET DIST:                              151.52887513606112
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -7.403929342489363
+RECENT IMPROVEMENTS:                      -4.777384513307993
+ROLLING MOVEMENT AVERAGE:                  24.32825961943037
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (430, 458)
+NEXT POINT:                                       (380, 457)
 STUCK:                                                 False
 STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 27                            
+TARGET DIST:                               145.1240848377691
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.404790298292028
+RECENT IMPROVEMENTS:                      -4.995572392942222
+ROLLING MOVEMENT AVERAGE:                    23.688135715104
+PROGRESS:                                 21.28470516669538%
+CURRENT POINT:                                    (380, 458)
+NEXT POINT:                                       (430, 458)
+STUCK:                                                 False
+STUCK COUNTER:                                             2
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 28                            
+TARGET DIST:                              152.48606493709516
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -7.361980099326075
+RECENT IMPROVEMENTS:                      -4.780276289527251
+ROLLING MOVEMENT AVERAGE:                  23.12516483180131
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (430, 459)
+NEXT POINT:                                       (380, 458)
+STUCK:                                                 False
+STUCK COUNTER:                                             3
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 29                            
+TARGET DIST:                              146.12323566086263
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                      6.362829276232532
+RECENT IMPROVEMENTS:                      -4.995633824793714
+ROLLING MOVEMENT AVERAGE:                 22.566420313282354
+PROGRESS:                                 21.28470516669538%
+CURRENT POINT:                                    (380, 459)
+NEXT POINT:                                       (430, 459)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 30                            
+TARGET DIST:                              118.33004690272035
+MOVEMENT:                                  49.49747468305833
+DISTANCE IMPROVEMENT:                      27.79318875814228
+RECENT IMPROVEMENTS:                      30.330640570464695
+ROLLING MOVEMENT AVERAGE:                  22.73502574698751
+PROGRESS:                                 21.28044950231881%
+CURRENT POINT:                                    (345, 424)
+NEXT POINT:                                       (380, 459)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 31                            
+TARGET DIST:                               68.35202996254024
+MOVEMENT:                                   49.9799959983992
+DISTANCE IMPROVEMENT:                      49.97801694018011
+RECENT IMPROVEMENTS:                        73.7746740729787
+ROLLING MOVEMENT AVERAGE:                  23.58636922177478
+PROGRESS:                                 21.06657020970253%
+CURRENT POINT:                                    (362, 377)
+NEXT POINT:                                       (345, 424)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 32                            
+TARGET DIST:                              18.384776310850235
+MOVEMENT:                                   49.9799959983992
+DISTANCE IMPROVEMENT:                      49.96725365169001
+RECENT IMPROVEMENTS:                      131.23139928523963
+ROLLING MOVEMENT AVERAGE:                 24.385789962075243
+PROGRESS:                                21.271935619400605%
+CURRENT POINT:                                    (379, 330)
+NEXT POINT:                                       (362, 377)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+FINAL MOVEMENT AVERAGE:                   24.385789962075243
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 33                            
+TARGET DIST:                              188.85973631242842
+MOVEMENT:                                                  0
+DISTANCE IMPROVEMENT:                                      0
+RECENT IMPROVEMENTS:                                       0
+ROLLING MOVEMENT AVERAGE:                  23.66856084554362
+PROGRESS:                                                 0%
+CURRENT POINT:                                    (558, 391)
+NEXT POINT:                                       (558, 391)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 34                            
+TARGET DIST:                              141.06027080648894
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                      47.79946550593948
+RECENT IMPROVEMENTS:                       47.79946550593948
+ROLLING MOVEMENT AVERAGE:                  24.35801526441207
+PROGRESS:                                               0.0%
+CURRENT POINT:                                    (519, 360)
+NEXT POINT:                                       (558, 391)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 35                            
+TARGET DIST:                              134.03357788255897
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      7.026692923929971
+RECENT IMPROVEMENTS:                       54.82615842986945
+ROLLING MOVEMENT AVERAGE:                 23.876589643843126
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (520, 310)
+NEXT POINT:                                       (519, 360)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 36                            
+TARGET DIST:                               142.9475428260311
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -8.913964943472138
+RECENT IMPROVEMENTS:                      45.912193486397314
+ROLLING MOVEMENT AVERAGE:                 23.472194381670935
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 360)
+NEXT POINT:                                       (520, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 37                            
+TARGET DIST:                               133.0338302838793
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                      9.913712542151814
+RECENT IMPROVEMENTS:                       55.82590602854913
+ROLLING MOVEMENT AVERAGE:                  23.11539222799938
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 310)
+NEXT POINT:                                       (521, 360)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 38                            
+TARGET DIST:                              142.00352108310554
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -8.969690799226242
+RECENT IMPROVEMENTS:                      46.856215229322885
+ROLLING MOVEMENT AVERAGE:                 22.752681934953912
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (520, 360)
+NEXT POINT:                                       (519, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 39                            
+TARGET DIST:                              135.03332921912278
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     6.9701918639827625
+RECENT IMPROVEMENTS:                       53.82640709330565
+ROLLING MOVEMENT AVERAGE:                 22.358119683179634
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 310)
+NEXT POINT:                                       (520, 360)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 40                            
+TARGET DIST:                              143.17122615944868
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     -8.137896940325902
+RECENT IMPROVEMENTS:                      45.688510152979745
+ROLLING MOVEMENT AVERAGE:                 22.011284982134423
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 260)
+NEXT POINT:                                       (521, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 41                            
+TARGET DIST:                              136.03308421115798
+MOVEMENT:                                  50.08991914547278
+DISTANCE IMPROVEMENT:                      7.138141948290695
+RECENT IMPROVEMENTS:                       52.82665210127044
+ROLLING MOVEMENT AVERAGE:                  21.65716252894767
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (522, 310)
+NEXT POINT:                                       (519, 260)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 42                            
+TARGET DIST:                              144.10065926289164
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     -8.067575051733655
+RECENT IMPROVEMENTS:                      44.759077049536785
+ROLLING MOVEMENT AVERAGE:                 21.341125610872925
+PROGRESS:                                26.522285863308426%
+CURRENT POINT:                                    (520, 260)
+NEXT POINT:                                       (522, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 43                            
+TARGET DIST:                              137.03284277865654
+MOVEMENT:                                  50.08991914547278
+DISTANCE IMPROVEMENT:                      7.067816484235095
+RECENT IMPROVEMENTS:                       51.82689353377188
+ROLLING MOVEMENT AVERAGE:                 21.016732221631155
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (523, 310)
+NEXT POINT:                                       (520, 260)
+STUCK:                                                 False
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 44                            
+TARGET DIST:                               143.8923208513922
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -6.859478072735669
+RECENT IMPROVEMENTS:                     -2.8320500449032693
+ROLLING MOVEMENT AVERAGE:                 20.702126573877923
+PROGRESS:                                26.522285863308426%
+CURRENT POINT:                                    (522, 360)
+NEXT POINT:                                       (523, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 45                            
+TARGET DIST:                              138.03260484392808
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     5.8597160074641295
+RECENT IMPROVEMENTS:                      -3.999026961369111
+ROLLING MOVEMENT AVERAGE:                 20.379465474608057
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (524, 310)
+NEXT POINT:                                       (522, 360)
+STUCK:                                                 False
+STUCK COUNTER:                                             2
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 46                            
+TARGET DIST:                              144.83784035948617
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -6.805235515558081
+RECENT IMPROVEMENTS:                     -1.8902975334550547
+ROLLING MOVEMENT AVERAGE:                 20.090652071224014
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (523, 360)
+NEXT POINT:                                       (524, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             3
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 47                            
+TARGET DIST:                               139.0323703315167
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                      5.805470027969477
+RECENT IMPROVEMENTS:                      -5.998540047637391
+ROLLING MOVEMENT AVERAGE:                 19.793044111989545
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (525, 310)
+NEXT POINT:                                       (523, 360)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 48                            
+TARGET DIST:                              145.03103116229988
+MOVEMENT:                                  50.15974481593781
+DISTANCE IMPROVEMENT:                     -5.998660830783194
+RECENT IMPROVEMENTS:                      -3.027510079194343
+ROLLING MOVEMENT AVERAGE:                 19.511526085842476
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (521, 260)
+NEXT POINT:                                       (525, 310)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 49                            
+TARGET DIST:                              140.03213916812098
+MOVEMENT:                                  50.24937810560445
+DISTANCE IMPROVEMENT:                      4.998891994178905
+RECENT IMPROVEMENTS:                     -4.9988099489982005
+ROLLING MOVEMENT AVERAGE:                 19.221273404009203
+PROGRESS:                                26.559258100921596%
+CURRENT POINT:                                    (526, 310)
+NEXT POINT:                                       (521, 260)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 50                            
+TARGET DIST:                               172.2440129583609
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                    -32.211873790239935
+RECENT IMPROVEMENTS:                     -29.072786798912233
+ROLLING MOVEMENT AVERAGE:                 19.475991058641178
+PROGRESS:                                26.606718343859963%
+CURRENT POINT:                                    (554, 351)
+NEXT POINT:                                       (526, 310)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 51                            
+TARGET DIST:                              173.28012003689287
+MOVEMENT:                                   49.9799959983992
+DISTANCE IMPROVEMENT:                    -1.0361070785319555
+RECENT IMPROVEMENTS:                      -37.24703582573488
+ROLLING MOVEMENT AVERAGE:                  19.12137790517754
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (537, 398)
+NEXT POINT:                                       (554, 351)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 52                            
+TARGET DIST:                              171.26879458909028
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                      2.011325447802591
+RECENT IMPROVEMENTS:                     -27.168135326198637
+ROLLING MOVEMENT AVERAGE:                   18.7985467267365
+PROGRESS:                                26.464082273056803%
+CURRENT POINT:                                    (553, 351)
+NEXT POINT:                                       (537, 398)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 53                            
+TARGET DIST:                               180.3690660839602
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                      -9.10027149486993
+RECENT IMPROVEMENTS:                      -43.33622330530366
+ROLLING MOVEMENT AVERAGE:                  18.61894903725749
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (544, 400)
+NEXT POINT:                                       (553, 351)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 54                            
+TARGET DIST:                              200.84820138602188
+MOVEMENT:                                  50.20956084253277
+DISTANCE IMPROVEMENT:                    -20.479135302061678
+RECENT IMPROVEMENTS:                      -56.95588053462967
+ROLLING MOVEMENT AVERAGE:                  18.65277060570848
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (580, 365)
+NEXT POINT:                                       (544, 400)
+STUCK:                                                  True
+STUCK COUNTER:                                             5
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 55                            
+TARGET DIST:                              188.04254837669055
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                     12.805653009331337
+RECENT IMPROVEMENTS:                      -50.00994353276246
+ROLLING MOVEMENT AVERAGE:                 18.548357791487458
+PROGRESS:                                 26.58563536246375%
+CURRENT POINT:                                    (550, 405)
+NEXT POINT:                                       (580, 365)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 56                            
+TARGET DIST:                              218.44907873461037
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     -30.40653035791982
+RECENT IMPROVEMENTS:                       -73.6112383751242
+ROLLING MOVEMENT AVERAGE:                 18.756395906688024
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (552, 455)
+NEXT POINT:                                       (550, 405)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 57                            
+TARGET DIST:                              195.05896544378575
+MOVEMENT:                                  50.35871324805669
+DISTANCE IMPROVEMENT:                     23.390113290824615
+RECENT IMPROVEMENTS:                     -56.026595112269064
+ROLLING MOVEMENT AVERAGE:                 18.836287585724865
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (558, 405)
+NEXT POINT:                                       (552, 455)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 58                            
+TARGET DIST:                              198.64037857394453
+MOVEMENT:                                 49.658836071740545
+DISTANCE IMPROVEMENT:                    -3.5814131301587793
+RECENT IMPROVEMENTS:                      -53.60934741164465
+ROLLING MOVEMENT AVERAGE:                 18.577730391562728
+PROGRESS:                                26.664610589495297%
+CURRENT POINT:                                    (579, 360)
+NEXT POINT:                                       (558, 405)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 59                            
+TARGET DIST:                              151.46286673637206
+MOVEMENT:                                  50.24937810560445
+DISTANCE IMPROVEMENT:                      47.17751183757247
+RECENT IMPROVEMENTS:                     -11.430727568251086
+ROLLING MOVEMENT AVERAGE:                  19.05439341566289
+PROGRESS:                                 26.29403018417357%
+CURRENT POINT:                                    (536, 334)
+NEXT POINT:                                       (579, 360)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 60                            
+TARGET DIST:                              179.38784797192923
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                     -27.92498123555717
+RECENT IMPROVEMENTS:                      -7.143835013568321
+ROLLING MOVEMENT AVERAGE:                 19.199812888120174
+PROGRESS:                                26.606718343859963%
+CURRENT POINT:                                    (552, 381)
+NEXT POINT:                                       (536, 334)
+STUCK:                                                  True
+STUCK COUNTER:                                             5
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 61                            
+TARGET DIST:                              158.14550262337528
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                     21.242345348553954
+RECENT IMPROVEMENTS:                      15.134617413517589
+ROLLING MOVEMENT AVERAGE:                 19.232756960062652
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (543, 332)
+NEXT POINT:                                       (552, 381)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 62                            
+TARGET DIST:                              135.32922818075923
+MOVEMENT:                                  50.11985634456667
+DISTANCE IMPROVEMENT:                      22.81627444261605
+RECENT IMPROVEMENTS:                      35.939566408331046
+ROLLING MOVEMENT AVERAGE:                 19.289638189944455
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (519, 288)
+NEXT POINT:                                       (543, 332)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 63                            
+TARGET DIST:                              136.31214179228496
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9829136115257313
+RECENT IMPROVEMENTS:                      44.056924291675244
+ROLLING MOVEMENT AVERAGE:                  19.00359561840666
+PROGRESS:                                 26.53813741519473%
+CURRENT POINT:                                    (520, 338)
+NEXT POINT:                                       (519, 288)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 64                            
+TARGET DIST:                               137.2953021774598
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9831603851748412
+RECENT IMPROVEMENTS:                       63.55289920856208
+ROLLING MOVEMENT AVERAGE:                 18.726358153280017
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 288)
+NEXT POINT:                                       (520, 338)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 65                            
+TARGET DIST:                              135.32922818075923
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     1.9660739967005725
+RECENT IMPROVEMENTS:                       52.71332019593132
+ROLLING MOVEMENT AVERAGE:                 18.472414453937905
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 338)
+NEXT POINT:                                       (521, 288)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 66                            
+TARGET DIST:                              136.31214179228496
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9829136115257313
+RECENT IMPROVEMENTS:                        82.1369369423254
+ROLLING MOVEMENT AVERAGE:                  18.21137712793175
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (520, 288)
+NEXT POINT:                                       (519, 338)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 67                            
+TARGET DIST:                               137.2953021774598
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9831603851748412
+RECENT IMPROVEMENTS:                       57.76366326632595
+ROLLING MOVEMENT AVERAGE:                 17.958020999361796
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 338)
+NEXT POINT:                                       (520, 288)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 68                            
+TARGET DIST:                              138.27870407260838
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9834018951485746
+RECENT IMPROVEMENTS:                      60.361674501336154
+ROLLING MOVEMENT AVERAGE:                 17.712012026836966
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 288)
+NEXT POINT:                                       (521, 338)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 69                            
+TARGET DIST:                              139.26234236145822
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9836382888498463
+RECENT IMPROVEMENTS:                       12.20052437491384
+ROLLING MOVEMENT AVERAGE:                 17.473035259151434
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (523, 338)
+NEXT POINT:                                       (522, 288)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 70                            
+TARGET DIST:                              140.24621207005913
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9838697086009063
+RECENT IMPROVEMENTS:                        39.1416359018701
+ROLLING MOVEMENT AVERAGE:                  17.24079349083382
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (524, 288)
+NEXT POINT:                                       (523, 338)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 71                            
+TARGET DIST:                              138.27870407260838
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     1.9675079974507526
+RECENT IMPROVEMENTS:                        19.8667985507669
+ROLLING MOVEMENT AVERAGE:                 17.028664525647944
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 338)
+NEXT POINT:                                       (524, 288)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 72                            
+TARGET DIST:                              139.26234236145822
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -0.9836382888498463
+RECENT IMPROVEMENTS:                     -3.9331141806989933
+ROLLING MOVEMENT AVERAGE:                 16.808869645691804
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (523, 288)
+NEXT POINT:                                       (522, 338)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 73                            
+TARGET DIST:                                188.939143641544
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     -49.67680128008578
+RECENT IMPROVEMENTS:                     -52.627001849259045
+ROLLING MOVEMENT AVERAGE:                 17.253030883994427
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (573, 286)
+NEXT POINT:                                       (523, 288)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 74                            
+TARGET DIST:                               209.2868844433401
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                    -20.347740801796107
+RECENT IMPROVEMENTS:                      -71.99158226588031
+ROLLING MOVEMENT AVERAGE:                  17.29429368289845
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (581, 237)
+NEXT POINT:                                       (573, 286)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 75                            
+TARGET DIST:                              196.69773765857096
+MOVEMENT:                                  50.24937810560445
+DISTANCE IMPROVEMENT:                     12.589146784769156
+RECENT IMPROVEMENTS:                      -61.36850947781173
+ROLLING MOVEMENT AVERAGE:                 17.232383855291484
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (547, 200)
+NEXT POINT:                                       (581, 237)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 76                            
+TARGET DIST:                              220.78043391568917
+MOVEMENT:                                  50.21951811795888
+DISTANCE IMPROVEMENT:                    -24.082696257118215
+RECENT IMPROVEMENTS:                      -84.46829212340421
+ROLLING MOVEMENT AVERAGE:                 17.321348951419104
+PROGRESS:                                26.606718343859963%
+CURRENT POINT:                                    (536, 151)
+NEXT POINT:                                       (547, 200)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 77                            
+TARGET DIST:                              242.03305559365234
+MOVEMENT:                                  50.15974481593781
+DISTANCE IMPROVEMENT:                    -21.252621677963162
+RECENT IMPROVEMENTS:                     -104.73775341619253
+ROLLING MOVEMENT AVERAGE:                 17.371749883810693
+PROGRESS:                                26.590907674932534%
+CURRENT POINT:                                    (582, 171)
+NEXT POINT:                                       (536, 151)
+STUCK:                                                  True
+STUCK COUNTER:                                             5
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 78                            
+TARGET DIST:                               207.8942038634074
+MOVEMENT:                                  50.35871324805669
+DISTANCE IMPROVEMENT:                      34.13885173024494
+RECENT IMPROVEMENTS:                      -69.61549979079902
+ROLLING MOVEMENT AVERAGE:                 17.583991679335178
+PROGRESS:                                26.559258100921596%
+CURRENT POINT:                                    (532, 165)
+NEXT POINT:                                       (582, 171)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 79                            
+TARGET DIST:                              256.44492586128507
+MOVEMENT:                                  50.11985634456667
+DISTANCE IMPROVEMENT:                     -48.55072199787767
+RECENT IMPROVEMENTS:                     -117.18258349982685
+ROLLING MOVEMENT AVERAGE:                  17.97107580831696
+PROGRESS:                                26.664610589495297%
+CURRENT POINT:                                    (556, 121)
+NEXT POINT:                                       (532, 165)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 80                            
+TARGET DIST:                              207.56203891848818
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                      48.88288694279689
+RECENT IMPROVEMENTS:                      -67.31582684842905
+ROLLING MOVEMENT AVERAGE:                 18.352703106273502
+PROGRESS:                                 26.53813741519473%
+CURRENT POINT:                                    (517, 152)
+NEXT POINT:                                       (556, 121)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 81                            
+TARGET DIST:                              172.70784579746226
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                      34.85419312102593
+RECENT IMPROVEMENTS:                      -34.42914172485388
+ROLLING MOVEMENT AVERAGE:                  18.55394078938024
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (468, 161)
+NEXT POINT:                                       (517, 152)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 82                            
+TARGET DIST:                              222.28135324403618
+MOVEMENT:                                  50.28916384272063
+DISTANCE IMPROVEMENT:                     -49.57350744657393
+RECENT IMPROVEMENTS:                      -83.01901088257796
+ROLLING MOVEMENT AVERAGE:                  18.92767050814161
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (483, 113)
+NEXT POINT:                                       (468, 161)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 83                            
+TARGET DIST:                              180.88670487352022
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                      41.39464837051597
+RECENT IMPROVEMENTS:                        8.05243876802379
+ROLLING MOVEMENT AVERAGE:                 19.195134530312732
+PROGRESS:                                 26.62778463246812%
+CURRENT POINT:                                    (442, 141)
+NEXT POINT:                                       (483, 113)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 84                            
+TARGET DIST:                              147.57371039585607
+MOVEMENT:                                  49.73932046178355
+DISTANCE IMPROVEMENT:                      33.31299447766415
+RECENT IMPROVEMENTS:                      61.713174047484046
+ROLLING MOVEMENT AVERAGE:                 19.361227000281573
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (399, 166)
+NEXT POINT:                                       (442, 141)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 85                            
+TARGET DIST:                              151.58495967608397
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                     -4.011249280227901
+RECENT IMPROVEMENTS:                       45.11277798248699
+ROLLING MOVEMENT AVERAGE:                 19.182738887257695
+PROGRESS:                                26.336646144364185%
+CURRENT POINT:                                    (349, 166)
+NEXT POINT:                                       (399, 166)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 86                            
+TARGET DIST:                              148.56984889270097
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      3.015110783382994
+RECENT IMPROVEMENTS:                        72.2105850229882
+ROLLING MOVEMENT AVERAGE:                  18.99690408146603
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (399, 165)
+NEXT POINT:                                       (349, 166)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 87                            
+TARGET DIST:                              152.55490814785344
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                     -3.985059255152464
+RECENT IMPROVEMENTS:                        89.4781474457989
+ROLLING MOVEMENT AVERAGE:                  18.82631493571247
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (349, 165)
+NEXT POINT:                                       (399, 165)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 88                            
+TARGET DIST:                              149.56603892595405
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     2.9888692218993924
+RECENT IMPROVEMENTS:                       58.32816493745335
+ROLLING MOVEMENT AVERAGE:                  18.64836610746738
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (399, 164)
+NEXT POINT:                                       (349, 165)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 89                            
+TARGET DIST:                              153.52524222420234
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                    -3.9592032982482976
+RECENT IMPROVEMENTS:                      102.91968363708273
+ROLLING MOVEMENT AVERAGE:                 18.485153187364944
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (349, 164)
+NEXT POINT:                                       (399, 164)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 90                            
+TARGET DIST:                              150.56227947264878
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     2.9629627515535617
+RECENT IMPROVEMENTS:                        56.9997594458394
+ROLLING MOVEMENT AVERAGE:                 18.314579666092293
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (399, 163)
+NEXT POINT:                                       (349, 164)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 91                            
+TARGET DIST:                              154.49595463959565
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                    -3.9336751669468697
+RECENT IMPROVEMENTS:                      18.211891157866603
+ROLLING MOVEMENT AVERAGE:                 18.158265486753752
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (349, 163)
+NEXT POINT:                                       (399, 163)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 92                            
+TARGET DIST:                               151.5585695366646
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      2.937385102931046
+RECENT IMPROVEMENTS:                       70.72278370737158
+ROLLING MOVEMENT AVERAGE:                 17.994600106282544
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (399, 162)
+NEXT POINT:                                       (349, 163)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 93                            
+TARGET DIST:                              155.46703830716015
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                    -3.9084687704955456
+RECENT IMPROVEMENTS:                      25.419666566360064
+ROLLING MOVEMENT AVERAGE:                  17.84474764526353
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (349, 162)
+NEXT POINT:                                       (399, 162)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 94                            
+TARGET DIST:                              152.55490814785344
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      2.912130159306713
+RECENT IMPROVEMENTS:                      -4.981197751997371
+ROLLING MOVEMENT AVERAGE:                 17.687562198042933
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (399, 161)
+NEXT POINT:                                       (349, 162)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 95                            
+TARGET DIST:                              156.43848631331102
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                    -3.8835781654575783
+RECENT IMPROVEMENTS:                     -4.8535266372270485
+ROLLING MOVEMENT AVERAGE:                 17.543770697703504
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (349, 161)
+NEXT POINT:                                       (399, 161)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 96                            
+TARGET DIST:                               204.2841158778626
+MOVEMENT:                                  49.92995093127971
+DISTANCE IMPROVEMENT:                     -47.84562956455159
+RECENT IMPROVEMENTS:                      -55.71426698516163
+ROLLING MOVEMENT AVERAGE:                 17.856160995299874
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (322, 119)
+NEXT POINT:                                       (349, 161)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 97                            
+TARGET DIST:                               169.6850022836432
+MOVEMENT:                                  49.76946855251722
+DISTANCE IMPROVEMENT:                       34.5991135942194
+RECENT IMPROVEMENTS:                      -17.13009413578976
+ROLLING MOVEMENT AVERAGE:                  18.02700745039089
+PROGRESS:                                 26.43758373604906%
+CURRENT POINT:                                    (303, 165)
+NEXT POINT:                                       (322, 119)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 98                            
+TARGET DIST:                              218.27734651126764
+MOVEMENT:                                  50.21951811795888
+DISTANCE IMPROVEMENT:                     -48.59234422762444
+RECENT IMPROVEMENTS:                      -68.71130758531359
+ROLLING MOVEMENT AVERAGE:                   18.3357482259185
+PROGRESS:                                26.352609361999836%
+CURRENT POINT:                                    (292, 116)
+NEXT POINT:                                       (303, 165)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 99                            
+TARGET DIST:                              202.87188075236054
+MOVEMENT:                                 49.678969393496885
+DISTANCE IMPROVEMENT:                     15.405465758907098
+RECENT IMPROVEMENTS:                     -49.346638528158195
+ROLLING MOVEMENT AVERAGE:                  18.30644540124839
+PROGRESS:                                26.590907674932534%
+CURRENT POINT:                                    (260, 154)
+NEXT POINT:                                       (292, 116)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 100                           
+TARGET DIST:                              216.51789764358972
+MOVEMENT:                                  50.24937810560445
+DISTANCE IMPROVEMENT:                     -13.64601689122918
+RECENT IMPROVEMENTS:                      -65.95561817094094
+ROLLING MOVEMENT AVERAGE:                 18.260302544713547
+PROGRESS:                                26.304690646879624%
+CURRENT POINT:                                    (294, 117)
+NEXT POINT:                                       (260, 154)
+STUCK:                                                  True
+STUCK COUNTER:                                             5
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 101                           
+TARGET DIST:                              178.35358140502814
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                      38.16431623856158
+RECENT IMPROVEMENTS:                     -23.857626765432485
+ROLLING MOVEMENT AVERAGE:                 18.455439933868917
+PROGRESS:                                26.606718343859963%
+CURRENT POINT:                                    (285, 166)
+NEXT POINT:                                       (294, 117)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 102                           
+TARGET DIST:                              193.25889371514057
+MOVEMENT:                                  50.20956084253277
+DISTANCE IMPROVEMENT:                    -14.905312310112436
+RECENT IMPROVEMENTS:                      -41.70032417847597
+ROLLING MOVEMENT AVERAGE:                 18.420972675385844
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (321, 131)
+NEXT POINT:                                       (285, 166)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 103                           
+TARGET DIST:                              176.63804799646084
+MOVEMENT:                                  50.35871324805669
+DISTANCE IMPROVEMENT:                     16.620845718679732
+RECENT IMPROVEMENTS:                      -21.17100968930069
+ROLLING MOVEMENT AVERAGE:                 18.403663762340592
+PROGRESS:                                 26.58563536246375%
+CURRENT POINT:                                    (371, 137)
+NEXT POINT:                                       (321, 131)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 104                           
+TARGET DIST:                              157.87653403846943
+MOVEMENT:                                 49.658836071740545
+DISTANCE IMPROVEMENT:                      18.76151395799141
+RECENT IMPROVEMENTS:                      -5.321625890615991
+ROLLING MOVEMENT AVERAGE:                  18.40707185944203
+PROGRESS:                                26.664610589495297%
+CURRENT POINT:                                    (416, 158)
+NEXT POINT:                                       (371, 137)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 105                           
+TARGET DIST:                               183.8396040030548
+MOVEMENT:                                  50.21951811795888
+DISTANCE IMPROVEMENT:                    -25.963069964585372
+RECENT IMPROVEMENTS:                     -27.401117689743785
+ROLLING MOVEMENT AVERAGE:                  18.47835486043395
+PROGRESS:                                 26.29403018417357%
+CURRENT POINT:                                    (465, 147)
+NEXT POINT:                                       (416, 158)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 106                           
+TARGET DIST:                              209.44211610848473
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -25.602512105429923
+RECENT IMPROVEMENTS:                      -5.158000230622122
+ROLLING MOVEMENT AVERAGE:                 18.544935769265688
+PROGRESS:                                26.590907674932534%
+CURRENT POINT:                                    (515, 148)
+NEXT POINT:                                       (465, 147)
+STUCK:                                                  True
+STUCK COUNTER:                                             5
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 107                           
+TARGET DIST:                              182.58422713914803
+MOVEMENT:                                  50.44799302251776
+DISTANCE IMPROVEMENT:                       26.8578889693367
+RECENT IMPROVEMENTS:                     -12.899224855504826
+ROLLING MOVEMENT AVERAGE:                 18.621907558155232
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (527, 197)
+NEXT POINT:                                       (515, 148)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 108                           
+TARGET DIST:                              223.66492796144863
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      -41.0807008223006
+RECENT IMPROVEMENTS:                      -5.387581450180988
+ROLLING MOVEMENT AVERAGE:                  18.82795153305565
+PROGRESS:                                26.711883648435386%
+CURRENT POINT:                                    (537, 148)
+NEXT POINT:                                       (527, 197)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 109                           
+TARGET DIST:                              178.46568297574746
+MOVEMENT:                                  49.39635614091387
+DISTANCE IMPROVEMENT:                      45.19924498570117
+RECENT IMPROVEMENTS:                      24.406197776613084
+ROLLING MOVEMENT AVERAGE:                 19.067690564443335
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 194)
+NEXT POINT:                                       (537, 148)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 110                           
+TARGET DIST:                              150.72159765607583
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     27.744085319671626
+RECENT IMPROVEMENTS:                       65.79629998751389
+ROLLING MOVEMENT AVERAGE:                 19.145856282958906
+PROGRESS:                                 26.15504877079679%
+CURRENT POINT:                                    (520, 244)
+NEXT POINT:                                       (519, 194)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 111                           
+TARGET DIST:                              134.35028842544403
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     16.371309230631795
+RECENT IMPROVEMENTS:                        44.0032929795841
+ROLLING MOVEMENT AVERAGE:                  19.12108354142027
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 294)
+NEXT POINT:                                       (520, 244)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 112                           
+TARGET DIST:                              137.53908535394584
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -3.1887969285018016
+RECENT IMPROVEMENTS:                       55.71980836119474
+ROLLING MOVEMENT AVERAGE:                  18.98008985458028
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (520, 344)
+NEXT POINT:                                       (519, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 113                           
+TARGET DIST:                              136.33048081775402
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.2086045361918138
+RECENT IMPROVEMENTS:                       40.30756717870682
+ROLLING MOVEMENT AVERAGE:                 18.824199632489155
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 294)
+NEXT POINT:                                       (520, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 114                           
+TARGET DIST:                              136.56500283747664
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                   -0.23452201972261832
+RECENT IMPROVEMENTS:                       21.31153120099279
+ROLLING MOVEMENT AVERAGE:                  18.66255026194336
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 344)
+NEXT POINT:                                       (521, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 115                           
+TARGET DIST:                              135.34031180694095
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.2246910305356948
+RECENT IMPROVEMENTS:                      48.499292196113856
+ROLLING MOVEMENT AVERAGE:                  18.51222388925881
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (520, 294)
+NEXT POINT:                                       (519, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 116                           
+TARGET DIST:                              138.51353724455961
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -3.173225437618669
+RECENT IMPROVEMENTS:                       70.92857886392511
+ROLLING MOVEMENT AVERAGE:                  18.38112133839009
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 344)
+NEXT POINT:                                       (520, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 117                           
+TARGET DIST:                              137.32079230764728
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.1927449369123337
+RECENT IMPROVEMENTS:                      45.263434831500746
+ROLLING MOVEMENT AVERAGE:                 18.235457131597908
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 294)
+NEXT POINT:                                       (521, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 118                           
+TARGET DIST:                              140.46351839534705
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -3.1427260876997707
+RECENT IMPROVEMENTS:                       83.20140956610157
+ROLLING MOVEMENT AVERAGE:                 18.108627458960108
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (523, 344)
+NEXT POINT:                                       (522, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 119                           
+TARGET DIST:                              139.30183056945089
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.1616878258961663
+RECENT IMPROVEMENTS:                       39.16385240629657
+ROLLING MOVEMENT AVERAGE:                 17.967402962017907
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (524, 294)
+NEXT POINT:                                       (523, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 120                           
+TARGET DIST:                              139.48835076808385
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                   -0.18652019863296232
+RECENT IMPROVEMENTS:                      11.233246887991982
+ROLLING MOVEMENT AVERAGE:                  17.82045351769241
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 344)
+NEXT POINT:                                       (524, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             1
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 121                           
+TARGET DIST:                              138.31124321616085
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      1.177107551923001
+RECENT IMPROVEMENTS:                      -3.960954790716812
+ROLLING MOVEMENT AVERAGE:                  17.68403264912053
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (523, 294)
+NEXT POINT:                                       (522, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             2
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 122                           
+TARGET DIST:                               141.4390328021229
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -3.127789585962063
+RECENT IMPROVEMENTS:                     -3.8999474481770733
+ROLLING MOVEMENT AVERAGE:                 17.565689209582658
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (524, 344)
+NEXT POINT:                                       (523, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             3
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 123                           
+TARGET DIST:                              140.29255147726127
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.1464813248616395
+RECENT IMPROVEMENTS:                     -3.9620706595072477
+ROLLING MOVEMENT AVERAGE:                 17.433276242770393
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (525, 294)
+NEXT POINT:                                       (524, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 124                           
+TARGET DIST:                              143.39107364128355
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -3.0985221640222846
+RECENT IMPROVEMENTS:                      -6.826070803806914
+ROLLING MOVEMENT AVERAGE:                 17.318598210140408
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (526, 344)
+NEXT POINT:                                       (525, 294)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 125                           
+TARGET DIST:                              134.21251804507656
+MOVEMENT:                                  49.49747468305833
+DISTANCE IMPROVEMENT:                       9.17855559620699
+RECENT IMPROVEMENTS:                      1.1277937618643818
+ROLLING MOVEMENT AVERAGE:                  17.25399469733141
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 295)
+NEXT POINT:                                       (526, 344)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 126                           
+TARGET DIST:                               137.7679207943562
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                    -3.5554027492796365
+RECENT IMPROVEMENTS:                      0.7456164502034142
+ROLLING MOVEMENT AVERAGE:                 17.146131768606594
+PROGRESS:                                26.208590380098407%
+CURRENT POINT:                                    (520, 345)
+NEXT POINT:                                       (519, 295)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 127                           
+TARGET DIST:                                136.194713553794
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.5732072405621977
+RECENT IMPROVEMENTS:                      1.1260787538532782
+ROLLING MOVEMENT AVERAGE:                 17.024468295731246
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 295)
+NEXT POINT:                                       (520, 345)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 128                           
+TARGET DIST:                              136.79546776117988
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                    -0.6007542073858758
+RECENT IMPROVEMENTS:                       3.668050634167173
+ROLLING MOVEMENT AVERAGE:                   16.8971526826433
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 345)
+NEXT POINT:                                       (521, 295)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 129                           
+TARGET DIST:                              135.20355024924456
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.5919175119353213
+RECENT IMPROVEMENTS:                       4.098280320206328
+ROLLING MOVEMENT AVERAGE:                  16.77942010440708
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (520, 295)
+NEXT POINT:                                       (519, 345)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 130                           
+TARGET DIST:                              138.74076545846214
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -3.537215209217578
+RECENT IMPROVEMENTS:                      0.7475853096217122
+ROLLING MOVEMENT AVERAGE:                 16.678334570856016
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 345)
+NEXT POINT:                                       (520, 295)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 131                           
+TARGET DIST:                              137.18600511714013
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.5547603413220088
+RECENT IMPROVEMENTS:                        1.12523809902072
+ROLLING MOVEMENT AVERAGE:                 16.563762038814094
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 295)
+NEXT POINT:                                       (521, 345)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 132                           
+TARGET DIST:                              140.68759717899798
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -3.501592061857849
+RECENT IMPROVEMENTS:                      0.7514356231249337
+ROLLING MOVEMENT AVERAGE:                 16.465550234476076
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (523, 345)
+NEXT POINT:                                       (522, 295)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 133                           
+TARGET DIST:                              139.16896205691842
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.5186351220795586
+RECENT IMPROVEMENTS:                       1.123589420342853
+ROLLING MOVEMENT AVERAGE:                  16.35400609184625
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (524, 295)
+NEXT POINT:                                       (523, 345)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 134                           
+TARGET DIST:                              139.71399357258383
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                    -0.5450315156654142
+RECENT IMPROVEMENTS:                      3.6770800686997234
+ROLLING MOVEMENT AVERAGE:                 16.236902576467134
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 345)
+NEXT POINT:                                       (524, 295)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 135                           
+TARGET DIST:                               138.1774221788784
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     1.5365713937054295
+RECENT IMPROVEMENTS:                      -3.964904133801838
+ROLLING MOVEMENT AVERAGE:                  16.12881190600565
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (523, 295)
+NEXT POINT:                                       (522, 345)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 136                           
+TARGET DIST:                               171.0263137648707
+MOVEMENT:                                  50.08991914547278
+DISTANCE IMPROVEMENT:                    -32.848891585992305
+RECENT IMPROVEMENTS:                      -33.25839297051451
+ROLLING MOVEMENT AVERAGE:                  16.25085628323183
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (545, 250)
+NEXT POINT:                                       (523, 295)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 137                           
+TARGET DIST:                              198.13379318026495
+MOVEMENT:                                  50.24937810560445
+DISTANCE IMPROVEMENT:                    -27.107479415394238
+RECENT IMPROVEMENTS:                      -61.93907962647094
+ROLLING MOVEMENT AVERAGE:                  16.32952746534895
+PROGRESS:                                26.522285863308426%
+CURRENT POINT:                                    (582, 284)
+NEXT POINT:                                       (545, 250)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 138                           
+TARGET DIST:                              175.82377541163197
+MOVEMENT:                                 50.566787519082126
+DISTANCE IMPROVEMENT:                     22.310017768632974
+RECENT IMPROVEMENTS:                      -39.02830765045209
+ROLLING MOVEMENT AVERAGE:                 16.372552575444516
+PROGRESS:                                26.606718343859963%
+CURRENT POINT:                                    (561, 330)
+NEXT POINT:                                       (582, 284)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 139                           
+TARGET DIST:                              133.37541002748594
+MOVEMENT:                                  49.92995093127971
+DISTANCE IMPROVEMENT:                      42.44836538414603
+RECENT IMPROVEMENTS:                      1.8281402217586162
+ROLLING MOVEMENT AVERAGE:                 16.558808381220956
+PROGRESS:                                26.774784560447596%
+CURRENT POINT:                                    (519, 303)
+NEXT POINT:                                       (561, 330)
+STUCK:                                                 False
+STUCK COUNTER:                                             3
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 140                           
+TARGET DIST:                              139.84276885130672
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -6.467358823820774
+RECENT IMPROVEMENTS:                     -1.1020033928445798
+ROLLING MOVEMENT AVERAGE:                 16.487237816984074
+PROGRESS:                                 26.43758373604906%
+CURRENT POINT:                                    (520, 353)
+NEXT POINT:                                       (519, 303)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 141                           
+TARGET DIST:                              135.36986370680884
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      4.472905144497872
+RECENT IMPROVEMENTS:                      1.8161414103312836
+ROLLING MOVEMENT AVERAGE:                  16.40262984041727
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 303)
+NEXT POINT:                                       (520, 353)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 142                           
+TARGET DIST:                              138.88484438555562
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                     -3.514980678746781
+RECENT IMPROVEMENTS:                      1.8027527934423517
+ROLLING MOVEMENT AVERAGE:                  16.31250641970629
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 353)
+NEXT POINT:                                       (521, 303)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 143                           
+TARGET DIST:                               134.3726162579266
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      4.512228127629015
+RECENT IMPROVEMENTS:                       4.796345798991808
+ROLLING MOVEMENT AVERAGE:                 16.230560042677972
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (520, 303)
+NEXT POINT:                                       (519, 353)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 144                           
+TARGET DIST:                              140.80127840328723
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -6.428662145360619
+RECENT IMPROVEMENTS:                     -1.0872848307033962
+ROLLING MOVEMENT AVERAGE:                 16.162960746834404
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 353)
+NEXT POINT:                                       (520, 303)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 145                           
+TARGET DIST:                              136.36715146984628
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                       4.43412693344095
+RECENT IMPROVEMENTS:                      1.8102707090321246
+ROLLING MOVEMENT AVERAGE:                 16.082626268660476
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 303)
+NEXT POINT:                                       (521, 353)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 146                           
+TARGET DIST:                              142.72000560538106
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -6.352854135534784
+RECENT IMPROVEMENTS:                      28.306308159489646
+ROLLING MOVEMENT AVERAGE:                 16.016437342584794
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (523, 353)
+NEXT POINT:                                       (522, 303)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 147                           
+TARGET DIST:                              138.36184445142382
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      4.358161153957241
+RECENT IMPROVEMENTS:                      59.771948728841124
+ROLLING MOVEMENT AVERAGE:                 15.937665206175147
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (524, 303)
+NEXT POINT:                                       (523, 353)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 148                           
+TARGET DIST:                               141.7603611733548
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                    -3.3985167219309744
+RECENT IMPROVEMENTS:                      34.063414238277176
+ROLLING MOVEMENT AVERAGE:                 15.853509847220488
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 353)
+NEXT POINT:                                       (524, 303)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 149                           
+TARGET DIST:                               137.3644786689776
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      4.395882504377198
+RECENT IMPROVEMENTS:                      -3.989068641491656
+ROLLING MOVEMENT AVERAGE:                 15.777125664934868
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (523, 303)
+NEXT POINT:                                       (522, 353)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 150                           
+TARGET DIST:                               177.2484132510077
+MOVEMENT:                                   49.8196748283246
+DISTANCE IMPROVEMENT:                     -39.88393458203009
+RECENT IMPROVEMENTS:                     -37.405644399700975
+ROLLING MOVEMENT AVERAGE:                 15.936773406107685
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (562, 334)
+NEXT POINT:                                       (523, 303)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 151                           
+TARGET DIST:                              166.37307474468338
+MOVEMENT:                                  50.44799302251776
+DISTANCE IMPROVEMENT:                     10.875338506324312
+RECENT IMPROVEMENTS:                     -31.003211037874536
+ROLLING MOVEMENT AVERAGE:                  15.90347449229332
+PROGRESS:                                 26.37919325795759%
+CURRENT POINT:                                    (550, 285)
+NEXT POINT:                                       (562, 334)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 152                           
+TARGET DIST:                              137.71347065556077
+MOVEMENT:                                  49.92995093127971
+DISTANCE IMPROVEMENT:                      28.65960408912261
+RECENT IMPROVEMENTS:                      1.1713737299948548
+ROLLING MOVEMENT AVERAGE:                 15.986847888351027
+PROGRESS:                                26.711883648435386%
+CURRENT POINT:                                    (523, 327)
+NEXT POINT:                                       (550, 285)
+STUCK:                                                 False
+STUCK COUNTER:                                             2
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 153                           
+TARGET DIST:                              137.78606605894515
+MOVEMENT:                                  50.15974481593781
+DISTANCE IMPROVEMENT:                   -0.07259540338438342
+RECENT IMPROVEMENTS:                      -3.413449801018544
+ROLLING MOVEMENT AVERAGE:                 15.883508586500595
+PROGRESS:                                 26.43758373604906%
+CURRENT POINT:                                    (519, 277)
+NEXT POINT:                                       (523, 327)
+STUCK:                                                 False
+STUCK COUNTER:                                             3
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 154                           
+TARGET DIST:                              134.72935834479432
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      3.056707714150832
+RECENT IMPROVEMENTS:                       6.071920058492907
+ROLLING MOVEMENT AVERAGE:                 15.800755032485435
+PROGRESS:                                26.559258100921596%
+CURRENT POINT:                                    (520, 327)
+NEXT POINT:                                       (519, 277)
+STUCK:                                                 False
+STUCK COUNTER:                                             3
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 155                           
+TARGET DIST:                              139.71757226634023
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -4.988213921545906
+RECENT IMPROVEMENTS:                     -3.3504207964939496
+ROLLING MOVEMENT AVERAGE:                 15.731443871517873
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 277)
+NEXT POINT:                                       (520, 327)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 156                           
+TARGET DIST:                              133.73481222179961
+MOVEMENT:                                 50.039984012787215
+DISTANCE IMPROVEMENT:                      5.982760044540612
+RECENT IMPROVEMENTS:                       8.985193383581446
+ROLLING MOVEMENT AVERAGE:                  15.66935034395751
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (519, 327)
+NEXT POINT:                                       (521, 277)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 157                           
+TARGET DIST:                               138.7515765676196
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -5.016764345819979
+RECENT IMPROVEMENTS:                     -0.3897321161957734
+ROLLING MOVEMENT AVERAGE:                  15.60192891358955
+PROGRESS:                                26.495845535867247%
+CURRENT POINT:                                    (520, 277)
+NEXT POINT:                                       (519, 327)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 158                           
+TARGET DIST:                              135.72398461583714
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     3.0275919517824548
+RECENT IMPROVEMENTS:                       6.036376557517656
+ROLLING MOVEMENT AVERAGE:                 15.522845033326613
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (521, 327)
+NEXT POINT:                                       (520, 277)
+STUCK:                                                 False
+STUCK COUNTER:                                             5
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 159                           
+TARGET DIST:                               140.6840431605518
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                     -4.960058544714656
+RECENT IMPROVEMENTS:                      -3.319564491574198
+ROLLING MOVEMENT AVERAGE:                 15.456827617772788
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (522, 277)
+NEXT POINT:                                       (521, 327)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 160                           
+TARGET DIST:                              182.70194306574848
+MOVEMENT:                                  50.15974481593781
+DISTANCE IMPROVEMENT:                    -42.017899905196685
+RECENT IMPROVEMENTS:                       -5.45352981474079
+ROLLING MOVEMENT AVERAGE:                 15.621803222042503
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (568, 297)
+NEXT POINT:                                       (522, 277)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 161                           
+TARGET DIST:                               168.8697723099075
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                     13.832170755840991
+RECENT IMPROVEMENTS:                     -2.4966975652241103
+ROLLING MOVEMENT AVERAGE:                 15.610756108053605
+PROGRESS:                                26.559258100921596%
+CURRENT POINT:                                    (552, 344)
+NEXT POINT:                                       (568, 297)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 162                           
+TARGET DIST:                              150.72159765607583
+MOVEMENT:                                 49.678969393496885
+DISTANCE IMPROVEMENT:                      18.14817465383166
+RECENT IMPROVEMENTS:                      -13.00812700051506
+ROLLING MOVEMENT AVERAGE:                 15.626323092997028
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (520, 382)
+NEXT POINT:                                       (552, 344)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 163                           
+TARGET DIST:                              196.91876497682998
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                     -46.19716732075415
+RECENT IMPROVEMENTS:                     -59.132698917884824
+ROLLING MOVEMENT AVERAGE:                 15.812730679751645
+PROGRESS:                                26.304690646879624%
+CURRENT POINT:                                    (550, 422)
+NEXT POINT:                                       (520, 382)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 164                           
+TARGET DIST:                              211.56795598577776
+MOVEMENT:                                  50.15974481593781
+DISTANCE IMPROVEMENT:                    -14.649191008947781
+RECENT IMPROVEMENTS:                      -76.83859764098344
+ROLLING MOVEMENT AVERAGE:                 15.805678924171014
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (530, 468)
+NEXT POINT:                                       (550, 422)
+STUCK:                                                  True
+STUCK COUNTER:                                             5
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 165                           
+TARGET DIST:                              241.05808428675442
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                    -29.490128300976664
+RECENT IMPROVEMENTS:                      -101.3405120204142
+ROLLING MOVEMENT AVERAGE:                 15.888115366199964
+PROGRESS:                                26.559258100921596%
+CURRENT POINT:                                    (516, 516)
+NEXT POINT:                                       (530, 468)
+STUCK:                                                  True
+STUCK COUNTER:                                             0
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 166                           
+TARGET DIST:                              206.11889772653063
+MOVEMENT:                                  49.49747468305833
+DISTANCE IMPROVEMENT:                      34.93918656022379
+RECENT IMPROVEMENTS:                      -72.38408550473102
+ROLLING MOVEMENT AVERAGE:                  16.00219363682286
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (523, 467)
+NEXT POINT:                                       (516, 516)
+STUCK:                                                  True
+STUCK COUNTER:                                             1
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 167                           
+TARGET DIST:                              166.73931749890306
+MOVEMENT:                                  49.72926703662542
+DISTANCE IMPROVEMENT:                      39.37958022762757
+RECENT IMPROVEMENTS:                      -27.98774093128347
+ROLLING MOVEMENT AVERAGE:                 16.141344747482414
+PROGRESS:                                26.208590380098407%
+CURRENT POINT:                                    (475, 454)
+NEXT POINT:                                       (523, 467)
+STUCK:                                                  True
+STUCK COUNTER:                                             2
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 168                           
+TARGET DIST:                               207.7137453323684
+MOVEMENT:                                  49.64876634922564
+DISTANCE IMPROVEMENT:                     -40.97442783346534
+RECENT IMPROVEMENTS:                      -71.98976071653126
+ROLLING MOVEMENT AVERAGE:                 16.288286067517813
+PROGRESS:                                 26.33132292123869%
+CURRENT POINT:                                    (522, 470)
+NEXT POINT:                                       (475, 454)
+STUCK:                                                  True
+STUCK COUNTER:                                             3
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 169                           
+TARGET DIST:                               173.7728402253931
+MOVEMENT:                                  50.35871324805669
+DISTANCE IMPROVEMENT:                      33.94090510697529
+RECENT IMPROVEMENTS:                     -33.088797064841316
+ROLLING MOVEMENT AVERAGE:                 16.392125003044033
+PROGRESS:                                26.288698331703834%
+CURRENT POINT:                                    (472, 464)
+NEXT POINT:                                       (522, 470)
+STUCK:                                                  True
+STUCK COUNTER:                                             4
+ESCAPING?:                                              True
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 170                           
+TARGET DIST:                               159.1257364476281
+MOVEMENT:                                  50.15974481593781
+DISTANCE IMPROVEMENT:                     14.647103777765011
+RECENT IMPROVEMENTS:                       23.57620661812038
+ROLLING MOVEMENT AVERAGE:                 16.381920200557023
+PROGRESS:                                26.664610589495297%
+CURRENT POINT:                                    (422, 468)
+NEXT POINT:                                       (472, 464)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 171                           
+TARGET DIST:                              140.51334456200237
+MOVEMENT:                                  50.28916384272063
+DISTANCE IMPROVEMENT:                     18.612391885625726
+RECENT IMPROVEMENTS:                      28.356427747905116
+ROLLING MOVEMENT AVERAGE:                 16.394888059191143
+PROGRESS:                                26.559258100921596%
+CURRENT POINT:                                    (374, 453)
+NEXT POINT:                                       (422, 468)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 172                           
+TARGET DIST:                              145.06550244630873
+MOVEMENT:                                               50.0
+DISTANCE IMPROVEMENT:                     -4.552157884306354
+RECENT IMPROVEMENTS:                       5.656095209767102
+ROLLING MOVEMENT AVERAGE:                 16.326432971475047
+PROGRESS:                                 26.62778463246812%
+CURRENT POINT:                                    (424, 453)
+NEXT POINT:                                       (374, 453)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 173                           
+TARGET DIST:                              141.50971698084905
+MOVEMENT:                                  50.00999900019995
+DISTANCE IMPROVEMENT:                      3.555785465459678
+RECENT IMPROVEMENTS:                       55.40904799598093
+ROLLING MOVEMENT AVERAGE:                 16.253038445578404
+PROGRESS:                                26.474674261582994%
+CURRENT POINT:                                    (374, 454)
+NEXT POINT:                                       (424, 453)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 174                           
+TARGET DIST:                              102.18121158021175
+MOVEMENT:                                  50.53711507397311
+DISTANCE IMPROVEMENT:                       39.3285054006373
+RECENT IMPROVEMENTS:                        109.386744405566
+ROLLING MOVEMENT AVERAGE:                 16.384898256750173
+PROGRESS:                                  26.4799686670477%
+CURRENT POINT:                                    (351, 409)
+NEXT POINT:                                       (374, 454)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
+
+
+SEARCH RADIUS:                                            50
+STEP COUNTER:                 175                           
+TARGET DIST:                               52.20153254455275
+MOVEMENT:                                   49.9799959983992
+DISTANCE IMPROVEMENT:                     49.979679035659004
+RECENT IMPROVEMENTS:                      188.85655174220165
+ROLLING MOVEMENT AVERAGE:                  16.57577769299397
+PROGRESS:                                26.759073194071476%
+CURRENT POINT:                                    (368, 362)
+NEXT POINT:                                       (351, 409)
+STUCK:                                                 False
+STUCK COUNTER:                                             4
+ESCAPING?:                                             False
 
 

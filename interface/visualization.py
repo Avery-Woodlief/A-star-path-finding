@@ -91,7 +91,8 @@ def draw_world(nav, start, end):
     pygame.draw.circle(screen, colors["green"], end, 5)
     #screen.blit(nav.radar_surface, (nav.current.point[0] - nav.search_radius, nav.current.point[1] - nav.search_radius))
     pygame.draw.circle(screen,colors["soft pink"],(nav.center_x, nav.center_y),nav.search_radius,3) # radar
-    pygame.draw.line(screen, colors["black"], nav.next_point_for_drawing.point, nav.current.point, width=3)
+    if (not nav.is_stuck):
+        pygame.draw.line(screen, colors["black"], nav.next_point_for_drawing.point, nav.current.point, width=3)
     pygame.draw.circle(screen, colors["light purple"], nav.current.point, 5)
     return
 
