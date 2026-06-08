@@ -4,6 +4,7 @@ import pygame
 import math
 
 pygame.init()
+nint = lambda x: (math.floor(x + 0.5) + math.ceil((2*x - 1)/4) - math.floor((2*x - 1)/4) - 1) # nearest integer function
 
 class MapMaker:
     
@@ -247,6 +248,7 @@ for obj, color in game_map.obstacles_.items():
     if isinstance(obj, ObstacleRect):
         file_["Rect"][f"{obj}"] = f"{color}"
     elif isinstance(obj, ObstacleCircle):
+        obj.radius = nint(obj.radius)
         file_["Circle"][f"{obj}"] = f"{color}"
 
 file_name = input("name your map: ")

@@ -42,6 +42,27 @@ class ObstacleCircle:
         if ((((cx - x)*(cx - x)) + ((cy - y)*(cy - y))) <= (self.radius*self.radius)):
             return True
         return False
+
+    def clipline(self, start, end):
+        px, py = start
+        qx, qy = end
+        cx, cy = self.center
+
+        dx = qx - px
+        dy = qy - py
+
+        if dx == 0 and dy == 0:
+            return (cx - px)**2 + (cy - py)**2 <= (self.radius)**2
+
+        t = ((cx - px)*dx + (cy - py)*dy) / (dx*dx + dy*dy)
+
+        # clamp to segment
+        t = max(0, min(1, t))
+
+        nearest_x = px + t*dx
+        nearest_y = py + t*dy
+
+        return ((nearest_x - cx)**2 + (nearest_y - cy)**2) <= (self.radius)**2
         
     def __hash__(self):
         return hash((self.center, self.radius))

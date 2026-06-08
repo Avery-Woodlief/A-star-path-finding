@@ -79,6 +79,9 @@ class Line:
     def colliderect(self, rect : Rect) -> bool:
         return bool(rect.clipline(self.start, self.end))
 
+    def collidecircle(self, circle : ObstacleCircle) -> bool:
+        return bool(circle.clipline(self.start, self.end))
+
 
 class Circle (BaseNavigationShape):
 
@@ -251,11 +254,17 @@ class Navigator:
         for obstacle in self.obstacles["Rect"]:
             if (obstacle.collidepoint(node)):
                 return True
+        for obstacle in self.obstacles["Circle"]:
+            if (obstacle.collidepoint(node)):
+                return True
         return False
 
     def line_collides(self, line : Line) -> bool:
         for obstacle in self.obstacles["Rect"]:
             if (line.colliderect(obstacle)):
+                return True
+        for obstacle in self.obstacles["Circle"]:
+            if (line.collidecircle(obstacle)):
                 return True
         return False
 

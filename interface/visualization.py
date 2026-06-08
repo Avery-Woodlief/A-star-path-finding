@@ -20,7 +20,7 @@ with open(f"maps/{input('choose a map: ')}.json", "r") as file:
 #rect_args = None
 #color_args = None
 
-obstacles = {"Rect":{}}
+obstacles = {"Rect":{}, "Circle":{}}
 
 '''
 for r, c in world_map.items():
@@ -57,6 +57,21 @@ for obstacle_type, instances in world_map.items():
             for i in a2_map:
                 color_args.append(i)
             obstacles["Rect"][ObstacleRect(topleft, size)] = tuple(color_args)
+    elif (obstacle_type == "Circle"):
+        for circle, color in instances.items():
+            a1 = re.findall(r"\d+", circle)
+            a1_map = map(int, a1)
+            circle_args = []
+            for i in a1_map:
+                circle_args.append(i)
+            center = (circle_args[0], circle_args[1])
+            radius = circle_args[2]
+            a2 = re.findall(r"\d+", color)
+            a2_map = map(int, a2)
+            color_args = []
+            for i in a2_map:
+                color_args.append(i)
+            obstacles["Circle"][ObstacleCircle(center, radius)] = tuple(color_args)
 
 color_pool = {
                 0 : "white",
@@ -102,6 +117,9 @@ def draw_world(nav, start, end):
         if (obstacle_type == "Rect"):
             for rect, color in instances.items():
                 pygame.draw.rect(screen, color, rect)
+        if (obstacle_type == "Circle"):
+            for circle, color in instances.items():
+                pygame.draw.circle(screen, color, circle.center, circle.radius)
     '''
     for obstacle, color in obstacles.items():
         pygame.draw.rect(screen, color, obstacle)
@@ -123,6 +141,9 @@ while (running):
         if (obstacle_type == "Rect"):
             for rect, color in instances.items():
                 pygame.draw.rect(screen, color, rect)
+        if (obstacle_type == "Circle"):
+            for circle, color in instances.items():
+                pygame.draw.circle(screen, color, circle.center, circle.radius)
 
     for event in pygame.event.get():
         if (event.type == pygame.WINDOWLEAVE):
