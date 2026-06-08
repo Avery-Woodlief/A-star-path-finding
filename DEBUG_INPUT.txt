@@ -1,1 +1,1 @@
-maze
+small_openings

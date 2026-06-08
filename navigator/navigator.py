@@ -1,11 +1,15 @@
 from navigator.obstacle import Obstacle
 from navigator.node import Node
 from itertools import product
-from math import floor, ceil, sqrt, dist#, pi
+from math import floor, ceil, sqrt
+import math
 from pygame import Rect
 from random import randint
 #from itertools import combinations
 #import pygame
+
+def dist(nodeA : Node, nodeB : Node) -> float:
+    return math.dist(nodeA.point, nodeB.point)
 
 nint = lambda x: (floor(x + 0.5) + ceil((2*x - 1)/4) - floor((2*x - 1)/4) - 1) # nearest integer function
 
@@ -159,9 +163,9 @@ class Navigator:
         self.radar = Circle(self.current.point, self.search_radius)                 
         self.tolerance = 10                                                         
         self.is_stuck = False                                                       
-        self.initial_dist = dist(self.current.point, self.target.point)             
-        self.curr_dist_to_target = dist(self.current.point, self.target.point)      
-        self.prev_dist_to_target = dist(self.current.point, self.target.point)      
+        self.initial_dist = dist(self.current, self.target)             
+        self.curr_dist_to_target = dist(self.current, self.target)      
+        self.prev_dist_to_target = dist(self.current, self.target)      
 
         self.movement = self.curr_dist_to_target - self.prev_dist_to_target         
         self.recent_improvements = []                                               
@@ -174,7 +178,7 @@ class Navigator:
         self.stuck_limit = 2                                                        
         self.escaping = False                                                      
         self.path = [self.start]                                                   
-        self.nodes_that_made_navigator_stuck = []                                 
+        self.nodes_that_made_navigator_stuck = []                         
 
         self.next_point_for_drawing = self.current                                 
         self.step_count = 0                                                        
@@ -212,12 +216,12 @@ class Navigator:
     def update_movement(self, next):
         self.prev_dist_to_target = self.curr_dist_to_target
 
-        self.dist_moved = dist(self.current.point, next.point)
+        self.dist_moved = dist(self.current, next)
 
         self.path.append(next)
         self.current = next
 
-        self.curr_dist_to_target = dist(self.current.point, self.target.point)
+        self.curr_dist_to_target = dist(self.current, self.target)
         self.dist_improvement = self.prev_dist_to_target - self.curr_dist_to_target
         '''if self.dist_improvement < 0, then doing worse than before
            if self.dist_improvement > 0, then now doing better'''
@@ -321,6 +325,9 @@ class Navigator:
         return
 
 
+    def find_best_improvement(self, nodes):
+        return
+
     def explore(self, stride):
         self.update_radar(stride)
         allowed_nodes = []
@@ -364,7 +371,7 @@ class Navigator:
                 self.escaping = True
                 self.explore(stride=10)
 
-            elif dist(self.current.point, self.target.point) > self.tolerance:
+            elif dist(self.current, self.target) > self.tolerance:
                 self.search_radius = self.greedy_radius
                 self.careful_step(stride=10)
             else:
@@ -420,8 +427,8 @@ class NavigatorLog:
         self.string = ""
         self.step_counter = 0
         if (self.focused_nav):
-            self.prev_dist = dist(self.focused_nav.current.point, self.focused_nav.target.point)
-            self.curr_dist = dist(self.focused_nav.current.point, self.focused_nav.target.point)
+            self.prev_dist = dist(self.focused_nav.current, self.focused_nav.target)
+            self.curr_dist = dist(self.focused_nav.current, self.focused_nav.target)
         self.movement_sums = 0
 
         self.bits = {
@@ -465,8 +472,8 @@ class NavigatorLog:
     def change_nav(self, new_nav : Navigator) -> None:
         self.focused_nav = new_nav
         self.step_counter = 0
-        self.prev_dist = dist(self.focused_nav.current.point, self.focused_nav.target.point)
-        self.curr_dist = dist(self.focused_nav.current.point, self.focused_nav.target.point)
+        self.prev_dist = dist(self.focused_nav.current, self.focused_nav.target)
+        self.curr_dist = dist(self.focused_nav.current, self.focused_nav.target)
         return
 
     def update_chars_occupied(self, name):
@@ -553,8 +560,8 @@ class NavigatorLog:
             return
 
         target_dist = dist(
-            self.focused_nav.current.point,
-            self.focused_nav.target.point
+            self.focused_nav.current,
+            self.focused_nav.target
         )
 
         self.update_chars_occupied("target dist")
@@ -608,8 +615,8 @@ class NavigatorLog:
 
         beyond_nav_tolerance = (
             dist(
-                self.focused_nav.current.point,
-                self.focused_nav.target.point
+                self.focused_nav.current,
+                self.focused_nav.target
             )
             > self.focused_nav.tolerance
         )

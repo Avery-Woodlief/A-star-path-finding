@@ -151,7 +151,7 @@ while (running):
                         #pygame.draw.line(screen, colors["green"], prev, nav.current.point, width = 2) 
                         clock.tick(60)                 
                         pygame.display.flip()
-                        if(dist(nav.current.point, nav.target.point) < nav.search_radius/2):#if (nav.current == nav.target):
+                        if(dist(nav.current, nav.target) < nav.search_radius/2):#if (nav.current == nav.target):
                             nav_log.write_step_info()
                             nav_log.upload_info()
                             break
