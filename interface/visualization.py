@@ -5,6 +5,9 @@ from random import randint
 import json
 import re
 import os
+import platform
+
+operating_system_name = platform.system()
 
 pygame.init()
 
@@ -21,24 +24,6 @@ with open(f"maps/{input('choose a map: ')}.json", "r") as file:
 #color_args = None
 
 obstacles = {"Rect":{}, "Circle":{}}
-
-'''
-for r, c in world_map.items():
-    a1 = re.findall(r"\d+", r)
-    a1_map = map(int, a1)
-    rect_args = []
-    for i in a1_map:
-        rect_args.append(i)
-    topleft = (rect_args[0], rect_args[1])
-    size = (rect_args[2], rect_args[3])
-    a2 = re.findall(r"\d+", c)
-    a2_map = map(int, a2)
-    color_args = []
-    for i in a2_map:
-        color_args.append(i)
-
-    obstacles[ObstacleRect(topleft, size)] = tuple(color_args)
-'''
 
 
 for obstacle_type, instances in world_map.items():
@@ -110,6 +95,14 @@ clock = pygame.time.Clock()
 nav_log = NavigatorLog(None)
 
 
+clear_terminal_screen_cmd = ""
+if ((operating_system_name == "Linux") or (operating_system_name == "Darwin")):
+    clear_terminal_screen_cmd = "clear"
+elif (operating_system_name == "Windows"):
+    clear_terminal_screen_cmd = "cls"
+else:
+    print("Unknown operating system")
+
 
 def draw_world(nav, start, end):
 
@@ -120,10 +113,6 @@ def draw_world(nav, start, end):
         if (obstacle_type == "Circle"):
             for circle, color in instances.items():
                 pygame.draw.circle(screen, color, circle.center, circle.radius)
-    '''
-    for obstacle, color in obstacles.items():
-        pygame.draw.rect(screen, color, obstacle)
-    '''
 
     
     pygame.draw.circle(screen, colors["blue"], start, 5)
@@ -174,7 +163,7 @@ while (running):
                         prev = nav.current.point
 
                         nav_log.write_step_info()
-                        os.system("clear")
+                        os.system(clear_terminal_screen_cmd)
                         nav_log.print_to_console()
                         try:
                             nav.step()
