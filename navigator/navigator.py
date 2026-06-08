@@ -155,6 +155,8 @@ class Navigator:
 
         self.current = self.start
         self.search_radius = 50
+        self.exploration_radius = 100
+        self.greedy_radius = 50
         self.center_x, self.center_y = self.current.point
         self.radar = Circle(self.current.point, self.search_radius)
         self.tolerance = 10
@@ -176,6 +178,7 @@ class Navigator:
         self.stuck_limit = 5
         self.escaping = False
         self.path = [self.start]
+        self.nodes_that_made_navigator_stuck = []
 
         #self.radar_surface = pygame.Surface((2*self.search_radius, 2*self.search_radius))
         #self.radar_surface.fill((0, 0, 0))        
@@ -308,10 +311,14 @@ class Navigator:
                 southern_hem_node = Node(end_points[0])
                 nothern_hem_node = Node(end_points[1])
 
-                if ((not southern_hem_collide) and not (southern_hem_node in self.path)):
+                if ((not southern_hem_collide) 
+                    and not (southern_hem_node in self.path)
+                    and not (southern_hem_node in self.nodes_that_made_navigator_stuck)):
                     allowed_nodes.append(southern_hem_node)
 
-                if ((not northern_hem_collide) and not (nothern_hem_node in self.path)):
+                if ((not northern_hem_collide) 
+                    and not (nothern_hem_node in self.path)
+                    and not (nothern_hem_node in self.nodes_that_made_navigator_stuck)):
                     allowed_nodes.append(nothern_hem_node)
 
             '''
@@ -351,10 +358,14 @@ class Navigator:
                 southern_hem_node = Node(end_points[0])
                 nothern_hem_node = Node(end_points[1])
 
-                if ((not southern_hem_collide) and not (southern_hem_node in self.path)):
+                if ((not southern_hem_collide) 
+                    and not (southern_hem_node in self.path) 
+                    and not (southern_hem_node in self.nodes_that_made_navigator_stuck)):
                     allowed_nodes.append(southern_hem_node)
 
-                if ((not northern_hem_collide) and not (nothern_hem_node in self.path)):
+                if ((not northern_hem_collide) 
+                    and not (nothern_hem_node in self.path)
+                    and not (nothern_hem_node in self.nodes_that_made_navigator_stuck)):
                     allowed_nodes.append(nothern_hem_node)
 
         next = allowed_nodes[randint(0, len(allowed_nodes)-1)]
@@ -374,6 +385,7 @@ class Navigator:
             if self.is_stuck:
                 #saved_search_radius = self.search_radius
                 #self.search_radius = 70
+                self.search_radius = self.exploration_radius
                 
                 self.escaping = True
                 self.explore(stride=10)
@@ -381,8 +393,10 @@ class Navigator:
                 #self.search_radius = saved_search_radius
 
             elif dist(self.current.point, self.target.point) > self.tolerance:
+                self.search_radius = self.greedy_radius
                 self.careful_step(stride=10)
             else:
+                self.search_radius = self.greedy_radius
                 self.careful_step(stride=1)
             
         # update stuck state AFTER movement happens
@@ -397,6 +411,7 @@ class Navigator:
             if total_improvement < 0:
                 if (self.stuck_counter >= self.stuck_limit):
                     self.is_stuck = True
+                    self.nodes_that_made_navigator_stuck.append(self.current)
                     #self.recent_improvements = []
                     self.stuck_counter = 0
                 else:
