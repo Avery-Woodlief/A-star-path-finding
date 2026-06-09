@@ -2,6 +2,8 @@ from navigator.obstacles import *
 import json
 import pygame
 import math
+import os
+import re
 
 pygame.init()
 nint = lambda x: (math.floor(x + 0.5) + math.ceil((2*x - 1)/4) - math.floor((2*x - 1)/4) - 1) # nearest integer function
@@ -12,6 +14,7 @@ class MapMaker:
         
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.obstacles_ = {}
+        self.load_in_a_map(input("mapname> "))
         self.color_pool = {
                 0 : "white",
                 1 : "red",
@@ -58,6 +61,57 @@ class MapMaker:
         self.skip_map = False
         self.selected_shape_type = "ObstacleRect"
 
+    def load_in_rect(self, instances : dict) -> None:
+        for rect, color in instances.items():
+            a1 = re.findall(r"\d+", rect)
+            a1_map = map(int, a1)
+            rect_args = []
+            for i in a1_map:
+                rect_args.append(i)
+            topleft = (rect_args[0], rect_args[1])
+            size = (rect_args[2], rect_args[3])
+            a2 = re.findall(r"\d+", color)
+            a2_map = map(int, a2)
+            color_args = []
+            for i in a2_map:
+                color_args.append(i)
+            self.obstacles_[ObstacleRect(topleft, size)] = pygame.Color(tuple(color_args))
+        return
+
+    def load_in_circle(self, instances : dict) -> None:
+        for circle, color in instances.items():
+            a1 = re.findall(r"\d+", circle)
+            a1_map = map(int, a1)
+            circle_args = []
+            for i in a1_map:
+                circle_args.append(i)
+            center = (circle_args[0], circle_args[1])
+            radius = circle_args[2]
+            a2 = re.findall(r"\d+", color)
+            a2_map = map(int, a2)
+            color_args = []
+            for i in a2_map:
+                color_args.append(i)
+            self.obstacles_[ObstacleCircle(center, radius)] = pygame.Color(tuple(color_args))
+        return
+
+    def parse_loaded_in_obstacles(self, loaded_in_objs) -> None:
+        for obstacle_type, instances in loaded_in_objs.items():
+            if (obstacle_type == "Rect"):
+                self.load_in_rect(instances)
+            elif (obstacle_type == "Circle"):
+                self.load_in_circle(instances)
+        return
+
+    def load_in_a_map(self, map_name : str) -> None:
+        print(os.getcwd())
+        with open(f"maps/{map_name}.json", "r") as file:
+            loaded_in_obstacles = json.load(file)
+        file.close()
+        self.parse_loaded_in_obstacles(loaded_in_obstacles)
+        
+        return
+
     def dragging_check(self, event):
         if (self.began_drag and not self.end_drag):
             #print("dragging")
@@ -69,19 +123,11 @@ class MapMaker:
                     overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
                     self.screen.blit(overlay, (min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])))
                 elif (self.selected_shape_type == "ObstacleCircle"):
-
-                    ''' self.radius = abs(self.start[0] - event.pos[0])
-                        self.center = self.start
-                        new_circle = ObstacleCircle(self.center, self.radius)
-                        self.obstacles_[new_circle] = self.colors["black"]
-                    '''
-
-
                     self.radius = math.dist(self.center, event.pos)
                     overlay = pygame.Surface((self.radius * 2 + 10, self.radius * 2 + 10), pygame.SRCALPHA)
                     #overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
                     pygame.draw.circle(overlay, (0, 0, 0, 1), (self.radius, self.radius), self.radius)
-                    self.screen.blit(overlay, (self.center[0] - self.radius, self.center[1] - self.radius)) # TODO
+                    self.screen.blit(overlay, (self.center[0] - self.radius, self.center[1] - self.radius))
                     
         elif (self.edit_began_drag and not self.edit_end_drag):
             #print("edit dragging")
