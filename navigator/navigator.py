@@ -39,6 +39,10 @@ def line_intersection_circle_x(circle_center, line_slope, search_radius):
 
 
 def get_points_from_solved_x(line_slope, x_sols, circle_center):
+    '''
+    Returns points of intersection between circle - with center 'circle_center' - and 
+    line with slope 'line_slope'. Then rounds to the nearest integer using 'nint'.
+    '''
     m = line_slope
     h, k = circle_center
     y1 = nint(int(k) + m * (x_sols[0] - int(h)))
@@ -48,6 +52,10 @@ def get_points_from_solved_x(line_slope, x_sols, circle_center):
 
 
 class BaseNavigationShape:
+    '''
+    Base Class for 'Navigator' helper classes.
+    Note: Class 'Line' does not need the inheritance.
+    '''
 
     def __init__(self):
         self.nodes = []
@@ -71,6 +79,14 @@ class BaseNavigationShape:
         pass
 
 class Line:
+    '''
+    Helper class for 'Navigator' class.
+    Makes line segment from 'start_point' to 'end_point'.
+    Is able to check collision with other obstacles on map and is used to build segment from center of 'radar' to border of 'radar' using
+    the slope of a legal 'Node'.
+    Each Node on the border of the radar corresponds to two seperate line segments (opposite directions): one in northern hemisphere of radar
+                                                                                                          one in southern hemisphere of radar
+    '''
 
     def __init__(self, start_point, end_point):
         self.start = start_point
@@ -84,6 +100,9 @@ class Line:
 
 
 class Circle (BaseNavigationShape):
+    '''
+    'Circle (BaseNavigationShape)' is used as a radar tool for 'Navigator'.
+    '''
 
     def __init__(self, center, radius):
         super().__init__()
@@ -163,7 +182,12 @@ class Navigator:
         self.exploration_radius = 30                                               
         self.greedy_radius = 50                                                     
         self.center_x, self.center_y = self.current.point                           
-        self.radar = Circle(self.current.point, self.search_radius)                 
+        self.radar = Circle(self.current.point, self.search_radius)     
+        '''
+        The goal of using a radar is to be able to build lines from current node to border of the radar, in the direction
+        of nodes on the border of the circle that is radar.
+        Then checks if any of those lines collide with obstacles on the map. Saves computation as opposed to doing nodes inside the radar.
+        '''            
         self.tolerance = 10                                                         
         self.is_stuck = False                                                       
         self.initial_dist = dist(self.current, self.target)             
@@ -171,8 +195,18 @@ class Navigator:
         self.prev_dist_to_target = dist(self.current, self.target)      
 
         self.movement = self.curr_dist_to_target - self.prev_dist_to_target         
-        self.recent_improvements = []                                               
+        self.recent_improvements = []              
+        '''
+        The variable self.recent_improvements stores at most 'self.stuck_window' values.
+        Each of the said values in this list is the distance between self.current and self.target.
+        The distances vary because self.current varies whenever Navigator traverses to a node.
+        '''                                 
         self.min_window_improvement = 50
+        '''
+        The variable self.min_window_improvement is lower bound of sum(self.recent_improvements).
+        Used as part of condition with identifyiing if Navigator is stuck and goes into a loop of wanting to use greedy
+        algorithm but cannot actually traverse to the cheapest node (because an obstacle is in the way.)
+        '''
         self.stuck_window = 5                                                 
         self.progress = 0                                                           
         self.dist_moved = 0                                                         
@@ -183,10 +217,16 @@ class Navigator:
         self.path = [self.start]                                                   
         self.nodes_that_made_navigator_stuck = []                         
 
-        self.next_point_for_drawing = self.current                                 
+        # FOR DRAWING ONLY
+
+        self.next_point_for_drawing = self.current     
+
+        #
+                            
         self.step_count = 0                                                        
 
     def get_neighbors_of_node(self, node, stride):
+        '''returns adjacent and diagonal neighbors of specified node with a stride of 'stride'.'''
         saved = self.current
         self.current = node
         neighbors = self.get_neighbors_of_current(stride)
@@ -194,6 +234,7 @@ class Navigator:
         return neighbors
 
     def get_neighbors_of_current(self, stride):
+        '''returns adjacent and diagonal neighbors of current node (the node the Navigator is currently traversed on) with a stride of 'stride'.'''
         x, y = self.current.point
         up      = Node((x, y - stride))
         down    = Node((x, y + stride))
@@ -217,6 +258,11 @@ class Navigator:
 
     
     def update_movement(self, next):
+        '''
+        stores information relating to the relative movement of 'Navigator' and updates the current 'Node', then puts the next Node in path variable.
+        Note:   if self.dist_improvement < 0, then doing worse than before
+                if self.dist_improvement > 0, then now doing better
+        '''
         self.prev_dist_to_target = self.curr_dist_to_target
 
         self.dist_moved = dist(self.current, next)
@@ -226,14 +272,18 @@ class Navigator:
 
         self.curr_dist_to_target = dist(self.current, self.target)
         self.dist_improvement = self.prev_dist_to_target - self.curr_dist_to_target
-        '''if self.dist_improvement < 0, then doing worse than before
-           if self.dist_improvement > 0, then now doing better'''
+        
         self.movement = abs(self.dist_improvement)
         
 
 
     def optimize_costs(self, nodes):
-        
+        '''
+        Cost is calculate as a sum of two different expenses.
+        The first expense is the distance between the current node and the node to traverse to.
+        The second expense is the distance between the node to traverse to and the target node which 'Navigator' is searching for.
+        The optimized cost is the minimum of these sums between all the nodes in 'nodes'.
+        '''
         f_costs = {self.current.calc(node, self.target) : node for node in nodes}
         try:
             min_f_cost = min(f_costs.keys())
@@ -247,10 +297,17 @@ class Navigator:
 
 
     def obstacle_free(self, stride):
+        '''
+        No obstacles in map so just needs to the direct neighbors (adjacent and diagonal).
+        '''
         nodes = self.get_neighbors_of_current(stride)
         self.optimize_costs(nodes)
 
     def node_collides(self, node : Node | tuple | list) -> bool:
+        '''
+        returns True if the specified node of 'Node' type collides with an obstacle on the map.
+        returns False otherwise.
+        '''
         for obstacle in self.obstacles["Rect"]:
             if (obstacle.collidepoint(node)):
                 return True
@@ -260,6 +317,10 @@ class Navigator:
         return False
 
     def line_collides(self, line : Line) -> bool:
+        '''
+        returns True if the specified line of 'Line' type collides with an obstacle on the map.
+        returns False otherwise.
+        '''
         for obstacle in self.obstacles["Rect"]:
             if (line.colliderect(obstacle)):
                 return True
@@ -269,6 +330,9 @@ class Navigator:
         return False
 
     def update_radar(self, stride):
+        '''
+        changes radar to a circle of center self.current and using radius of self.search_radius.
+        '''
         current_x = self.current.point[0]
         current_y = self.current.point[1]
         target_x = self.target.point[0]
@@ -289,6 +353,9 @@ class Navigator:
         return
 
     def is_legal_southern_node(self, node):
+        '''
+        Checks if node in the direction of the southern hemisphere is legal for traversal.
+        '''
         line_southern_hem = Line(self.current.point, node.point)
         southern_hem_collide = self.line_collides(line_southern_hem)
         if ((not southern_hem_collide) 
@@ -298,6 +365,9 @@ class Navigator:
         return False
 
     def is_legal_northern_node(self, node):
+        '''
+        Checks if node in the direction of the northern hemisphere is legal for traversal.
+        '''
         line_northern_hem = Line(self.current.point, node.point)
         northern_hem_collide = self.line_collides(line_northern_hem)
         if ((not northern_hem_collide) 
@@ -307,6 +377,11 @@ class Navigator:
         return False
 
     def careful_step(self, stride):
+
+        '''
+        Uses greedy algorithm to traverse to node with minimum 'F_cost' cost - see 'Node.py'.
+        This cannot be used all the time because sometimes minimum cost is directly through a obstacle so must then change state to explore.
+        '''
 
         self.update_radar(stride)
         allowed_nodes = []
@@ -338,6 +413,10 @@ class Navigator:
         return
 
     def explore(self, stride):
+        '''
+        Used when greedy algorithm fails.
+        Randomly picks a node from a list of legal nodes.
+        '''
         self.update_radar(stride)
         allowed_nodes = []
         self.next_point_for_drawing = self.current
@@ -366,10 +445,18 @@ class Navigator:
         return
 
     def step(self):
+        '''
+        Iteration of each node traversal (not recursive).
+        '''
+
+        # FOR NAVIGATOR LOG
+
         try:
             self.progress = ((self.initial_dist - self.dist_moved) / self.initial_dist) * 100
         except ZeroDivisionError:
             self.progress = "NA"
+
+        #
 
         if not self.obstacles:
             self.obstacle_free(stride=1)
@@ -408,6 +495,11 @@ class Navigator:
         return
 
     def update_stuck_status(self) -> None:
+        '''
+        If allowance of times Navigator has fallen below lower bound of sum(self.recent_improvements) self.stuck_limit times,
+        then the Navigator identifies itself as being stuck and changes from greedy algorithm to exploration.
+        Otherwise increases (by 1) the number of times it has fallen below the lower bound.
+        '''
         if (self.stuck_counter >= self.stuck_limit):
             self.is_stuck = True
             self.nodes_that_made_navigator_stuck.append(self.current)
@@ -417,6 +509,9 @@ class Navigator:
         
 
     def __str__(self):
+        '''
+        Converts the path of Navigator to a string which is list of CSV of tuples which are points that the Navigator has traversed to.
+        '''
         string = f"{self.start}"
         for node in self.path:
             if (node == self.start):
