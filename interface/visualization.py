@@ -1,4 +1,5 @@
 from navigator.navigator import *
+from navigator.navigator_logs import *
 
 import pygame
 from random import randint
