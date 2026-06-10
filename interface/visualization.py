@@ -74,7 +74,10 @@ colors = {
             "blue" : pygame.Color(0, 0, 255),
             "black" : pygame.Color(0, 0, 0),
             "soft pink": pygame.Color(255, 174, 201),
-            "light purple": pygame.Color(127, 0, 127)
+            "light purple": pygame.Color(127, 0, 127),
+            "ugly green": pygame.Color(127, 127, 0, 100),
+            "aqua blue": pygame.Color(0, 127, 127),
+            "orange":pygame.Color(255, 127, 0)
         }
 
 screen = pygame.display.set_mode((1000, 750))
@@ -117,9 +120,14 @@ def draw_world(nav, start, end):
 
     
     pygame.draw.circle(screen, colors["blue"], start, 5)
+    for node in nav.path:
+        if isinstance(node, Node):
+            pygame.draw.circle(screen, colors["orange"], node.point, 2) 
+        elif isinstance(node, tuple):
+            pygame.draw.circle(screen, colors["orange"], node, 2) 
     pygame.draw.circle(screen, colors["green"], end, 5)
     #screen.blit(nav.radar_surface, (nav.current.point[0] - nav.search_radius, nav.current.point[1] - nav.search_radius))
-    pygame.draw.circle(screen,colors["soft pink"],(nav.center_x, nav.center_y),nav.search_radius,3) # radar
+    pygame.draw.circle(screen,colors["soft pink"],(nav.current[0], nav.current[1]),nav.search_radius,3) # radar
     if (not nav.is_stuck):
         pygame.draw.line(screen, colors["black"], nav.next_point_for_drawing.point, nav.current.point, width=3)
     pygame.draw.circle(screen, colors["light purple"], nav.current.point, 5)
@@ -183,7 +191,7 @@ while (running):
                         draw_world(nav, start, end)
                         #pygame.draw.line(screen, colors["blue"], start, end, width=1)
                         #pygame.draw.line(screen, colors["green"], prev, nav.current.point, width = 2) 
-                        clock.tick(60)                 
+                        clock.tick(10)                 
                         pygame.display.flip()
                         if(dist(nav.current, nav.target) < nav.search_radius/2):#if (nav.current == nav.target):
                             nav_log.write_step_info()
