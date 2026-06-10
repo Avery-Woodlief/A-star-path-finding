@@ -120,14 +120,15 @@ def draw_world(nav, start, end):
 
     
     pygame.draw.circle(screen, colors["blue"], start, 5)
+    for center, radius in nav.areas_seen.items():
+        pygame.draw.circle(screen, colors["ugly green"], center.point, radius)
     for node in nav.path:
         if isinstance(node, Node):
             pygame.draw.circle(screen, colors["orange"], node.point, 2) 
         elif isinstance(node, tuple):
             pygame.draw.circle(screen, colors["orange"], node, 2) 
     pygame.draw.circle(screen, colors["green"], end, 5)
-    #screen.blit(nav.radar_surface, (nav.current.point[0] - nav.search_radius, nav.current.point[1] - nav.search_radius))
-    pygame.draw.circle(screen,colors["soft pink"],(nav.current[0], nav.current[1]),nav.search_radius,3) # radar
+    pygame.draw.circle(screen,colors["soft pink"],(nav.current[0], nav.current[1]),nav.search_radius + nav.current_stride,3) # radar
     if (not nav.is_stuck):
         pygame.draw.line(screen, colors["black"], nav.next_point_for_drawing.point, nav.current.point, width=3)
     pygame.draw.circle(screen, colors["light purple"], nav.current.point, 5)
@@ -166,14 +167,16 @@ while (running):
                 nav = Navigator(start, end, obstacles)
                 #nav_log = NavigatorLog(nav)
                 nav_log.change_nav(nav)
+                draw_world(nav, start, end)
+                pygame.display.flip()
                 
                 if (nav):
                     while (not (nav.start == nav.target)):
                         prev = nav.current.point
 
-                        nav_log.write_step_info()
-                        os.system(clear_terminal_screen_cmd)
-                        nav_log.print_to_console()
+                        #nav_log.write_step_info()
+                        #os.system(clear_terminal_screen_cmd)
+                        #nav_log.print_to_console()
                         try:
                             nav.step()
                         except (ZeroDivisionError, ValueError):
@@ -191,7 +194,7 @@ while (running):
                         draw_world(nav, start, end)
                         #pygame.draw.line(screen, colors["blue"], start, end, width=1)
                         #pygame.draw.line(screen, colors["green"], prev, nav.current.point, width = 2) 
-                        clock.tick(10)                 
+                        clock.tick(60)                 
                         pygame.display.flip()
                         if(dist(nav.current, nav.target) < nav.search_radius/2):#if (nav.current == nav.target):
                             nav_log.write_step_info()

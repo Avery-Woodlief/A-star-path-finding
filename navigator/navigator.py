@@ -144,6 +144,9 @@ class Circle (BaseNavigationShape):
                     self.nodes.append(Node(point))
         return
 
+    def __str__(self):
+        return f"{self.center} : {self.radius}"
+
 class Navigator:
 
     def __init__(self, start : Node | tuple | list, target : Node | tuple | list, obstacles = None):
@@ -182,19 +185,17 @@ class Navigator:
         self.exploration_radius = 30                                               
         self.greedy_radius = 50                                                     
         self.center_x, self.center_y = self.current.point                           
-        self.radar = Circle(self.current.point, self.search_radius)     
-        '''
-        The goal of using a radar is to be able to build lines from current node to border of the radar, in the direction
-        of nodes on the border of the circle that is radar.
-        Then checks if any of those lines collide with obstacles on the map. Saves computation as opposed to doing nodes inside the radar.
-        '''            
+                  
         self.tolerance = 10                                                         
         self.is_stuck = False                                                       
         self.initial_dist = dist(self.current, self.target)             
         self.curr_dist_to_target = dist(self.current, self.target)      
         self.prev_dist_to_target = dist(self.current, self.target)      
 
-        self.movement = self.curr_dist_to_target - self.prev_dist_to_target         
+        self.movement = self.curr_dist_to_target - self.prev_dist_to_target
+        self.rolling_total_movements = self.movement
+        self.rolling_movement_average = self.rolling_total_movements/1
+        
         self.recent_improvements = []              
         '''
         The variable self.recent_improvements stores at most 'self.stuck_window' values.
@@ -212,10 +213,20 @@ class Navigator:
         self.dist_moved = 0                                                         
         self.stuck_counter = 0                                                      
         self.dist_improvement = 0                                                   
-        self.stuck_limit = 2                                                        
+        self.stuck_limit = 2  
+        self.current_stride = 0
+        self.radar = None#Circle((self.start[0], self.start[1]), self.search_radius)
+        self.update_radar()
+        '''
+        The goal of using a radar is to be able to build lines from current node to border of the radar, in the direction
+        of nodes on the border of the circle that is radar.
+        Then checks if any of those lines collide with obstacles on the map. Saves computation as opposed to doing nodes inside the radar.
+        '''
+        #self.update_radar()        
         self.escaping = False                                                      
         self.path = [self.start]                                                   
-        self.nodes_that_made_navigator_stuck = []                         
+        self.nodes_that_made_navigator_stuck = []
+        self.areas_seen = {} # areas of previous radars to not go to the same legal node more than one time               
 
         # FOR DRAWING ONLY
 
@@ -223,7 +234,7 @@ class Navigator:
 
         #
                             
-        self.step_count = 0                                                        
+        self.step_count = 1                                                      
 
     def get_neighbors_of_node(self, node, stride):
         '''returns adjacent and diagonal neighbors of specified node with a stride of 'stride'.'''
@@ -329,7 +340,27 @@ class Navigator:
                 return True
         return False
 
-    def update_radar(self, stride):
+    def in_seen_area(self, node):
+
+        if (sum(self.recent_improvements) == 0 and self.step_count > 1):
+            raise Exception(f"on step: {self.step_count}")
+
+        if (len(list(self.areas_seen.items())) == 0):
+            return False
+
+        if (node == self.current):
+            return False
+        
+        # center is of type Node here, radius is of type int, node is of type Node
+        for center, radius in self.areas_seen.items():
+            if (isinstance(center, Node) and isinstance(node, Node)):
+                if ((((center[0] - node[0])**2) + ((center[1] - node[1])**2)) <= (radius*radius)):
+                    return True
+            else:
+                raise TypeError(f"center is of type Node, radius is of type int, node is of type Node")
+        return False
+
+    def update_radar(self):
         '''
         changes radar to a circle of center self.current and using radius of self.search_radius.
         '''
@@ -337,15 +368,16 @@ class Navigator:
         current_y = self.current.point[1]
         target_x = self.target.point[0]
         target_y = self.target.point[1]
+        
         if (current_x < target_x):
-            self.center_x = current_x + stride
+            self.center_x = current_x + self.current_stride
         elif (current_x > target_x):
-            self.center_x = current_x - stride
+            self.center_x = current_x - self.current_stride
         
         if (current_y < target_y):
-            self.center_y = current_y + stride
+            self.center_y = current_y + self.current_stride
         elif (current_y > target_y):
-            self.center_y = current_y - stride
+            self.center_y = current_y - self.current_stride
         
         
         if ((self.center_x != None) and (self.center_y != None)):
@@ -376,19 +408,21 @@ class Navigator:
             return True
         return False
 
-    def careful_step(self, stride):
+    def careful_step(self):
 
         '''
         Uses greedy algorithm to traverse to node with minimum 'F_cost' cost - see 'Node.py'.
         This cannot be used all the time because sometimes minimum cost is directly through a obstacle so must then change state to explore.
         '''
-
-        self.update_radar(stride)
+        self.update_radar()
+        
         allowed_nodes = []
         self.next_point_for_drawing = self.current
         for node in self.radar:
-            
-            
+           
+            #if self.in_seen_area(node) and (node != self.current):
+            #    print("!")
+            #    continue
             
             if (not (node[0] == self.current[0])):
                 line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
@@ -406,22 +440,26 @@ class Navigator:
                     allowed_nodes.append(northern_hem_node)
         
         self.optimize_costs(allowed_nodes)
+        
         return
 
 
     def find_best_improvement(self, nodes):
         return
 
-    def explore(self, stride):
+    def explore(self):
         '''
         Used when greedy algorithm fails.
         Randomly picks a node from a list of legal nodes.
         '''
-        self.update_radar(stride)
+        self.update_radar()
         allowed_nodes = []
         self.next_point_for_drawing = self.current
         for node in self.radar:
             
+            #if self.in_seen_area(node):
+            #    print("?")
+            #    continue
             
             if (node == self.current):
                 continue
@@ -465,14 +503,17 @@ class Navigator:
                 self.search_radius = self.exploration_radius
                 
                 self.escaping = True
-                self.explore(stride=10)
+                self.current_stride = 10
+                self.explore()
 
             elif dist(self.current, self.target) > self.tolerance:
                 self.search_radius = self.greedy_radius
-                self.careful_step(stride=10)
+                self.current_stride = 10
+                self.careful_step()
             else:
                 self.search_radius = self.greedy_radius
-                self.careful_step(stride=1)
+                self.current_stride = 1
+                self.careful_step()
             
         # update stuck state after movement happens
         self.recent_improvements.append(self.dist_improvement)
@@ -485,13 +526,30 @@ class Navigator:
             total_improvement = sum(self.recent_improvements)
 
             if total_improvement < self.min_window_improvement:
+                                    
                 self.update_stuck_status()
             else:
                 self.is_stuck = False
                 self.escaping = False
                 
-
+        prev_rolling_movement_average = self.rolling_movement_average
         self.step_count += 1
+        self.rolling_total_movements += self.movement
+        self.rolling_movement_average = self.rolling_total_movements/self.step_count
+        '''
+        if (abs(self.rolling_movement_average - prev_rolling_movement_average) < 0.001):
+            print(f"\n\ncurrent: {self.current}\nradar: {self.radar}\nsearch radius: {self.search_radius}\nstuck? {self.is_stuck}")
+            print(f"exploring? {self.escaping}\ncurrent stride: {self.current_stride}")
+            string = "areas seen:\n"
+            for center, radius in self.areas_seen.items():
+                string += f"{center} : {radius}\n"
+            print(string)
+            print("RESTARTING...")
+            self.current = self.start
+            self.path = [self.start]
+            self.areas_seen = {}
+            #raise Exception("On step: {self.step_count}, stopped moving")
+        '''
         return
 
     def update_stuck_status(self) -> None:
@@ -503,6 +561,8 @@ class Navigator:
         if (self.stuck_counter >= self.stuck_limit):
             self.is_stuck = True
             self.nodes_that_made_navigator_stuck.append(self.current)
+            #self.areas_seen[Node(self.radar.center)] = 2
+            #self.update_radar()
             self.stuck_counter = 0
         else:
             self.stuck_counter += 1

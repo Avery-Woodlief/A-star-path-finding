@@ -25,11 +25,12 @@ class ObstacleRect (Rect):
     def __str__(self):
         return f"{self.x}, {self.y}, {self.w}, {self.h}"
 
-class ObstacleCircle:
+class ObstacleCircle: #(Rect):
 
     def __init__(self, center, radius):
         self.center = center
         self.radius = radius
+        #super().__init__(self.center[0]-self.radius, self.center[1]-self.radius,2*self.radius, 2*self.radius)
 
     def collidepoint(self, node : Node | tuple) -> bool:
         if (isinstance(node, Node)):
@@ -43,6 +44,8 @@ class ObstacleCircle:
             return True
         return False
 
+
+    
     def clipline(self, start, end):
         px, py = start
         qx, qy = end
