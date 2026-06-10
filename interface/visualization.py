@@ -76,7 +76,7 @@ colors = {
             "light purple": pygame.Color(127, 0, 127)
         }
 
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((1000, 750))
 pygame.display.set_allow_screensaver(True)
 
 
