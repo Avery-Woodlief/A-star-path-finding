@@ -78,6 +78,10 @@ class MapMaker:
         self.loaded_in_a_map = False
         self.complete_exit = False
 
+        self.easy_draw = False
+        self.saved_obj = None
+        self.filled_circle = False
+
 
     def display_text(self, msg, font_key, pos):
         text_surface = self.fonts[font_key].render(msg, True, (0, 0, 0, 255))
@@ -293,7 +297,7 @@ class MapMaker:
         return
 
     def dragging_check(self, event):
-        if (self.began_drag and not self.end_drag):
+        if (self.began_drag and not self.end_drag and not self.easy_draw):
             #print("dragging")
             if (event.type == pygame.MOUSEMOTION):
                 if (self.selected_shape_type == "ObstacleRect"):
@@ -309,7 +313,7 @@ class MapMaker:
                     pygame.draw.circle(overlay, (0, 0, 0, 1), (self.radius, self.radius), self.radius)
                     self.screen.blit(overlay, (self.center[0] - self.radius, self.center[1] - self.radius))
                     
-        elif (self.edit_began_drag and not self.edit_end_drag):
+        elif (self.edit_began_drag and not self.edit_end_drag and not self.easy_draw):
             #print("edit dragging")
             self.edit_dragging = True
             self.screen.fill(self.colors["white"])
@@ -325,6 +329,9 @@ class MapMaker:
                 self.obstacles_[self.focused_obj] = self.colors["blue"]
             except(AttributeError):
                 raise AttributeError
+        elif (self.began_drag and self.easy_draw):
+            self.obstacles_[ObstacleRect((event.pos[0], event.pos[1], 50, 50))] = self.colors["black"]
+            
         else:
             self.screen.fill(self.colors["white"])
             #print("")
@@ -374,7 +381,31 @@ class MapMaker:
         self.obstacles_[new_rect] = self.colors["black"]
         return
 
+    def draw_circle_using_rects(self, center, radius):
+        cx, cy = center
+
+        w = 5
+        h = 5
+        increment = math.floor((360)/(2*math.pi*radius/w))
+        
+
+        for d in range(0, 360, increment):
+            angle = math.radians(d)
+
+            x = nint(cx + radius * math.cos(angle))
+            y = nint(cy + radius * math.sin(angle))
+
+            new_rect = ObstacleRect((x, y), (w, h))
+            self.obstacles_[new_rect] = self.colors["black"]
+
+
     def make_new_circle_obj(self, event):
+        self.radius = math.dist(self.start, event.pos)
+        self.center = self.start
+        self.draw_circle_using_rects(self.center, self.radius)
+        return
+
+    def make_new_circle_obj_filled(self, event):
         self.radius = math.dist(self.start, event.pos)
         self.center = self.start
         new_circle = ObstacleCircle(self.center, self.radius)
@@ -391,7 +422,7 @@ class MapMaker:
                         self.handle_rect_in_mouse_event(event)
                     elif (self.selected_shape_type == "ObstacleCircle"):
                         self.handle_circle_in_mouse_event(event)
-                        
+                
                         
                 if (event.button == 3):
                     if (not self.began_drag):
@@ -407,12 +438,19 @@ class MapMaker:
                 self.obstacles_[self.focused_obj] = self.colors["black"]
 
             if (self.began_drag):
+                print("ending drag")
                 self.began_drag = False
                 self.end_drag = True
-                if (self.selected_shape_type == "ObstacleRect"):
-                    self.make_new_rect_obj(event)
-                elif (self.selected_shape_type == "ObstacleCircle"):    
-                    self.make_new_circle_obj(event)
+                if (not self.easy_draw):
+                    if (self.selected_shape_type == "ObstacleRect"):
+                        self.make_new_rect_obj(event)
+                    elif (self.selected_shape_type == "ObstacleCircle"):
+                        if (not self.filled_circle):
+                            self.make_new_circle_obj(event)
+                        else:
+                            self.make_new_circle_obj_filled(event)
+
+          
 
     def handle_key_event(self, event):
         if (event.type in [pygame.KEYDOWN, pygame.KEYUP]):
@@ -432,7 +470,11 @@ class MapMaker:
                     self.selected_shape_type = "ObstacleCircle"
                 elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
                     self.more_control = not self.more_control
-                
+                elif (event.key == pygame.K_SPACE):
+                    self.easy_draw = not self.easy_draw
+                    self.saved_obj = self.focused_obj
+                elif (event.key == pygame.K_f and event.mod & pygame.KMOD_LCTRL):
+                    self.filled_circle = not self.filled_circle
                 elif (event.key == pygame.K_DELETE and (not (self.focused_obj == None))):
                     try:
                         self.obstacles_.pop(self.focused_obj)
