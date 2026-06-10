@@ -1,5 +1,5 @@
 from navigator.obstacles import *
-from exceptions.ui_errors import *
+from interface.ui_elements import *
 import json
 import pygame
 from pathlib import Path
@@ -12,211 +12,14 @@ pygame.init()
 nint = lambda x: (math.floor(x + 0.5) + math.ceil((2*x - 1)/4) - math.floor((2*x - 1)/4) - 1) # nearest integer function
 
 
-class SimpleButton(pygame.Rect):
 
-    def __init__(self, args, text, bg_color=(0, 0, 255, 100)):
-        super().__init__(*args)
-        self.text = text
-        self.overlay = pygame.Surface(self.size, pygame.SRCALPHA)
-        self.fonts = {
-                "small": pygame.font.Font(None, 12),
-                "medium": pygame.font.Font(None, 24),
-                "large": pygame.font.Font(None, 36)
-            }
-        self.bg_color = bg_color
-        self.loc_rel_parent = None
-        #self.draw("medium")
-
-    def put_in(self, parent_screen, loc_rel_parent):
-        self.loc_rel_parent = loc_rel_parent
-        parent_screen.blit(self.overlay, loc_rel_parent)
-        
-    def draw(self, font_type):
-        self.overlay.fill(self.bg_color)
-        pygame.draw.rect(self.overlay, (0, 0, 0), self, width=2)
-        self.text_surface = self.fonts[font_type].render(self.text, True, (0, 0, 0))
-        self.overlay.blit(self.text_surface, (self.width//4, self.height//4))
-        
-    def collidepoint(self, point):
-        dx, dy = self.loc_rel_parent
-        return super().collidepoint((point[0] - dx, point[1] - dy))
-
-class DropDownList:pass
-
-class DropDownItem(pygame.Rect):
-
-    
-
-
-    def __init__(self, img = None, text = None, parent = None, id_ = None, bg_color = pygame.Color(255, 0, 0, 100)):
-        self.z_index = 0
-        if (img):
-            if (isinstance(img, str)):
-                if (Path(img).exists() and 
-                    ((img[img.index('.'):] == ".png") or (img[img.index('.'):] == ".jpg") or (img[img.index('.'):] == ".jpeg"))):
-                    self.img = pygame.image.load(img)
-        if (not text):
-            self.text = ""
-        else:
-            self.text = text
-        self.fonts = {
-                "small": pygame.font.Font(None, 12),
-                "medium": pygame.font.Font(None, 24),
-                "large": pygame.font.Font(None, 36)
-            }
-        #if (isinstance(parent, DropDownList)):
-            #print(type(parent))
-        if ((parent == None) or (not isinstance(parent, DropDownList))):
-            raise NoParentContainerFound
-        else:
-            self.parent = parent
-            self.parent.add(self)
-        self.bg_color = bg_color
-        self.id = id_
-        
-    def __hash__(self):
-        return (self.topleft + self.size).__hash__()
-
-    def create_shape(self, args):
-        super().__init__(*args)
-    
-
-    def draw_text(self, font_type):
-        if (font_type not in list(self.fonts.keys())):
-            return
-        self.text_surface = self.fonts[font_type].render(self.text, True, (0, 0, 0))
-        self.parent.overlay.blit(self.text_surface, (self.x, self.y))
-
-
-    def get_dominating_z(self):
-        hits = []
-        for child in self.parent.children:
-            if (child == self):
-                continue
-            if (child.colliderect(self)):
-                hits.append(child)
-        if (len(hits) > 0):
-            return max([child.z_index for child in hits])
-        return self.z_index
-
-    def collidepoint(self, point):
-        point_rel = (point[0] - self.parent.parent_screen_x, point[1] - self.parent.parent_screen_y)
-            
-        return super().collidepoint(point_rel)
-
-    def __str__(self):
-        return f"{self.x}, {self.y}, {self.w}, {self.h}"
-
-class DropDownList(pygame.Rect):
-    def __init__(self, img = None, text = None, rel_parent_loc = (50, 50), size = (400, 400),
-                 drop_button_bg_color=pygame.Color(0, 255, 0, 100), bg_color_open=(0, 0, 0, 100), bg_color_closed=(0, 0, 0, 100)):
-        if (img):
-            if (isinstance(img, str)):
-                if (Path(img).exists() and 
-                    ((img[img.index('.'):] == ".png") or (img[img.index('.'):] == ".jpg") or (img[img.index('.'):] == ".jpeg"))):
-                    self.img = pygame.image.load(img)
-        if (not text):
-            self.text = ""
-        else:
-            self.text = text
-        
-        self.children = []
-        self.child_height = 0
-        self.size = size
-        self.drop_menu_width = self.size[0]
-        self.drop_menu_height = self.size[1]
-        self.drop_down_button = DropDownItem(text="Load in a map", parent=self, id_=1, bg_color=drop_button_bg_color)
-        self.drop_down_button.z_index = 1
-        self.overlay = pygame.Surface(self.size, pygame.SRCALPHA)
-        self.bounding_box = pygame.Rect(0, 0, self.drop_menu_width, self.drop_menu_height)
-        self.bg_color_open = bg_color_open
-        self.bg_color_closed = bg_color_closed
-        self.overlay.fill(self.bg_color_closed)
-        self.is_open = False
-        
-        self.parent_screen_x, self.parent_screen_y = rel_parent_loc
-        self.removed_children = 1 # used for scrolling down
-        
-
-    def check_children_instances(self):
-        if (isinstance(self.children, list)):
-            for child in self.children:
-                if (not isinstance(child, DropDownItem)):
-                    raise BadDropDownItemTypeError
-        return
-
-    def add(self, child):
-        self.children.append(child)
-        
-        self.check_children_instances()
-
-    def update_screen(self, screen):
-        screen.blit(self.overlay, (self.parent_screen_x, self.parent_screen_y))
-
-    def init_children_shapes(self, width, height):
-        if (len(self.children) == 0):
-            return
-        self.child_height = height
-        for child in self.children:
-            child.create_shape([0, 0 + (self.children.index(child)*height) + (self.children.index(child)*10), width, height])
-            child.index = self.children.index(child)
-
-    def open(self):
-        if (len(self.children) == 0):
-            return
-        #self.overlay.fill((0, 0, 0, 100))
-        self.overlay.fill(self.bg_color_open)
-        for child in self.children:
-            if (child.id == 1):
-                continue
-            else:
-                pygame.draw.rect(self.overlay, child.bg_color, child)
-                child.draw_text("medium")
-
-        pygame.draw.rect(self.overlay, self.children[0].bg_color, self.children[0])
-        self.children[0].draw_text("large")
-            
-    def close(self):
-        self.overlay.fill(self.bg_color_closed)
-        pygame.draw.rect(self.overlay, self.drop_down_button.bg_color, self.drop_down_button)
-        self.drop_down_button.draw_text("large")
-
-    def collidepoint(self, point):
-        point_rel = (point[0] - self.parent_screen_x, point[1] - self.parent_screen_y)
-        return self.bounding_box.collidepoint(point_rel)
-
-    def scroll_down(self,parent_screen):
-        
-        if (self.children[-1].y <= (self.children[0].height)):
-            return
-        for child in self.children:
-            if (child.id == 1):
-                continue
-            child.y -= (self.child_height)
-        self.close()
-        self.open()
-        self.update_screen(parent_screen)
-        #self.removed_children += 1
-
-    def scroll_up(self,parent_screen):
-        
-        if (self.children[1].y >= (self.children[0].height)):
-            return
-        for child in self.children:
-            if (child.id == 1):
-                continue
-            child.y += (self.child_height)
-        self.close()
-        self.open()
-        self.update_screen(parent_screen)
-        #self.removed_children += 1
 
 
 class MapMaker:
     
     def __init__(self, screen_width, screen_height):
         
-        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
         self.obstacles_ = {}
         #self.load_in_a_map(input("mapname> "))
         self.color_pool = {
@@ -273,6 +76,7 @@ class MapMaker:
         self.selected_shape_type = "ObstacleRect"
         self.loadded_in_map = ""
         self.loaded_in_a_map = False
+        self.complete_exit = False
 
 
     def display_text(self, msg, font_key, pos):
@@ -280,7 +84,7 @@ class MapMaker:
         self.screen.blit(text_surface, pos)
 
 
-    def collect_text_input(self, prompts : list) -> str:
+    def collect_text_input_yes_no(self, prompts : list) -> str:
 
         no_button = SimpleButton((0, 0, 50, 50), "No", bg_color=(255, 0, 0, 100))
         yes_button = SimpleButton((0, 0, 50, 50), "Yes", bg_color=(0, 255, 0, 100))
@@ -300,21 +104,38 @@ class MapMaker:
             for event in pygame.event.get():
                 if event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP]:
                     mouse_pos = event.pos
+                    hit_button_color = None
+                    grabbed_button = None
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if no_button.collidepoint(mouse_pos):
-                            bg = no_button.bg_color
-                            r, g, b, a = bg
-                            no_button.bg_color = (r, g, b, (2*a % 255)+1)
-                            return "NO"
+                            if (no_button.collidepoint(mouse_pos)):
+                                return "NO"
+                                hit_button_color = no_button.bg_color
+                                grabbed_button = no_button    
+                            elif (yes_button.collidepoint(mouse_pos)):
+                                return "YES"
+                                hit_button_color = yes_button.bg_color
+                                grabbed_button = yes_button
+                    elif event.type == pygame.MOUSEMOTION:
+                            if (no_button.collidepoint(mouse_pos)):
+                                hit_button_color = no_button.bg_color
+                                grabbed_button = no_button
+                            else:
+                                no_button.bg_color = (255, 0, 0, 100)
+                            if (yes_button.collidepoint(mouse_pos)):
+                                hit_button_color = yes_button.bg_color
+                                grabbed_button = yes_button
+                            else:
+                                yes_button.bg_color = (0, 255, 0, 100)
 
-                        if yes_button.collidepoint(mouse_pos):
-                            bg = yes_button.bg_color
-                            r, g, b, a = bg
-                            yes_button.bg_color = (r, g, b, (2*a % 255)+1)
-                            return "YES"
+                            if (hit_button_color != None and grabbed_button != None):
+                                r, g, b, a = hit_button_color
+                                grabbed_button.bg_color = (r, g, b, (2*a % 256) + 1)
+                                hit_button_color = None
+                        
+                        
                         
 
-            pygame.time.Clock().tick(5)
+            pygame.time.Clock().tick(60)
                         
             for prompt in prompts:
                 self.display_text(*prompt)
@@ -327,20 +148,46 @@ class MapMaker:
 
     def run_start_menu(self) -> None: # TODO
 
-        drop_down = DropDownList(rel_parent_loc=(0,0), bg_color_open=pygame.Color(0, 0, 0, 10), bg_color_closed=(0, 0, 0, 0))
-        map_files = [map_ for map_ in Path("maps/").iterdir() if map_.is_file()]
+        drop_down = DropDownList(text="Load in a map", rel_parent_loc=(0,0), bg_color_open=pygame.Color(0, 0, 0, 10), bg_color_closed=(0, 0, 0, 0))
+        new_map_button = SimpleButton((0, 0, 400, 50), "Create new map")
+        
+        map_files = [re.sub(r"\b.json\b", "", re.sub(r"\bmaps/\b", "", str(map_))) for map_ in Path("maps/").iterdir() if map_.is_file()]
         items = [DropDownItem(text=f"{map_}", parent=drop_down) for map_ in map_files]
         #items = [DropDownItem(text=f"item {i}", parent=drop_down) for i in range(3)]
-        drop_down.init_children_shapes(drop_down.drop_menu_width, 25)
-        
+        drop_down.init_children_shapes(drop_down.drop_menu_width, 30)
+        drop_down.children[0].height=50
         #drop_down.close()
         while (self.start_menu_running):
             self.screen.fill(self.colors["white"])
+            self.display_text("Press 'q' or 'Esc' to quit the program", "medium", (0, self.screen.get_height()-150))
+            new_map_button.put_in(self.screen, (self.screen.get_width()-400, 0))
+            new_map_button.draw("large")
             for event in pygame.event.get():
                 if (event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP, pygame.MOUSEWHEEL]):
-                        
+                        mouse_pos = event.pos                        
+                        if (event.type == pygame.MOUSEMOTION):
+                            for child in drop_down.children:
+                                    if (child.collidepoint(mouse_pos) and child.id != 1):
+                                        if (child.colliderect(drop_down.drop_down_button)):
+                                            break
+                                        child.bg_color = (255, 0, 0, 50)
+                                    elif (not child.collidepoint(mouse_pos) and child.id != 1):
+                                        child.bg_color = (255, 0, 0, 100)
+                            if (new_map_button.collidepoint(mouse_pos)):
+                                new_map_button.bg_color = (0, 0, 255, 50)
+                            else:
+                                new_map_button.bg_color = (0, 0, 255, 100)
+
+                            if (drop_down.drop_down_button.collidepoint(mouse_pos)):
+                                drop_down.drop_down_button.bg_color = (0, 255, 0, 50)
+                            else:
+                                drop_down.drop_down_button.bg_color = (0, 255, 0, 100)
                         if (event.type == pygame.MOUSEBUTTONDOWN):
                             mouse_pos = event.pos
+                            if (new_map_button.collidepoint(mouse_pos)):
+                                self.running = True
+                                self.start_menu_running = False
+                                return
                             if (drop_down.is_open):
                                 if (event.button in [2, 4, 5]): # 4 - up, 5 - down
                                     if (event.button == 5):
@@ -360,7 +207,7 @@ class MapMaker:
                                                     ["Would you like to continue? ","large",(0, 50)]
                                                   ]
                                         pygame.display.flip()
-                                        overwrite_previous_map_version_response = self.collect_text_input(prompts)
+                                        overwrite_previous_map_version_response = self.collect_text_input_yes_no(prompts)
                                         if (overwrite_previous_map_version_response == "N" or
                                             overwrite_previous_map_version_response == "NO"):
                                             self.running = True
@@ -375,16 +222,14 @@ class MapMaker:
                             if (drop_down.drop_down_button.collidepoint(mouse_pos)):
                                 drop_down.is_open = not drop_down.is_open
                 if (event.type == pygame.KEYDOWN):
-                    if (event.key == pygame.K_q):
-                        self.running = True
+                    if ((event.key == pygame.K_q) or (event.key == pygame.K_ESCAPE)):
+                        self.complete_exit = True
+                        self.running = False
                         self.start_menu_running = False
-                    elif (event.key == pygame.K_o):
-                        drop_down.open()
-                    elif (event.key == pygame.K_c):
-                        drop_down.close()
                     
                 if (event.type == pygame.QUIT):
-                    self.running = True
+                    self.complete_exit = True
+                    self.running = False
                     self.start_menu_running = False
 
             if (drop_down.is_open):
@@ -440,7 +285,7 @@ class MapMaker:
 
     def load_in_a_map(self, map_name : str) -> None:
         print(os.getcwd())
-        with open(f"{map_name}", "r") as file:
+        with open(f"maps/{map_name}.json", "r") as file:
             loaded_in_obstacles = json.load(file)
         file.close()
         self.parse_loaded_in_obstacles(loaded_in_obstacles)
@@ -621,16 +466,16 @@ class MapMaker:
                         pygame.draw.circle(self.screen, self.obstacles_[obj], obj.center, obj.radius)
                 pygame.display.flip()
 
-        pygame.quit()
+        return
 
-game_map = MapMaker(1000, 800)
+map_maker = MapMaker(1000, 750)
 
 
-game_map.running_loop()
+map_maker.running_loop()
 file_ = {"Rect":{}, "Circle":{}}
 
 
-for obj, color in game_map.obstacles_.items():
+for obj, color in map_maker.obstacles_.items():
     if isinstance(obj, ObstacleRect):
         file_["Rect"][f"{obj}"] = f"{color}"
     elif isinstance(obj, ObstacleCircle):
@@ -638,11 +483,33 @@ for obj, color in game_map.obstacles_.items():
         file_["Circle"][f"{obj}"] = f"{color}"
 
 file_name = ""
-if (game_map.loaded_in_a_map):
-    file_name = game_map.loadded_in_map
-    with open(f"{file_name}", "w") as file:
-        json.dump(file_, file, indent=4)
-else:
-    file_name = input("name your map: ")
+if (map_maker.loaded_in_a_map):
+    file_name = map_maker.loadded_in_map
     with open(f"maps/{file_name}.json", "w") as file:
         json.dump(file_, file, indent=4)
+elif (not map_maker.complete_exit):
+    run = True
+    file_name = ""
+    while (run):
+        map_maker.screen.fill(map_maker.colors["white"])
+        for event in pygame.event.get():
+            if event.type == pygame.TEXTINPUT:
+                file_name += event.text
+
+            elif event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_BACKSPACE:
+                    file_name = file_name[:-1]
+
+                elif event.key == pygame.K_RETURN:
+                    run=False
+        map_maker.display_text("name your map: ", "large", (0, 0))
+        map_maker.display_text("Press Enter when finished", "large", (0, 50))
+        map_maker.display_text(file_name, "large", (len("name your map: ")*13, 0))
+        pygame.display.flip()
+
+    #file_name = input("name your map: ")
+    with open(f"maps/{file_name}.json", "w") as file:
+        json.dump(file_, file, indent=4)
+
+pygame.quit()
