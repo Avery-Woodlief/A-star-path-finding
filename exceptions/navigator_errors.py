@@ -1,15 +1,10 @@
-
-
-
-
-class MenuErrors(Exception):
+class BaseNavigatorError(Exception):
     def __init__(self):
         super().__init__()
-        self.parent_message = ""
-        self.message = "Menu Error"
+        self.message = "Navigator Error"
 
     def __str__(self):
-        return "Menu Error"
+        return "Navigator Error"
 
     def get_info(self):
         traceback = self.__traceback__
@@ -25,20 +20,22 @@ class MenuErrors(Exception):
         line_number = traceback.tb_lineno
         return f"{self.parent_message.upper()}\nIn {file_name}\n\tIn {function_name} on line {line_number}\n\t{self.message}"
 
-class BadDropDownItemTypeError(MenuErrors):
+class EmptyPathError(BaseNavigatorError):
+
     def __init__(self):
         super().__init__()
         self.parent_message = self.message
-        self.message = "Bad drop down item type"
+        self.message = "Navigator path is completely empty"
+
     def __str__(self):
         return self.get_info()
 
-
-class NoParentContainerFound(MenuErrors):
+class NextNodeError(BaseNavigatorError):
+    
     def __init__(self):
         super().__init__()
         self.parent_message = self.message
-        self.message = "No parent container found"
+        self.message = "Navigator cannot find a node to traverse to"
+
     def __str__(self):
         return self.get_info()
-

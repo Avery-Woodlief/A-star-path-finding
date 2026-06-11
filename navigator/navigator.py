@@ -1,3 +1,4 @@
+from exceptions.navigator_errors import *
 from navigator.obstacles import *
 from navigator.node import Node
 from itertools import product
@@ -236,11 +237,15 @@ class Navigator:
         #self.update_radar()        
         self.escaping = False                                                      
         self.path = [self.start]                                                   
-        self.nodes_that_made_navigator_stuck = []
+        #self.nodes_that_made_navigator_stuck = []
         #self.areas_seen = {} # areas of previous radars to not go to the same legal node more than one time               
         #self.areas_memory = []
         self.visited_areas = []
-
+        self.visited_areas_memory_capacity = 32
+        self.expand_factor = 1.05
+        self.compress_factor = 0.95
+        self.search_radius_upper_bound = 100
+        self.search_radius_lower_bound = 10
         # FOR DRAWING ONLY
 
         self.next_point_for_drawing = self.current     
@@ -304,7 +309,9 @@ class Navigator:
         self.path.append(next)
         self.current = next
 
-        self.visited_areas.append((self.current, self.search_radius//4))
+        if (len(self.visited_areas) > self.visited_areas_memory_capacity):
+            self.visited_areas.remove(self.visited_areas[0])
+        self.visited_areas.append((self.current, nint(self.search_radius/4)))
 
         self.curr_dist_to_target = dist(self.current, self.target)
         self.dist_improvement = self.prev_dist_to_target - self.curr_dist_to_target
@@ -370,6 +377,7 @@ class Navigator:
         '''
         changes radar to a circle of center self.current and using radius of self.search_radius.
         '''
+        #print("UPDATING RADAR")
         current_x = self.current.point[0]
         current_y = self.current.point[1]
         target_x = self.target.point[0]
@@ -387,7 +395,7 @@ class Navigator:
         
         
         if ((self.center_x != None) and (self.center_y != None)):
-            
+            #print(f"SEARCH RADIUS: {self.search_radius}")
             self.radar = Circle((self.center_x, self.center_y), self.search_radius)
         
         return
@@ -398,9 +406,17 @@ class Navigator:
         '''
         line_southern_hem = Line(self.current.point, node.point)
         southern_hem_collide = self.line_collides(line_southern_hem)
+        if (southern_hem_collide):
+            if (self.search_radius >= self.search_radius_lower_bound):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
+        else:
+            if (self.search_radius <= self.search_radius_upper_bound):
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+        
+
         if ((not southern_hem_collide) 
-            and not (node in self.path)
-            and not (node in self.nodes_that_made_navigator_stuck)):
+            and not (node in self.path)):
+            #and not (node in self.nodes_that_made_navigator_stuck)):
             return True
         return False
 
@@ -410,11 +426,61 @@ class Navigator:
         '''
         line_northern_hem = Line(self.current.point, node.point)
         northern_hem_collide = self.line_collides(line_northern_hem)
+        if (northern_hem_collide):
+            if (self.search_radius >= self.search_radius_lower_bound):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
+        else:
+            if (self.search_radius <= self.search_radius_upper_bound):
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+
         if ((not northern_hem_collide) 
-            and not (node in self.path)
-            and not (node in self.nodes_that_made_navigator_stuck)):
+            and not (node in self.path)):
+            #and not (node in self.nodes_that_made_navigator_stuck)):
             return True
         return False
+
+    def get_legal_nodes(self, query_visited = False):
+        allowed_nodes = []
+        for node in self.radar:
+           
+            #if self.in_seen_area(node) and (node != self.current):
+            #    print("!")
+            #    continue
+            if (query_visited):
+                if (self.in_visited_area(node)):
+                    continue
+            
+            if (not (node[0] == self.current[0])):
+                line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
+
+                x_sols = line_intersection_circle_x(self.current.point, line_slope, self.search_radius)
+                end_points = get_points_from_solved_x(line_slope, x_sols, self.current.point)
+
+                southern_hem_node = Node(end_points[0])
+                northern_hem_node = Node(end_points[1])
+                
+                if self.is_legal_southern_node(southern_hem_node):
+                    allowed_nodes.append(southern_hem_node)
+
+                if self.is_legal_northern_node(northern_hem_node):
+                    allowed_nodes.append(northern_hem_node)
+        return allowed_nodes
+
+    def find_f_cost_optimized_unexplored_node(self):
+        nodes = self.get_legal_nodes(query_visited=True)
+        if (len(nodes) > 0):
+            self.optimize_costs(nodes)
+        else:
+            saved_search_radius = self.search_radius
+            
+            while (len(nodes) == 0):
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+                self.update_radar()
+                nodes = self.get_legal_nodes(query_visited=True)
+
+            #self.search_radius = saved_search_radius
+            self.optimize_costs(nodes)
+        return
 
     def careful_step(self):
 
@@ -423,36 +489,37 @@ class Navigator:
         This cannot be used all the time because sometimes minimum cost is directly through a obstacle so must then change state to explore.
         '''
         
-
-        allowed_nodes = []
-        self.next_point_for_drawing = self.current
-        for node in self.radar:
-           
-            #if self.in_seen_area(node) and (node != self.current):
-            #    print("!")
-            #    continue
-            if (self.in_visited_area(node)):
-                continue
-            
-            if (not (node[0] == self.current[0])):
-                line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
-
-                x_sols = line_intersection_circle_x(self.current.point, line_slope, self.search_radius)
-                end_points = get_points_from_solved_x(line_slope, x_sols, self.current.point)
-
-                southern_hem_node = Node(end_points[0])
-                northern_hem_node = Node(end_points[1])
-                
-                if self.is_legal_southern_node(southern_hem_node):
-                    allowed_nodes.append(southern_hem_node)
-
-                if self.is_legal_northern_node(northern_hem_node):
-                    allowed_nodes.append(northern_hem_node)
-        self.optimize_costs(allowed_nodes)
+        allowed_nodes = self.get_legal_nodes(query_visited=True)
         
+        self.next_point_for_drawing = self.current
+        
+
+        if (len(allowed_nodes) > 0):
+            self.optimize_costs(allowed_nodes)
+        else:
+            self.find_f_cost_optimized_unexplored_node()
+            while (self.search_radius > self.search_radius_upper_bound):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
         
         return
         
+
+    def find_random_unexplored_node(self):
+        
+        
+        nodes = self.get_legal_nodes(query_visited=True)
+        if (len(nodes) > 0):
+            return choice(nodes)
+        else:
+            saved_search_radius = self.search_radius
+            
+            while (len(nodes) == 0):
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+                self.update_radar()
+                nodes = self.get_legal_nodes(query_visited=True)
+
+            #self.search_radius = saved_search_radius
+            return choice(nodes)
 
 
     def explore(self):
@@ -460,31 +527,7 @@ class Navigator:
         Used when greedy algorithm fails.
         Randomly picks a node from a list of legal nodes.
         '''
-        allowed_nodes = []
-        self.next_point_for_drawing = self.current
-        for node in self.radar:
-            
-            #if self.in_seen_area(node):
-            #    print("?")
-            #    continue
-            if (self.in_visited_area(node)):
-                continue
-            if (node == self.current):
-                continue
-            if (not (node[0] == self.current[0])):
-                line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
-
-                x_sols = line_intersection_circle_x(self.current.point, line_slope, self.search_radius)
-                end_points = get_points_from_solved_x(line_slope, x_sols, self.current.point)
-
-                southern_hem_node = Node(end_points[0])
-                northern_hem_node = Node(end_points[1])
-                
-                if self.is_legal_southern_node(southern_hem_node):
-                    allowed_nodes.append(southern_hem_node)
-
-                if self.is_legal_northern_node(northern_hem_node):
-                    allowed_nodes.append(northern_hem_node)
+        allowed_nodes = self.get_legal_nodes(query_visited=True)
             
            
             
@@ -496,19 +539,10 @@ class Navigator:
         if len(unvisited_nodes) > 0:
             next = choice(unvisited_nodes)
         else:
-            print("RAN OUT OF NODES")
-            if len(allowed_nodes) > 0:
-                next = choice(allowed_nodes)
-            else:
-                # back tracking
-                print("GOING BACK A STEP")
-                print(self.step_count)
-                try:
-                    self.path.pop()
-                    next = self.path[-1]
-                except (IndexError):
-                    pass   
-                self.explore()
+            
+            next = self.find_random_unexplored_node()
+            while (self.search_radius > self.search_radius_upper_bound):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
 
         #next = choice(allowed_nodes)
         self.update_movement(next)
@@ -527,25 +561,34 @@ class Navigator:
             self.progress = "NA"
 
         #
-
+        previous_position = self.current
         if not self.obstacles:
             self.obstacle_free(stride=1)
         else:
             if self.is_stuck:
-                self.search_radius = self.exploration_radius
+                #self.search_radius = self.exploration_radius
                 
                 self.escaping = True
-                self.current_stride = 10
+                self.current_stride = 1
                 self.explore()
 
             elif dist(self.current, self.target) > self.tolerance:
-                self.search_radius = self.greedy_radius
-                self.current_stride = 10
-                self.careful_step()
-            else:
-                self.search_radius = self.greedy_radius
+                #self.search_radius = self.greedy_radius
                 self.current_stride = 1
                 self.careful_step()
+            else:
+                #self.search_radius = self.greedy_radius
+                self.current_stride = 1
+                self.careful_step()
+        current_position = self.current
+
+        did_not_move = False
+
+        if (previous_position == current_position):
+            print("did not move this step")
+            self.is_stuck = True
+            did_not_move = True
+            self.stuck_counter = 0
         
         # update stuck state after movement happens
         self.recent_improvements.append(self.dist_improvement)
@@ -560,7 +603,7 @@ class Navigator:
             if total_improvement < self.min_window_improvement:
                                     
                 self.update_stuck_status()
-            else:
+            elif (not did_not_move):
                 self.is_stuck = False
                 self.escaping = False
                 
@@ -581,7 +624,7 @@ class Navigator:
         '''
         if (self.stuck_counter >= self.stuck_limit):
             self.is_stuck = True
-            self.nodes_that_made_navigator_stuck.append(self.current)
+            #self.nodes_that_made_navigator_stuck.append(self.current)
             
             #self.update_radar()
             self.stuck_counter = 0

@@ -176,9 +176,9 @@ while (running):
                     while (not (nav.start == nav.target)):
                         prev = nav.current.point
 
-                        #nav_log.write_step_info()
-                        #os.system(clear_terminal_screen_cmd)
-                        #nav_log.print_to_console()
+                        nav_log.write_step_info()
+                        os.system(clear_terminal_screen_cmd)
+                        nav_log.print_to_console()
                         if (event.type == pygame.KEYDOWN):
                             if (event.key == pygame.K_c and event.mod & pygame.KMOD_LCTRL):
                                 # emergency abort
@@ -201,7 +201,7 @@ while (running):
                         clock.tick(60)                 
                         pygame.display.flip()
                         if(dist(nav.current, nav.target) < nav.search_radius/2):#if (nav.current == nav.target):
-                            #nav_log.write_step_info()
+                            nav_log.write_step_info()
                             #nav_log.upload_info()
                             break
                 nav = None
