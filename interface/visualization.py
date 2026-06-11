@@ -120,8 +120,10 @@ def draw_world(nav, start, end):
 
     
     pygame.draw.circle(screen, colors["blue"], start, 5)
+    '''
     for center, radius in nav.areas_seen.items():
         pygame.draw.circle(screen, colors["ugly green"], center.point, radius)
+    '''
     for node in nav.path:
         if isinstance(node, Node):
             pygame.draw.circle(screen, colors["orange"], node.point, 2) 

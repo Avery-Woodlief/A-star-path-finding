@@ -45,6 +45,7 @@ class Node (NodeHelper):
         self.G_cost = -1.0
         self.H_cost = -1.0
         self.F_cost = -1.0
+        self.exploration_cost = 0
 
     @NodeHelper.calculate_h_cost
     def calc_H_cost(self, target : Node | list | tuple) -> float:
