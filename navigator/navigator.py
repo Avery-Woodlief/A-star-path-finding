@@ -234,8 +234,8 @@ class Navigator:
         self.path = [self.start]                                                   
         self.nodes_that_made_navigator_stuck = []
         #self.areas_seen = {} # areas of previous radars to not go to the same legal node more than one time               
-        self.areas_memory = []
-
+        #self.areas_memory = []
+        self.visited_areas = []
 
         # FOR DRAWING ONLY
 
@@ -276,6 +276,14 @@ class Navigator:
                 ]
         return nodes
 
+
+    def in_visited_area(self, node):
+        # Here center is of type Node
+        for center, radius in self.visited_areas:
+            if dist(node, center) <= radius:
+                return True
+
+        return False
     
     def update_movement(self, next):
         '''
@@ -286,9 +294,13 @@ class Navigator:
         self.prev_dist_to_target = self.curr_dist_to_target
 
         self.dist_moved = dist(self.current, next)
+        
+        
 
         self.path.append(next)
         self.current = next
+
+        self.visited_areas.append((self.current, self.search_radius//4))
 
         self.curr_dist_to_target = dist(self.current, self.target)
         self.dist_improvement = self.prev_dist_to_target - self.curr_dist_to_target
@@ -415,7 +427,8 @@ class Navigator:
             #if self.in_seen_area(node) and (node != self.current):
             #    print("!")
             #    continue
-            
+            if (self.in_visited_area(node)):
+                continue
             
             if (not (node[0] == self.current[0])):
                 line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
@@ -435,6 +448,8 @@ class Navigator:
         
         
         return
+        
+
 
     def explore(self):
         '''
@@ -443,12 +458,13 @@ class Navigator:
         '''
         allowed_nodes = []
         self.next_point_for_drawing = self.current
-        without_mem = []
         for node in self.radar:
             
             #if self.in_seen_area(node):
             #    print("?")
             #    continue
+            if (self.in_visited_area(node)):
+                continue
             if (node == self.current):
                 continue
             if (not (node[0] == self.current[0])):
@@ -462,30 +478,69 @@ class Navigator:
                 
                 if self.is_legal_southern_node(southern_hem_node):
                     allowed_nodes.append(southern_hem_node)
-                    without_mem.append(southern_hem_node)
 
                 if self.is_legal_northern_node(northern_hem_node):
                     allowed_nodes.append(northern_hem_node)
-                    without_mem.append(northern_hem_node)
             
-            '''
-            already_visited = False
-            for area in self.areas_memory:
-                if area.collidepoint(node.point):
-                    already_visited = True
-                    break
-
-            if not already_visited:
-                allowed_nodes.append(node)
-            else:
-                allowed_nodes.remove(node)
-            '''
+           
             
             
 
         #next = allowed_nodes[randint(0, len(allowed_nodes)-1)]
-        next = choice(allowed_nodes)
+        unvisited_nodes = [node for node in allowed_nodes if not self.in_visited_area(node)]
+
+        if len(unvisited_nodes) > 0:
+            next = choice(unvisited_nodes)
+        else:
+            print("RAN OUT OF NODES")
+            if len(allowed_nodes) > 0:
+                next = choice(allowed_nodes)
+            else:
+                # back tracking
+                print("GOING BACK")
+                
+                i = 0
+                while (True):
+                    allowed_nodes = []
+                    try:
+                        for node in self.get_neighbors_of_node(self.path[-1], i):
+                            if (self.in_visited_area(node)):
+                                continue
+                            if (node == self.current):
+                                continue
+                            if (not (node[0] == self.current[0])):
+                                line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
+
+                                x_sols = line_intersection_circle_x(self.current.point, line_slope, self.search_radius + i)
+                                end_points = get_points_from_solved_x(line_slope, x_sols, self.current.point)
+
+                                southern_hem_node = Node(end_points[0])
+                                northern_hem_node = Node(end_points[1])
+                                
+                                if self.is_legal_southern_node(southern_hem_node):
+                                    allowed_nodes.append(southern_hem_node)
+
+                                if self.is_legal_northern_node(northern_hem_node):
+                                    allowed_nodes.append(northern_hem_node)
+                        next = choice(allowed_nodes)
+                        self.update_movement(next)
+                        print("found")
+                        return
+                    except (IndexError, ValueError):
+                        print("bad")
+                        i += 1
+                    if (i > 30):
+                        try:
+                            next = self.path[self.recursion_index]
+                            self.recursion_index -= 1
+                            self.update_movement(next)
+                            self.explore()
+                        except (RecursionError):
+                            raise ValueError("Bad map?")
+
+        #next = choice(allowed_nodes)
         self.update_movement(next)
+        self.recursion_index = -1
         return
 
     def step(self):
@@ -543,7 +598,7 @@ class Navigator:
         self.rolling_total_movements += self.movement
         self.rolling_movement_average = self.rolling_total_movements/self.step_count
         #self.areas_seen[Node(self.radar.center)] = self.search_radius//4
-        self.areas_memory.append(Circle(self.radar.center, self.search_radius//4))
+        #self.areas_memory.append(Circle(self.radar.center, self.search_radius//4))
         self.update_radar()
         return
 

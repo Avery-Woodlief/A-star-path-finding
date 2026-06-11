@@ -179,16 +179,18 @@ while (running):
                         #nav_log.write_step_info()
                         #os.system(clear_terminal_screen_cmd)
                         #nav_log.print_to_console()
-                        try:
-                            nav.step()
-                        except (ZeroDivisionError, ValueError):
-                            continue
-                        
                         if (event.type == pygame.KEYDOWN):
                             if (event.key == pygame.K_c and event.mod & pygame.KMOD_LCTRL):
                                 # emergency abort
                                 print("aborting current path simulation")
                                 break
+                        try:
+                            nav.step()
+                            print("completed step")
+                        except (ZeroDivisionError, ValueError):
+                            continue
+                        
+                        
                         #print(nav.current)
 
                         screen.fill(colors["white"])
