@@ -186,7 +186,7 @@ while (running):
                                 break
                         try:
                             nav.step()
-                            print("completed step")
+                            #print("completed step")
                         except (ZeroDivisionError, ValueError):
                             continue
                         
@@ -201,8 +201,8 @@ while (running):
                         clock.tick(60)                 
                         pygame.display.flip()
                         if(dist(nav.current, nav.target) < nav.search_radius/2):#if (nav.current == nav.target):
-                            nav_log.write_step_info()
-                            nav_log.upload_info()
+                            #nav_log.write_step_info()
+                            #nav_log.upload_info()
                             break
                 nav = None
                 print("completed path")
