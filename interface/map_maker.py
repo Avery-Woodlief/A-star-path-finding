@@ -1,6 +1,6 @@
 from navigator.obstacles import *
 from interface.ui_elements import *
-from interface.start_menu import run_start_menu, collect_text_input_yes_no, display_text
+from interface.start_menu import run_start_menu, collect_text_input_yes_no, display_text, export_map_file
 import json
 import pygame
 from pathlib import Path
@@ -366,45 +366,6 @@ map_maker = MapMaker(1000, 750)
 
 
 map_maker.running_loop()
-file_ = {"Rect":{}, "Circle":{}}
-
-
-for obj, color in map_maker.obstacles_.items():
-    if isinstance(obj, ObstacleRect):
-        file_["Rect"][f"{obj}"] = f"{color}"
-    elif isinstance(obj, ObstacleCircle):
-        obj.radius = nint(obj.radius)
-        file_["Circle"][f"{obj}"] = f"{color}"
-
-file_name = ""
-if (map_maker.loaded_in_a_map):
-    file_name = map_maker.loadded_in_map
-    with open(f"maps{map_maker.file_nav_char}{file_name}.json", "w") as file:
-        json.dump(file_, file, indent=4)
-    
-elif (not map_maker.complete_exit):
-    run = True
-    file_name = ""
-    while (run):
-        map_maker.screen.fill(map_maker.colors["white"])
-        for event in pygame.event.get():
-            if event.type == pygame.TEXTINPUT:
-                file_name += event.text
-
-            elif event.type == pygame.KEYDOWN:
-
-                if event.key == pygame.K_BACKSPACE:
-                    file_name = file_name[:-1]
-
-                elif event.key == pygame.K_RETURN:
-                    run=False
-        prompt_width = display_text(map_maker,"name your map: ", "large", (0, 0)).get_width()
-        display_text(map_maker, "Press Enter when finished", "large", (0, 50))
-        display_text(map_maker, file_name, "large", (prompt_width + 10, 0))
-        pygame.display.flip()
-
-    #file_name = input("name your map: ")
-    with open(f"maps{map_maker.file_nav_char}{file_name}.json", "w") as file:
-        json.dump(file_, file, indent=4)
+export_map_file(map_maker)
 
 pygame.quit()
