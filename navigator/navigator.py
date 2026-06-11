@@ -406,12 +406,7 @@ class Navigator:
         '''
         line_southern_hem = Line(self.current.point, node.point)
         southern_hem_collide = self.line_collides(line_southern_hem)
-        if (southern_hem_collide):
-            if (self.search_radius >= self.search_radius_lower_bound):
-                self.search_radius = nint(self.search_radius * self.compress_factor)
-        else:
-            if (self.search_radius <= self.search_radius_upper_bound):
-                self.search_radius = nint(self.search_radius * self.expand_factor)
+
         
 
         if ((not southern_hem_collide) 
@@ -426,18 +421,43 @@ class Navigator:
         '''
         line_northern_hem = Line(self.current.point, node.point)
         northern_hem_collide = self.line_collides(line_northern_hem)
-        if (northern_hem_collide):
-            if (self.search_radius >= self.search_radius_lower_bound):
-                self.search_radius = nint(self.search_radius * self.compress_factor)
-        else:
-            if (self.search_radius <= self.search_radius_upper_bound):
-                self.search_radius = nint(self.search_radius * self.expand_factor)
+
 
         if ((not northern_hem_collide) 
             and not (node in self.path)):
             #and not (node in self.nodes_that_made_navigator_stuck)):
             return True
         return False
+
+
+    def change_radius(self):
+
+
+        for node in self.radar:
+            line_northern_hem = Line(self.current.point, node.point)
+            northern_hem_collide = self.line_collides(line_northern_hem)
+            line_southern_hem = Line(self.current.point, node.point)
+            southern_hem_collide = self.line_collides(line_southern_hem)
+
+            if (northern_hem_collide):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
+            else:
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+                
+
+            if (southern_hem_collide):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
+            else:
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+
+
+            while (self.search_radius >= self.search_radius_upper_bound):
+                self.search_radius = nint(self.search_radius * self.compress_factor)
+
+            while (self.search_radius <= self.search_radius_lower_bound):
+                self.search_radius = nint(self.search_radius * self.expand_factor)
+            
+        return
 
     def get_legal_nodes(self, query_visited = False):
         allowed_nodes = []
@@ -464,6 +484,7 @@ class Navigator:
 
                 if self.is_legal_northern_node(northern_hem_node):
                     allowed_nodes.append(northern_hem_node)
+        self.change_radius()
         return allowed_nodes
 
     def find_f_cost_optimized_unexplored_node(self):
