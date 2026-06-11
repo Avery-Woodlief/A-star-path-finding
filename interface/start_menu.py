@@ -4,8 +4,9 @@ from pathlib import Path
 import pygame
 
 def display_text(parent, msg, font_key, pos):
-    text_surface = parent.fonts[font_key].render(msg, True, (0, 0, 0, 255))
+    text_surface = parent.fonts["timesnewroman"][font_key].render(msg, True, (0, 0, 0, 255))
     parent.screen.blit(text_surface, pos)
+    return text_surface
 
 def collect_text_input_yes_no(parent, prompts : list) -> str:
 
@@ -15,13 +16,14 @@ def collect_text_input_yes_no(parent, prompts : list) -> str:
     len_last_prompt = 0        
 
     for prompt in prompts:
-        display_text(parent, *prompt)
-        len_last_prompt = len(prompt[0])
+        len_last_prompt = display_text(parent, *prompt).get_width()
+        
+    #print(len_last_prompt)
 
 
     R=True
     collected_text = ""
-    len_last_prompt = 0
+    #len_last_prompt = 0
     while (R):
         parent.screen.fill(parent.colors["white"])
         for event in pygame.event.get():
@@ -63,9 +65,9 @@ def collect_text_input_yes_no(parent, prompts : list) -> str:
         for prompt in prompts:
             display_text(parent, *prompt)
         yes_button.draw("large")
-        yes_button.put_in(parent.screen, ((len_last_prompt)*12 + 400, 50))
+        yes_button.put_in(parent.screen, (len_last_prompt, 50))
         no_button.draw("large")
-        no_button.put_in(parent.screen, (400 + ((len_last_prompt)*12) + yes_button.width + 50, 50))
+        no_button.put_in(parent.screen, (len_last_prompt + (2*yes_button.width), 50))
         pygame.display.flip()
     return
 
@@ -127,8 +129,8 @@ def run_start_menu(parent) -> None:
                                         break
 
                                     prompts = [
-                                                ["Loading in a map will overwrite the previous save once the changes are made","large",(0, 0)],
-                                                ["Would you like to continue? ","large",(0, 50)]
+                                                ["Loading in a map will overwrite the previous save once the changes are made","medium",(0, 0)],
+                                                ["Would you like to continue? ","medium",(0, 50)]
                                               ]
                                     pygame.display.flip()
                                     overwrite_previous_map_version_response = collect_text_input_yes_no(parent, prompts)

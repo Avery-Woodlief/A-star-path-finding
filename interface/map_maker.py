@@ -10,6 +10,8 @@ import os
 import re
 #import exceptions
 pygame.init()
+pygame.font.init()
+
 nint = lambda x: (math.floor(x + 0.5) + math.ceil((2*x - 1)/4) - math.floor((2*x - 1)/4) - 1) # nearest integer function
 
 
@@ -24,12 +26,21 @@ class MapMaker:
         self.obstacles_ = {}
         
         self.colors = pygame.color.THECOLORS
+        self.font_names = pygame.font.get_fonts()
+        self.fonts = {}
+        for name in self.font_names:
+            try:
+                self.fonts[name] = {
+                                    "small": pygame.font.Font(pygame.font.match_font(name), 12),
+                                    "medium": pygame.font.Font(pygame.font.match_font(name), 24),
+                                    "large": pygame.font.Font(pygame.font.match_font(name), 36)
+                                   }
+            except (FileNotFoundError):
+                self.fonts.pop(name)
+                continue
 
-        self.fonts = {
-                "small": pygame.font.Font(None, 12),
-                "medium": pygame.font.Font(None, 24),
-                "large": pygame.font.Font(None, 36)
-            }
+        #print(self.fonts)
+
 
         self.screen.fill(self.colors["white"])
         
@@ -387,9 +398,9 @@ elif (not map_maker.complete_exit):
 
                 elif event.key == pygame.K_RETURN:
                     run=False
-        display_text(map_maker,"name your map: ", "large", (0, 0))
+        prompt_width = display_text(map_maker,"name your map: ", "large", (0, 0)).get_width()
         display_text(map_maker, "Press Enter when finished", "large", (0, 50))
-        display_text(map_maker, file_name, "large", (len("name your map: ")*13, 0))
+        display_text(map_maker, file_name, "large", (prompt_width + 10, 0))
         pygame.display.flip()
 
     #file_name = input("name your map: ")
