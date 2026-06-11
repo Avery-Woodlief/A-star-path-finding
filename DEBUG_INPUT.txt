@@ -1,1 +1,1 @@
-tight_squeeze
+maze
