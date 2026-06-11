@@ -13,9 +13,12 @@ operating_system_name = platform.system()
 pygame.init()
 
 #map_name = "obstacle_course1.json"
-
-with open(f"maps/{input('choose a map: ')}.json", "r") as file:
-    world_map = json.load(file)
+if ((operating_system_name.upper() == "WINDOWS") or (operating_system_name.upper() == "WINDOW")):
+    with open(f"maps\{input('choose a map: ')}.json", "r") as file:
+        world_map = json.load(file)
+elif ((operating_system_name.upper() == "LINUX") or (operating_system_name.upper() == "DARWIN")):
+    with open(f"maps/{input('choose a map: ')}.json", "r") as file:
+        world_map = json.load(file)
 
 #print(world_map)
 
@@ -179,11 +182,6 @@ while (running):
                         nav_log.write_step_info()
                         os.system(clear_terminal_screen_cmd)
                         nav_log.print_to_console()
-                        if (event.type == pygame.KEYDOWN):
-                            if (event.key == pygame.K_c and event.mod & pygame.KMOD_LCTRL):
-                                # emergency abort
-                                print("aborting current path simulation")
-                                break
                         try:
                             nav.step()
                             #print("completed step")

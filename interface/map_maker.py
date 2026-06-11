@@ -1,13 +1,14 @@
 from navigator.obstacles import *
 from interface.ui_elements import *
+from interface.start_menu import run_start_menu, collect_text_input_yes_no, display_text
 import json
 import pygame
 from pathlib import Path
+import platform
 import math
 import os
 import re
 #import exceptions
-
 pygame.init()
 nint = lambda x: (math.floor(x + 0.5) + math.ceil((2*x - 1)/4) - math.floor((2*x - 1)/4) - 1) # nearest integer function
 
@@ -21,21 +22,8 @@ class MapMaker:
         
         self.screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
         self.obstacles_ = {}
-        #self.load_in_a_map(input("mapname> "))
-        self.color_pool = {
-                0 : "white",
-                1 : "red",
-                2 : "green",
-                3 : "blue",
-                4 : "black"          
-             }
-        self.colors = {
-            "white" : pygame.Color(255, 255, 255),
-            "red" : pygame.Color(255, 0, 0),
-            "green" : pygame.Color(0, 255, 0),
-            "blue" : pygame.Color(0, 0, 255),
-            "black" : pygame.Color(0, 0, 0)
-        }
+        
+        self.colors = pygame.color.THECOLORS
 
         self.fonts = {
                 "small": pygame.font.Font(None, 12),
@@ -70,6 +58,12 @@ class MapMaker:
         self.edit_width = None
         self.edit_height = None
         self.focused_obj = None
+        self.operating_system = platform.system()
+        self.file_nav_char =""
+        if (self.operating_system.upper() == "WINDOWS"):
+            self.file_nav_char = "\\"
+        else:
+            self.file_nav_char = "/"
         self.dx = None
         self.dy = None
         self.skip_map = False
@@ -81,169 +75,15 @@ class MapMaker:
         self.easy_draw = False
         self.saved_obj = None
         self.filled_circle = False
+        run_start_menu(self)
 
 
-    def display_text(self, msg, font_key, pos):
-        text_surface = self.fonts[font_key].render(msg, True, (0, 0, 0, 255))
-        self.screen.blit(text_surface, pos)
+    
 
 
-    def collect_text_input_yes_no(self, prompts : list) -> str:
+    
 
-        no_button = SimpleButton((0, 0, 50, 50), "No", bg_color=(255, 0, 0, 100))
-        yes_button = SimpleButton((0, 0, 50, 50), "Yes", bg_color=(0, 255, 0, 100))
-
-        len_last_prompt = 0        
-
-        for prompt in prompts:
-            self.display_text(*prompt)
-            len_last_prompt = len(prompt[0])
-
-
-        R=True
-        collected_text = ""
-        len_last_prompt = 0
-        while (R):
-            self.screen.fill(self.colors["white"])
-            for event in pygame.event.get():
-                if event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP]:
-                    mouse_pos = event.pos
-                    hit_button_color = None
-                    grabbed_button = None
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                            if (no_button.collidepoint(mouse_pos)):
-                                return "NO"
-                                hit_button_color = no_button.bg_color
-                                grabbed_button = no_button    
-                            elif (yes_button.collidepoint(mouse_pos)):
-                                return "YES"
-                                hit_button_color = yes_button.bg_color
-                                grabbed_button = yes_button
-                    elif event.type == pygame.MOUSEMOTION:
-                            if (no_button.collidepoint(mouse_pos)):
-                                hit_button_color = no_button.bg_color
-                                grabbed_button = no_button
-                            else:
-                                no_button.bg_color = (255, 0, 0, 100)
-                            if (yes_button.collidepoint(mouse_pos)):
-                                hit_button_color = yes_button.bg_color
-                                grabbed_button = yes_button
-                            else:
-                                yes_button.bg_color = (0, 255, 0, 100)
-
-                            if (hit_button_color != None and grabbed_button != None):
-                                r, g, b, a = hit_button_color
-                                grabbed_button.bg_color = (r, g, b, (2*a % 256) + 1)
-                                hit_button_color = None
-                        
-                        
-                        
-
-            pygame.time.Clock().tick(60)
-                        
-            for prompt in prompts:
-                self.display_text(*prompt)
-            #self.display_text(collected_text, "large", (, 50))
-            yes_button.draw("large")
-            yes_button.put_in(self.screen, ((len_last_prompt)*12 + 400, 50))
-            no_button.draw("large")
-            no_button.put_in(self.screen, (400 + ((len_last_prompt)*12) + yes_button.width + 50, 50))
-            pygame.display.flip()
-
-    def run_start_menu(self) -> None: # TODO
-
-        drop_down = DropDownList(text="Load in a map", rel_parent_loc=(0,0), bg_color_open=pygame.Color(0, 0, 0, 10), bg_color_closed=(0, 0, 0, 0))
-        new_map_button = SimpleButton((0, 0, 400, 50), "Create new map")
-        
-        map_files = [re.sub(r"\b.json\b", "", re.sub(r"\bmaps/\b", "", str(map_))) for map_ in Path("maps/").iterdir() if map_.is_file()]
-        items = [DropDownItem(text=f"{map_}", parent=drop_down) for map_ in map_files]
-        #items = [DropDownItem(text=f"item {i}", parent=drop_down) for i in range(3)]
-        drop_down.init_children_shapes(drop_down.drop_menu_width, 30)
-        drop_down.children[0].height=50
-        #drop_down.close()
-        while (self.start_menu_running):
-            self.screen.fill(self.colors["white"])
-            self.display_text("Press 'q' or 'Esc' to quit the program", "medium", (0, self.screen.get_height()-150))
-            new_map_button.put_in(self.screen, (self.screen.get_width()-400, 0))
-            new_map_button.draw("large")
-            for event in pygame.event.get():
-                if (event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP, pygame.MOUSEWHEEL]):
-                        mouse_pos = event.pos                        
-                        if (event.type == pygame.MOUSEMOTION):
-                            for child in drop_down.children:
-                                    if (child.collidepoint(mouse_pos) and child.id != 1):
-                                        if (child.colliderect(drop_down.drop_down_button)):
-                                            break
-                                        child.bg_color = (255, 0, 0, 50)
-                                    elif (not child.collidepoint(mouse_pos) and child.id != 1):
-                                        child.bg_color = (255, 0, 0, 100)
-                            if (new_map_button.collidepoint(mouse_pos)):
-                                new_map_button.bg_color = (0, 0, 255, 50)
-                            else:
-                                new_map_button.bg_color = (0, 0, 255, 100)
-
-                            if (drop_down.drop_down_button.collidepoint(mouse_pos)):
-                                drop_down.drop_down_button.bg_color = (0, 255, 0, 50)
-                            else:
-                                drop_down.drop_down_button.bg_color = (0, 255, 0, 100)
-                        if (event.type == pygame.MOUSEBUTTONDOWN):
-                            mouse_pos = event.pos
-                            if (new_map_button.collidepoint(mouse_pos)):
-                                self.running = True
-                                self.start_menu_running = False
-                                return
-                            if (drop_down.is_open):
-                                if (event.button in [2, 4, 5]): # 4 - up, 5 - down
-                                    if (event.button == 5):
-                                        drop_down.scroll_down(self.screen)
-                                        break
-                                    elif (event.button == 4):
-                                        drop_down.scroll_up(self.screen)
-                                        break
-                                    continue
-                                for child in drop_down.children:
-                                    if (child.collidepoint(mouse_pos) and child.id != 1):
-                                        if (child.colliderect(drop_down.drop_down_button)):
-                                            break
-
-                                        prompts = [
-                                                    ["Loading in a map will overwrite the previous save once the changes are made","large",(0, 0)],
-                                                    ["Would you like to continue? ","large",(0, 50)]
-                                                  ]
-                                        pygame.display.flip()
-                                        overwrite_previous_map_version_response = self.collect_text_input_yes_no(prompts)
-                                        if (overwrite_previous_map_version_response == "N" or
-                                            overwrite_previous_map_version_response == "NO"):
-                                            self.running = True
-                                            self.start_menu_running = False
-                                            return
-                                        self.running = True
-                                        self.start_menu_running = False
-                                        self.load_in_a_map(child.text)
-                                        self.loadded_in_map = child.text
-                                        self.loaded_in_a_map = True
-                                        
-                            if (drop_down.drop_down_button.collidepoint(mouse_pos)):
-                                drop_down.is_open = not drop_down.is_open
-                if (event.type == pygame.KEYDOWN):
-                    if ((event.key == pygame.K_q) or (event.key == pygame.K_ESCAPE)):
-                        self.complete_exit = True
-                        self.running = False
-                        self.start_menu_running = False
-                    
-                if (event.type == pygame.QUIT):
-                    self.complete_exit = True
-                    self.running = False
-                    self.start_menu_running = False
-
-            if (drop_down.is_open):
-                drop_down.open()
-            else:
-                drop_down.close()
-            
-            self.screen.blit(drop_down.overlay, (drop_down.parent_screen_x, drop_down.parent_screen_y))
-            pygame.display.flip()
-        return
+    
 
     def load_in_rect(self, instances : dict) -> None:
         for rect, color in instances.items():
@@ -288,8 +128,8 @@ class MapMaker:
         return
 
     def load_in_a_map(self, map_name : str) -> None:
-        print(os.getcwd())
-        with open(f"maps/{map_name}.json", "r") as file:
+        #print(os.getcwd())
+        with open(f"maps{self.file_nav_char}{map_name}.json", "r") as file:
             loaded_in_obstacles = json.load(file)
         file.close()
         self.parse_loaded_in_obstacles(loaded_in_obstacles)
@@ -475,6 +315,7 @@ class MapMaker:
                     self.saved_obj = self.focused_obj
                 elif (event.key == pygame.K_f and event.mod & pygame.KMOD_LCTRL):
                     self.filled_circle = not self.filled_circle
+                    print(f"filled circle: {self.filled_circle}")
                 elif (event.key == pygame.K_DELETE and (not (self.focused_obj == None))):
                     try:
                         self.obstacles_.pop(self.focused_obj)
@@ -485,7 +326,7 @@ class MapMaker:
                 self.running = False
 
     def running_loop(self):
-        self.run_start_menu()
+        #self.run_start_menu()
 
         while (self.running):
             #print(self.selected_shape_type)
@@ -527,8 +368,9 @@ for obj, color in map_maker.obstacles_.items():
 file_name = ""
 if (map_maker.loaded_in_a_map):
     file_name = map_maker.loadded_in_map
-    with open(f"maps/{file_name}.json", "w") as file:
+    with open(f"maps{map_maker.file_nav_char}{file_name}.json", "w") as file:
         json.dump(file_, file, indent=4)
+    
 elif (not map_maker.complete_exit):
     run = True
     file_name = ""
@@ -545,13 +387,13 @@ elif (not map_maker.complete_exit):
 
                 elif event.key == pygame.K_RETURN:
                     run=False
-        map_maker.display_text("name your map: ", "large", (0, 0))
-        map_maker.display_text("Press Enter when finished", "large", (0, 50))
-        map_maker.display_text(file_name, "large", (len("name your map: ")*13, 0))
+        display_text(map_maker,"name your map: ", "large", (0, 0))
+        display_text(map_maker, "Press Enter when finished", "large", (0, 50))
+        display_text(map_maker, file_name, "large", (len("name your map: ")*13, 0))
         pygame.display.flip()
 
     #file_name = input("name your map: ")
-    with open(f"maps/{file_name}.json", "w") as file:
+    with open(f"maps{map_maker.file_nav_char}{file_name}.json", "w") as file:
         json.dump(file_, file, indent=4)
 
 pygame.quit()
