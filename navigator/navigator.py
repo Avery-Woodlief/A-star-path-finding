@@ -9,6 +9,10 @@ import os
 #from itertools import combinations
 import pygame
 
+
+
+
+
 def dist(nodeA : Node, nodeB : Node) -> float:
     return math.dist(nodeA.point, nodeB.point)
 
@@ -497,50 +501,17 @@ class Navigator:
                 next = choice(allowed_nodes)
             else:
                 # back tracking
-                print("GOING BACK")
-                
-                i = 0
-                while (True):
-                    allowed_nodes = []
-                    try:
-                        for node in self.get_neighbors_of_node(self.path[-1], i):
-                            if (self.in_visited_area(node)):
-                                continue
-                            if (node == self.current):
-                                continue
-                            if (not (node[0] == self.current[0])):
-                                line_slope = (node[1] - self.current[1])/(node[0] - self.current[0])
-
-                                x_sols = line_intersection_circle_x(self.current.point, line_slope, self.search_radius + i)
-                                end_points = get_points_from_solved_x(line_slope, x_sols, self.current.point)
-
-                                southern_hem_node = Node(end_points[0])
-                                northern_hem_node = Node(end_points[1])
-                                
-                                if self.is_legal_southern_node(southern_hem_node):
-                                    allowed_nodes.append(southern_hem_node)
-
-                                if self.is_legal_northern_node(northern_hem_node):
-                                    allowed_nodes.append(northern_hem_node)
-                        next = choice(allowed_nodes)
-                        self.update_movement(next)
-                        print("found")
-                        return
-                    except (IndexError, ValueError):
-                        print("bad")
-                        i += 1
-                    if (i > 30):
-                        try:
-                            next = self.path[self.recursion_index]
-                            self.recursion_index -= 1
-                            self.update_movement(next)
-                            self.explore()
-                        except (RecursionError):
-                            raise ValueError("Bad map?")
+                print("GOING BACK A STEP")
+                print(self.step_count)
+                try:
+                    self.path.pop()
+                    next = self.path[-1]
+                except (IndexError):
+                    pass   
+                self.explore()
 
         #next = choice(allowed_nodes)
         self.update_movement(next)
-        self.recursion_index = -1
         return
 
     def step(self):
