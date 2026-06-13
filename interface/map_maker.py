@@ -138,6 +138,7 @@ class WindowBuilder:
         window.root.geometry("1375x536")
         if (window.system == "Linux"):
             window.root.attributes("-type", "splash")
+            #window.root.attributes("-type", "toolbar")
 
         window.root.bind_all("<KeyPress>", window.key_pressed)
         window.root.bind_all("<Escape>", lambda event: window.root.destroy())
@@ -490,6 +491,7 @@ class DrawingBoard:
 
     def run(self):
         self.root.update_idletasks()
+        self.root.attributes("-topmost", True)
         self.root.lift()
         self.root.focus_force()
         self.canvas.focus_set()
