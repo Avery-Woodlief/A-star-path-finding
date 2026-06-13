@@ -1,242 +1,107 @@
-from navigator.obstacles import *
-from interface.ui_elements import *
-from interface.start_menu import run_start_menu, collect_text_input_yes_no, display_text, export_map_file
-import json
-import pygame
-from pathlib import Path
+from tkinter import Tk, Button, _tkinter, Label, Frame, Canvas, Event, colorchooser, StringVar, OptionMenu, Listbox, Entry, Toplevel
+#from tkinter.ttk import Widget, ComboBox
+import tkinter.ttk as ttk
+import re
 import platform
 import math
+import json
 import os
-import re
-#import exceptions
-pygame.init()
-pygame.font.init()
+
+
+# valid relief arguments: flat, groove, raised, ridge, solid, sunken
+
+# hex masks for event states
+
+
+state_masks = {
+                "button1":0x100,
+                "button2":0x200,
+                "button3":0x400,
+                "motion":0x0
+              }
 
 nint = lambda x: (math.floor(x + 0.5) + math.ceil((2*x - 1)/4) - math.floor((2*x - 1)/4) - 1) # nearest integer function
 
 
-
-
-
-class MapMaker:
-    
-    def __init__(self, screen_width, screen_height):
+class Shape:
+    def __init__(self, topleft=None, width=None, height=None, center=None, radius=None, filled=None, end=None, color=None, outline=None):
+        if (not topleft and not center):
+            raise ValueError("not speficied shape")
+        if ((topleft and width and height) or (topleft and end)):
+            self.type = "rectangle"
+            if (width and height and not end):
+                self.width = self.w = width
+                self.height = self.h = height
+                self.end = (topleft[0] + self.width, topleft[1] + self.height)
+            elif ((not (width and height)) and end):
+                self.width = self.w = end[0]-topleft[0]
+                self.height = self.h = end[1]-topleft[1]
+            self.topleft = topleft
+            self.x = self.topleft[0]
+            self.y = self.topleft[1]
+        if ((center and radius) or (center and end)):
+            self.type = "oval"
+            if (radius):
+                self.radius = radius
+            else:
+                self.radius = nint(math.dist(center, end))
+            self.center = center
+        self.filled = filled
+        self.color = color
+        self.outline = outline
+        self.export_color = "(229, 229, 229, 255)"
+        self.export_outline = "(127, 127, 127, 255)"
+    def __str__(self):
+        pass
         
-        self.screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
-        self.obstacles_ = {}
         
-        self.colors = pygame.color.THECOLORS
-        self.font_names = pygame.font.get_fonts()
-        self.fonts = {}
-        for name in self.font_names:
-            try:
-                self.fonts[name] = {
-                                    "small": pygame.font.Font(pygame.font.match_font(name), 12),
-                                    "medium": pygame.font.Font(pygame.font.match_font(name), 24),
-                                    "large": pygame.font.Font(pygame.font.match_font(name), 36)
-                                   }
-            except (FileNotFoundError):
-                self.fonts.pop(name)
-                continue
 
-        #print(self.fonts)
+class Rect(Shape):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+    def __str__(self):
+        return f"{self.x}, {self.y}, {self.w}, {self.h} : {self.color}"
 
+    def get_dims(self):
+        return f"{self.x}, {self.y}, {self.w}, {self.h}"
+    def get_color(self):
+        return f"{self.color}"
 
-        self.screen.fill(self.colors["white"])
-        
-        self.running = False
-        self.start_menu_running = True
-        self.began_drag = False
-        self.end_drag = False
-        self.start = None
-        
-        # rect params
+class Oval(Shape):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+    def __str__(self):
+        return f"{self.center[0]}, {self.center[1]}, {self.radius} : {self.color}"
 
-        self.width = None
-        self.height = None
+    def get_dims(self):
+        return f"{self.center[0]}, {self.center[1]}, {self.radius}"
+    def get_color(self):
+        return f"{self.color}"
 
-        # circle params
+class HighDefOval:
+    def __init__(self, center = None, end = None, radius = None, filled = None, color = None, outline = None, w = 20, h = 20):
+        if (not center and not end):
+            raise ValueError("no center and no end for HighDefOval class")        
+        self.center = center
+        self.radius = nint(math.dist(center, end))
+        self.color = color
+        self.filled = filled
+        self.outline = outline
+        self.rects = []
+        self.type = "high-def oval"
+        self.w = w
+        self.h = h
+        try:
+            self.draw_circle_using_rects()
+        except(ZeroDivisionError):
+            pass
 
-        self.radius = None
-        self.center = None
+    def draw_circle_using_rects(self):
+        cx, cy = self.center
 
-
-        self.more_control = False
-        self.edit_began_drag = False
-        self.edit_end_drag = False
-        self.edit_dragging = False
-        self.edit_pos = None
-        self.edit_width = None
-        self.edit_height = None
-        self.focused_obj = None
-        self.operating_system = platform.system()
-        self.file_nav_char =""
-        if (self.operating_system.upper() == "WINDOWS"):
-            self.file_nav_char = "\\"
-        else:
-            self.file_nav_char = "/"
-        self.dx = None
-        self.dy = None
-        self.skip_map = False
-        self.selected_shape_type = "ObstacleRect"
-        self.loadded_in_map = ""
-        self.loaded_in_a_map = False
-        self.complete_exit = False
-
-        self.easy_draw = False
-        self.saved_obj = None
-        self.filled_circle = False
-        run_start_menu(self)
-
-
-    
-
-
-    
-
-    
-
-    def load_in_rect(self, instances : dict) -> None:
-        for rect, color in instances.items():
-            a1 = re.findall(r"\d+", rect)
-            a1_map = map(int, a1)
-            rect_args = []
-            for i in a1_map:
-                rect_args.append(i)
-            topleft = (rect_args[0], rect_args[1])
-            size = (rect_args[2], rect_args[3])
-            a2 = re.findall(r"\d+", color)
-            a2_map = map(int, a2)
-            color_args = []
-            for i in a2_map:
-                color_args.append(i)
-            self.obstacles_[ObstacleRect(topleft, size)] = pygame.Color(tuple(color_args))
-        return
-
-    def load_in_circle(self, instances : dict) -> None:
-        for circle, color in instances.items():
-            a1 = re.findall(r"\d+", circle)
-            a1_map = map(int, a1)
-            circle_args = []
-            for i in a1_map:
-                circle_args.append(i)
-            center = (circle_args[0], circle_args[1])
-            radius = circle_args[2]
-            a2 = re.findall(r"\d+", color)
-            a2_map = map(int, a2)
-            color_args = []
-            for i in a2_map:
-                color_args.append(i)
-            self.obstacles_[ObstacleCircle(center, radius)] = pygame.Color(tuple(color_args))
-        return
-
-    def parse_loaded_in_obstacles(self, loaded_in_objs) -> None:
-        for obstacle_type, instances in loaded_in_objs.items():
-            if (obstacle_type == "Rect"):
-                self.load_in_rect(instances)
-            elif (obstacle_type == "Circle"):
-                self.load_in_circle(instances)
-        return
-
-    def load_in_a_map(self, map_name : str) -> None:
-        #print(os.getcwd())
-        with open(f"maps{self.file_nav_char}{map_name}.json", "r") as file:
-            loaded_in_obstacles = json.load(file)
-        file.close()
-        self.parse_loaded_in_obstacles(loaded_in_obstacles)
-        
-        return
-
-    def dragging_check(self, event):
-        if (self.began_drag and not self.end_drag and not self.easy_draw):
-            #print("dragging")
-            if (event.type == pygame.MOUSEMOTION):
-                if (self.selected_shape_type == "ObstacleRect"):
-                    self.width = abs(self.start[0] - event.pos[0])
-                    self.height = abs(self.start[1] - event.pos[1])
-                    overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
-                    overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
-                    self.screen.blit(overlay, (min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])))
-                elif (self.selected_shape_type == "ObstacleCircle"):
-                    self.radius = math.dist(self.center, event.pos)
-                    overlay = pygame.Surface((self.radius * 2 + 10, self.radius * 2 + 10), pygame.SRCALPHA)
-                    #overlay.fill((0, 0, 0, 1))  # clears overlay to transparent
-                    pygame.draw.circle(overlay, (0, 0, 0, 1), (self.radius, self.radius), self.radius)
-                    self.screen.blit(overlay, (self.center[0] - self.radius, self.center[1] - self.radius))
-                    
-        elif (self.edit_began_drag and not self.edit_end_drag and not self.easy_draw):
-            #print("edit dragging")
-            self.edit_dragging = True
-            self.screen.fill(self.colors["white"])
-            try:
-                try:
-                    self.obstacles_.pop(self.focused_obj)
-                except (KeyError):
-                    pass
-                mouse_pos = event.pos
-               
-                self.edit_pos = (mouse_pos[0] - self.dx, mouse_pos[1] - self.dy)
-                self.focused_obj.move(self.edit_pos)
-                self.obstacles_[self.focused_obj] = self.colors["blue"]
-            except(AttributeError):
-                raise AttributeError
-        elif (self.began_drag and self.easy_draw):
-            self.obstacles_[ObstacleRect((event.pos[0], event.pos[1], 50, 50))] = self.colors["black"]
-            
-        else:
-            self.screen.fill(self.colors["white"])
-            #print("")
-
-    def handle_rect_in_mouse_event(self, event):
-        #print(self.obstacles_)
-        for obj in self.obstacles_:
-            if (not isinstance(obj, ObstacleRect)):
-                continue
-            mouse_pos = event.pos
-            if (pygame.Rect(obj).collidepoint(mouse_pos)):
-                if (not self.edit_began_drag):
-                    self.edit_end_drag = False
-                    self.edit_began_drag = True
-                    self.focused_obj = obj
-                    self.obstacles_.pop(obj)
-                    self.edit_width = self.focused_obj.width
-                    self.edit_height = self.focused_obj.height
-                    self.dx = mouse_pos[0] - self.focused_obj.x
-                    self.dy = mouse_pos[1] - self.focused_obj.y
-                    break
-
-    def handle_circle_in_mouse_event(self, event):
-        for obj in self.obstacles_:
-            if (not isinstance(obj, ObstacleCircle)):
-                continue
-            mouse_pos = event.pos
-            if (obj.collidepoint(mouse_pos)):
-                if (not self.edit_began_drag):
-                    self.edit_end_drag = False
-                    self.edit_began_drag = True
-                    self.focused_obj = obj
-                    self.obstacles_.pop(obj)
-                    #self.edit_width = self.focused_obj.width
-                    #self.edit_height = self.focused_obj.height
-                    self.dx = mouse_pos[0] - self.focused_obj.center[0]
-                    self.dy = mouse_pos[1] - self.focused_obj.center[1]
-                    break
-        return
-
-    def make_new_rect_obj(self, event):
-        self.width = abs(self.start[0] - event.pos[0])
-        self.height = abs(self.start[1] - event.pos[1])
-        size = (self.width, self.height)
-        
-        new_rect = ObstacleRect((min(self.start[0], event.pos[0]),min(self.start[1], event.pos[1])), size)
-        self.obstacles_[new_rect] = self.colors["black"]
-        return
-
-    def draw_circle_using_rects(self, center, radius):
-        cx, cy = center
-
-        w = 5
-        h = 5
+        w = self.w
+        h = self.h
+        radius = self.radius
         increment = math.floor((360)/(2*math.pi*radius/w))
         
 
@@ -246,126 +111,391 @@ class MapMaker:
             x = nint(cx + radius * math.cos(angle))
             y = nint(cy + radius * math.sin(angle))
 
-            new_rect = ObstacleRect((x, y), (w, h))
-            self.obstacles_[new_rect] = self.colors["black"]
+            args = {"topleft":(x, y),"width":w, "height":h, "color":self.color, "filled":self.filled, "outline":self.outline}
 
+            new_rect = Rect(**args)
+            self.rects.append(new_rect)
 
-    def make_new_circle_obj(self, event):
-        self.radius = math.dist(self.start, event.pos)
-        self.center = self.start
-        self.draw_circle_using_rects(self.center, self.radius)
-        return
+    def __str__(self):
+        if (len(self.rects) == 0):
+            return ""
+        string = f"{self.rects[0]}"
+        for i in range(1, len(self.rects)):
+            string += f"\n{self.rects[i]}"
+        return string
 
-    def make_new_circle_obj_filled(self, event):
-        self.radius = math.dist(self.start, event.pos)
-        self.center = self.start
-        new_circle = ObstacleCircle(self.center, self.radius)
-        self.obstacles_[new_circle] = self.colors["black"]
-        return
+class WindowBuilder:
 
-    def handle_mouse_event(self, event):
-        if (event.type in [pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN]):
-            #print("mouse moving")
-            if (event.type == pygame.MOUSEBUTTONDOWN):
-                if (event.button == 1 and self.more_control):
-                    print("began edit dragging")
-                    if (self.selected_shape_type == "ObstacleRect"):
-                        self.handle_rect_in_mouse_event(event)
-                    elif (self.selected_shape_type == "ObstacleCircle"):
-                        self.handle_circle_in_mouse_event(event)
-                
-                        
-                if (event.button == 3):
-                    if (not self.began_drag):
-                        print("began dragging")
-                        self.end_drag = False
-                        self.began_drag = True
-                        self.start = event.pos
-                        self.center = self.start
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if (self.edit_began_drag):
-                self.edit_began_drag = False
-                self.edit_end_drag = True
-                self.obstacles_[self.focused_obj] = self.colors["black"]
+    def __init__(self, window):
+        self.init_root(window)
+        self.init_root_geometry(window)
+        self.build_window_title_bar(window)
+        self.build_window_canvas(window)
+        self.build_window_button_panel(window)
 
-            if (self.began_drag):
-                print("ending drag")
-                self.began_drag = False
-                self.end_drag = True
-                if (not self.easy_draw):
-                    if (self.selected_shape_type == "ObstacleRect"):
-                        self.make_new_rect_obj(event)
-                    elif (self.selected_shape_type == "ObstacleCircle"):
-                        if (not self.filled_circle):
-                            self.make_new_circle_obj(event)
-                        else:
-                            self.make_new_circle_obj_filled(event)
+    def init_root(self, window):
+        window.root = Tk()
+        window.root.geometry("1375x536")
+        if (window.system == "Linux"):
+            window.root.attributes("-type", "splash")
 
-          
-
-    def handle_key_event(self, event):
-        if (event.type in [pygame.KEYDOWN, pygame.KEYUP]):
+        window.root.bind_all("<KeyPress>", window.key_pressed)
+        window.root.bind_all("<Escape>", lambda event: window.root.destroy())
+        window.root.bind_all("<Control-z>", window.undo_previous_shape)
         
-            if (event.type == pygame.KEYDOWN):
-                if (event.key == pygame.K_z and event.mod & pygame.KMOD_LCTRL):
-                    try:
-                        popped_key = list(self.obstacles_.keys()).pop()
-                        self.obstacles_.pop(popped_key)
-                    except (IndexError, KeyError):
-                        pass
-                elif (event.key == pygame.K_1):
-                    print("Rectangle type selected")
-                    self.selected_shape_type = "ObstacleRect"
-                elif (event.key == pygame.K_2):
-                    print("Circle type selected")
-                    self.selected_shape_type = "ObstacleCircle"
-                elif (event.key == pygame.K_e and event.mod & pygame.KMOD_LSHIFT):
-                    self.more_control = not self.more_control
-                elif (event.key == pygame.K_SPACE):
-                    self.easy_draw = not self.easy_draw
-                    self.saved_obj = self.focused_obj
-                elif (event.key == pygame.K_f and event.mod & pygame.KMOD_LCTRL):
-                    self.filled_circle = not self.filled_circle
-                    print(f"filled circle: {self.filled_circle}")
-                elif (event.key == pygame.K_DELETE and (not (self.focused_obj == None))):
-                    try:
-                        self.obstacles_.pop(self.focused_obj)
-                        self.focused_obj = None
-                    except (KeyError):
-                        pass
-            if (event.key == pygame.K_ESCAPE):
-                self.running = False
+    def init_root_geometry(self, window):
+        window.root.geometry("1375x536")
+        window.root.columnconfigure(0, weight=1)
+        window.root.columnconfigure(1, weight=1)
+        window.root.rowconfigure(0, weight=1)
+        window.root.rowconfigure(1, weight=1)
 
-    def running_loop(self):
-        #self.run_start_menu()
+    def build_window_title_bar(self, window):
+        window.title_bar = Frame(window.root, bg="gray20", height=30, relief="ridge", borderwidth=2)
+        
+        window.title_bar.grid(row=0, column=0, sticky="new", columnspan=3)
+        window.title_bar.rowconfigure(0, weight=1)
+        window.title_bar.columnconfigure(0, weight=1)
+        window.title_bar.columnconfigure(1)
+        window.title_bar.columnconfigure(2)
+        window.title_bar.columnconfigure(3)
 
-        while (self.running):
-            #print(self.selected_shape_type)
-            for event in pygame.event.get():
-                if (event.type == pygame.WINDOWLEAVE):
-                    print("No come back!")
-                try:
-                    self.dragging_check(event)
-                except (AttributeError):
-                    continue
-                self.handle_mouse_event(event)
-                self.handle_key_event(event)
-                if (event.type == pygame.QUIT):
-                    self.running = False
+        window.title_bar_label = Label(window.title_bar, text="Map Maker", background="grey20", fg="white")
+        window.title_bar_label.grid(row=0, column=0)
+        window.title_bar_label.bind("<Motion>", window.move_window_around)
+        window.title_bar_label.bind("<ButtonPress-1>", window.move_window_around)
+        window.title_bar_label.bind("<ButtonRelease-1>", window.move_window_around)
+        
+
+        window.minimize = Button(window.title_bar, text="_", command=window.root.withdraw, width=1)
+        window.minimize.grid(row=0, column=1, sticky="ne")
+        window.maximize = Button(window.title_bar, text="O", command=window.zoom_out, width=1)
+        window.maximize.grid(row=0, column=2, sticky="ne")
+        window.title_quit = Button(window.title_bar, text="x", command=window.root.destroy, width=1)
+        window.title_quit.grid(row=0, column=3, sticky="ne")
+
+    def build_window_canvas(self, window):
+        window.canvas = Canvas(window.root, **{"width":1000, "height":500, "borderwidth":5, "relief":"ridge", "background":"grey90"},
+                               takefocus=True)
+        window.canvas.grid(row=1, column=1, sticky="nsew")
+
+    def build_window_button_panel(self, window):
+        window.button_panel = Frame(window.root, borderwidth=5, relief="ridge")
+        window.button_panel.grid(row=1, column=0, sticky="new") # where it is relative inside self.root
+
+
+        window.button_panel.columnconfigure(0, weight = 1, uniform="button_panel_col", minsize=100)
+        window.button_panel.rowconfigure(0, uniform="button_panel_row")
+        window.button_panel.rowconfigure(1, uniform="button_panel_row")
+        window.button_panel.rowconfigure(2, uniform="button_panel_row")
+        window.button_panel.rowconfigure(3, uniform="button_panel_row")
+        window.button_panel.rowconfigure(4, weight = 1)
+
+        window.export = Button(window.button_panel, text="EXPORT", command=window.export_shapes, width=1, height=1)
+        window.import_ = Button(window.button_panel, text="IMPORT", command=window.import_shapes, width=1, height=1)
+        window.color_picker1 = Button(window.button_panel, text="FILL", command=window.fill_color_picker, width=1, height=1)
+        window.color_picker2 = Button(window.button_panel, text="OUTLINE", command=window.outline_color_picker, width=1, height=1)
+
+        window.shape_selection = Listbox(window.button_panel,font=("Arial", 16, "bold"), justify="center", width=8, borderwidth=1, relief="ridge")
+        window.shape_selection.bind("<<ListboxSelect>>", window.update_shape_type)
+        window.shape_selection.insert("end", "rectangle")
+        window.shape_selection.insert("end", "oval")
+        window.shape_selection.insert("end", "high-def oval")
+
+        window.export.grid(row=0, column=0, sticky="new")
+        window.import_.grid(row=1, column=0, sticky="new")
+        window.color_picker1.grid(row=2, column=0, sticky="new")
+        window.color_picker2.grid(row=3, column=0, sticky="new")
+        window.shape_selection.grid(row=4, column=0, sticky="new")
+
+class DrawingBoard:
+    def __init__(self):
+        self.shape_args = {
+                "rectangle": {
+                                "topleft":None,
+                                "width":None,
+                                "end":None,
+                                "height":None
+                              },
+                "oval": {
+                            "center":None,
+                            "end":None,
+                            "radius":0
+                          },
+                "high-def oval": {
+                                    "center":None,
+                                    "end":None,
+                                    "radius":0
+                                 },
+                "style": {
+                            "filled":None,
+                            "color":"grey90",
+                            "outline":"grey50"
+                         },
+
+                "export": {
+                            "color":"(229, 229, 229, 255)",
+                            "outline":"(127, 127, 127, 255)"
+                          }
                 
-                for obj in self.obstacles_.keys():
-                    if (isinstance(obj, ObstacleRect)):
-                        pygame.draw.rect(self.screen, self.obstacles_[obj], obj)
-                    elif (isinstance(obj, ObstacleCircle)):
-                        pygame.draw.circle(self.screen, self.obstacles_[obj], obj.center, obj.radius)
-                pygame.display.flip()
+             }
+        self.shape_counter = {"rectangle":0, "oval":0, "high-def oval":0}
+        self.current_shape_type = "oval"#"rectangle"
+        self.shapes = []
+        self.system = platform.system()
+        if (self.system == "Windows"):
+            self.file_nav_char = "\\"
+        else:
+            self.file_nav_char = "/"
+        self.zoom_bool = False
+        self.window_event_x = 0
+        self.window_event_y = 0
+       
 
+        WindowBuilder(self)
+        
+        #self.root.bind_all("<Escape>", lambda event: self.root.destroy())
+        self.bind_commands(self.canvas, {"<Motion>":self.start_dragging_button1,
+                                         "<ButtonPress-1>":self.start_dragging_button1,
+                                         "<ButtonRelease-1>":self.end_dragging_button1,
+                                         "<Button-4>":self.radius_adjuster,
+                                         "<Button-5>":self.radius_adjuster,
+                                         "<MouseWheel>":self.radius_adjuster})
+
+        #self.canvas.bind("<Button-1>",lambda event: self.canvas.focus_set(),add="+")
+        #self.root.bind_all("<ButtonPress>",lambda event: self.force_keyboard_focus(),add="+")
+        self.title_bar.bind("<Motion>", self.move_window_around)
+        self.title_bar.bind("<ButtonPress-1>", self.move_window_around)
+        self.title_bar.bind("<ButtonRelease-1>", self.move_window_around)
+        #self.root.bind_all("<Control-z>",self.undo_previous_shape)
+
+        self.run()
+
+    def ask_name(self):
+
+        self.file_name = ""
+
+        popup = Toplevel(self.root)
+        popup.title("Map Maker")
+        popup.geometry("300x150")
+
+        label = Label(popup, text="Enter a name for map: ")
+        label.pack(pady=20)
+
+        entry = Entry(popup)
+        entry.pack()
+
+        def submit(event):
+            self.file_name = entry.get()
+            popup.destroy()
+        def submit2():
+            self.file_name = entry.get()
+            popup.destroy()
+
+        b = Button(
+            popup,
+            text="OK",
+            command=submit2
+        ).pack()
+
+        self.root.bind_all("<Return>", submit)
+
+        popup.grab_set()
+        self.root.wait_window(popup)
+
+        return self.file_name
+
+    def export_shapes(self):
+        exported_shapes = {"Rect":{}, "Circle":{}}
+        for shape in self.shapes:
+            if (shape.type == "rectangle"):
+                exported_shapes["Rect"][shape.get_dims()] = shape.export_color
+            elif (shape.type == "high-def oval"):
+                for rect in shape.rects:
+                    exported_shapes["Rect"][rect.get_dims()] = rect.export_color
+            elif (shape.type == "oval"):
+                exported_shapes["Circle"][shape.get_dims()] = shape.export_color
+
+        self.ask_name()
+        
+        with open(f"maps{self.file_nav_char}{self.file_name}.json", "w") as file:
+            json.dump(exported_shapes, file, indent=4)
+
+    def import_shapes(self):
         return
 
-map_maker = MapMaker(1000, 750)
+    def move_window_around(self, event):
+        
+        if (event.type.name == "ButtonPress"):
+            self.window_event_x = event.x
+            self.window_event_y = event.y
+        if ((event.type.name == "Motion") and (event.state & state_masks["button1"])):
+            dx = event.x - self.window_event_x
+            dy = event.y - self.window_event_y
+            x = self.root.winfo_x() + dx
+            y = self.root.winfo_y() + dy
+
+            #print(width, height)
+            #mouse_pos = (event.x, event.y)
+            #print(mouse_pos)
+            self.root.geometry(f"+{x}+{y}")
 
 
-map_maker.running_loop()
-export_map_file(map_maker)
+    def force_keyboard_focus(self):
+        self.root.focus_force()
+        self.canvas.focus_set()
 
-pygame.quit()
+    def key_pressed(self, event):
+        #print("KEY:", event.keysym, event.char, event.state)
+        return
+
+    def zoom_out(self):
+        self.zoom_bool = not self.zoom_bool
+        self.root.attributes("-zoomed", self.zoom_bool)
+
+    def update_shape_type(self, event):        
+        self.current_shape_type = self.shape_selection.get(self.shape_selection.curselection()[0])
+    
+    
+
+
+    def fill_color_picker(self):
+        self.shape_args["style"]["color"] = colorchooser.askcolor()
+        if (not self.shape_args["style"]["color"][0]):
+            self.shape_args["style"]["color"] = "grey90"
+            self.shape_args["export"]["color"] = "(229, 229, 229, 255)"
+            return
+        self.shape_args["export"]["color"] = str(self.shape_args["style"]["color"][0] + (255,))
+        self.shape_args["style"]["color"] = re.search(r"#\w+", str(self.shape_args["style"]["color"])).group(0)
+
+    def outline_color_picker(self):
+        self.shape_args["style"]["outline"] = colorchooser.askcolor()
+        if (not self.shape_args["style"]["outline"][0]):
+            self.shape_args["style"]["outline"] = "grey50"
+            self.shape_args["export"]["outline"] = "(127, 127, 127, 255)"
+            return
+        self.shape_args["export"]["outline"] = str(self.shape_args["style"]["outline"][0] + (255,))
+        self.shape_args["style"]["outline"] = re.search(r"#\w+", str(self.shape_args["style"]["outline"])).group(0)
+
+    def radius_adjuster(self, event):
+        if (self.system != "Linux"):
+            if (hasattr(event, "delta") and event.delta):
+                if event.delta > 0:
+                    if (self.shape_args["oval"]["radius"] == 100):
+                        return
+                        self.shape_args["oval"]["radius"] += 1
+                elif event.delta < 0:
+                    if (self.shape_args["oval"]["radius"] == 0):
+                        return
+                    self.shape_args["oval"]["radius"] -= 1
+        else:
+            if (event.num == 4):
+                if (self.shape_args["oval"]["radius"] == 100):
+                    return
+                self.shape_args["oval"]["radius"] += 1
+            elif (event.num == 5):
+                if (self.shape_args["oval"]["radius"] == 0):
+                    return
+                self.shape_args["oval"]["radius"] -= 1
+        
+
+    def undo_previous_shape(self, event):
+        
+        try:
+            
+            shape = self.shapes.pop()
+            shape_type_popped = shape.type
+            
+            tag_name = shape_type_popped + " " + str(self.shape_counter[shape_type_popped])
+            self.canvas.delete(tag_name)
+            self.shape_counter[shape_type_popped] -= 1
+            
+            
+        except (IndexError):
+            return
+    
+
+    def end_dragging_button1(self, event):
+        if event.state & state_masks["button1"]:
+            self.canvas.delete("overlay")
+            mouse_pos = (event.x, event.y)
+            self.shape_args["rectangle"]["end"] = mouse_pos
+            self.shape_args["oval"]["end"] = mouse_pos
+            self.shape_args["high-def oval"]["end"] = mouse_pos
+            if (self.current_shape_type == "rectangle"):
+                self.shape_counter["rectangle"] += 1
+                self.canvas.create_rectangle(self.shape_args["rectangle"]["topleft"] + self.shape_args["rectangle"]["end"], 
+                                             fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], 
+                                             tags=(f"rectangle {self.shape_counter['rectangle']}",))
+                self.shapes.append(Rect(**(self.shape_args["rectangle"] | self.shape_args["style"])))
+                self.shapes[-1].export_color = self.shape_args["export"]["color"]
+                self.shapes[-1].export_outline = self.shape_args["export"]["outline"]
+            elif (self.current_shape_type == "oval"):
+                self.shape_counter["oval"] += 1
+                self.canvas.create_oval(self.shape_args["oval"]["center"] + self.shape_args["oval"]["end"], 
+                                             fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], 
+                                             tags=(f"oval {self.shape_counter['oval']}",))
+                self.shapes.append(Oval(**(self.shape_args["oval"] | self.shape_args["style"])))
+                self.shapes[-1].export_color = self.shape_args["export"]["color"]
+                self.shapes[-1].export_outline = self.shape_args["export"]["outline"]
+            elif (self.current_shape_type == "high-def oval"):
+                self.shapes.append(HighDefOval(**(self.shape_args["high-def oval"] | self.shape_args["style"])))
+                self.shape_counter["high-def oval"] += 1
+                highdef_oval = self.shapes[-1]
+                
+                for rect in highdef_oval.rects:
+                    rect.export_color = self.shape_args["export"]["color"]
+                    rect.export_outline = self.shape_args["export"]["outline"]
+                    self.canvas.create_rectangle(rect.topleft + rect.end, 
+                                                 fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"],
+                                                 tags=(f"high-def oval {self.shape_counter['high-def oval']}",))
+                
+                #print(self.shape_args["high-def oval"]["center"])
+            #os.system("clear")
+            #for shape in self.shapes:
+                #print(shape)
+            #print("end dragging")
+
+    def start_dragging_button1(self, event):
+        if (event.type.name == "ButtonPress"):
+            mouse_pos = (event.x, event.y)
+            self.shape_args["rectangle"]["topleft"] = mouse_pos
+            self.shape_args["oval"]["center"] = mouse_pos
+            self.shape_args["high-def oval"]["center"] = mouse_pos
+        if (event.state & state_masks["button1"]):
+            self.canvas.delete("overlay")
+            mouse_pos = (event.x, event.y)
+            #print("dragging")
+            if (self.current_shape_type == "rectangle"):
+                self.canvas.create_rectangle(self.shape_args["rectangle"]["topleft"] + mouse_pos,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
+                
+            elif (self.current_shape_type == "oval"):
+                self.canvas.create_oval(self.shape_args["oval"]["center"] + mouse_pos,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
+            elif (self.current_shape_type == "high-def oval"):
+                overlay_high_def_oval = HighDefOval(center=self.shape_args["high-def oval"]["center"], end=mouse_pos,
+                                                    filled=self.shape_args["style"]["filled"], color=self.shape_args["style"]["color"],
+                                                    outline=self.shape_args["style"]["outline"])
+                for rect in overlay_high_def_oval.rects:
+                    self.canvas.create_rectangle(rect.topleft + rect.end, 
+                                                 fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"],
+                                                 tags=("overlay",))
+                
+        
+    def bind_commands(self, widget, kw):
+        for event, command in kw.items():
+            widget.bind(event, command)
+
+    def destroy(self, widget):
+        widget.destroy()
+
+    def run(self):
+        self.root.update_idletasks()
+        self.root.lift()
+        self.root.focus_force()
+        self.canvas.focus_set()
+        self.root.mainloop()
+        
+
+
+
+DrawingBoard()
