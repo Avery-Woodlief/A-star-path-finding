@@ -41,11 +41,30 @@ class Shape:
             self.x = self.topleft[0]
             self.y = self.topleft[1]
         if ((center and radius) or (center and end)):
-            self.type = "oval"
+            
             if (radius):
+                cx, cy = center
+                left   = cx - radius
+                top    = cy - radius
                 self.radius = radius
+                if (not end):
+                    self.end = (center[0] + self.radius, center[1] + self.radius)
+                    self.width = self.end[0]-left
+                    self.height = self.end[1]-top
             else:
                 self.radius = nint(math.dist(center, end))
+                cx, cy = center
+                left   = cx - radius
+                top    = cy - radius
+                self.end = end
+                self.width = self.end[0]-left
+                self.height = self.end[1]-top
+                if (self.width == self.height):
+                    self.is_circle = True
+                    self.type = "circle"
+                else:
+                    self.is_circle = False
+                    self.type = "oval"
             self.center = center
         self.filled = filled
         self.color = color
@@ -72,10 +91,16 @@ class Oval(Shape):
     def __init__(self, **kw):
         super().__init__(**kw)
     def __str__(self):
-        return f"{self.center[0]}, {self.center[1]}, {self.radius} : {self.color}"
+        if (self.is_circle):
+            return f"{self.center[0]}, {self.center[1]}, {self.radius} : {self.color}"
+        else:
+            return f"{self.center[0]-self.width}, {self.center[1]-self.height}, {self.end[0]}, {self.end[1]}"
 
     def get_dims(self):
-        return f"{self.center[0]}, {self.center[1]}, {self.radius}"
+        if (not self.is_circle):
+            return f"{self.center[0]-self.width}, {self.center[1]-self.height}, {self.end[0]}, {self.end[1]}"
+        else:
+            return f"{self.center[0]}, {self.center[1]}, {self.radius}"
     def get_color(self):
         return f"{self.color}"
 
@@ -203,6 +228,7 @@ class WindowBuilder:
         window.shape_selection.bind("<<ListboxSelect>>", window.update_shape_type)
         window.shape_selection.insert("end", "rectangle")
         window.shape_selection.insert("end", "oval")
+        window.shape_selection.insert("end", "circle")
         window.shape_selection.insert("end", "high-def oval")
 
         window.export.grid(row=0, column=0, sticky="new")
@@ -228,7 +254,7 @@ class DrawingBoard:
                 "circle": {
                             "center":None,
                             "end":None,
-                            "radius":0 
+                            "radius":0
                           },
                 "high-def oval": {
                                     "center":None,
@@ -247,7 +273,7 @@ class DrawingBoard:
                           }
                 
              }
-        self.shape_counter = {"rectangle":0, "oval":0, "high-def oval":0}
+        self.shape_counter = {"rectangle":0, "oval":0, "circle":0, "high-def oval":0}
         self.current_shape_type = "oval"#"rectangle"
         self.shapes = []
         self.system = platform.system()
@@ -387,7 +413,7 @@ class DrawingBoard:
         return self.file_name
 
     def export_shapes(self):
-        exported_shapes = {"Rect":{}, "Circle":{}}
+        exported_shapes = {"Rect":{}, "Circle":{}, "Oval":{}}
         for shape in self.shapes:
             if (shape.type == "rectangle"):
                 exported_shapes["Rect"][shape.get_dims()] = shape.export_color
@@ -395,6 +421,8 @@ class DrawingBoard:
                 for rect in shape.rects:
                     exported_shapes["Rect"][rect.get_dims()] = rect.export_color
             elif (shape.type == "oval"):
+                exported_shapes["Oval"][shape.get_dims()] = shape.export_color
+            elif (shape.type == "circle"):
                 exported_shapes["Circle"][shape.get_dims()] = shape.export_color
 
         try:
@@ -437,9 +465,10 @@ class DrawingBoard:
         self.zoom_bool = not self.zoom_bool
         self.root.attributes("-zoomed", self.zoom_bool)
 
-    def update_shape_type(self, event):        
+    def update_shape_type(self, event):
+
         self.current_shape_type = self.shape_selection.get(self.shape_selection.curselection()[0])
-    
+        # TODO handle rare-ish or occasional exception
     
 
 
@@ -506,6 +535,8 @@ class DrawingBoard:
             self.shape_args["rectangle"]["end"] = mouse_pos
             self.shape_args["oval"]["end"] = mouse_pos
             self.shape_args["high-def oval"]["end"] = mouse_pos
+
+            #XXX RECTANGLE
             if (self.current_shape_type == "rectangle"):
                 self.shape_counter["rectangle"] += 1
                 self.canvas.create_rectangle(self.shape_args["rectangle"]["topleft"] + self.shape_args["rectangle"]["end"], 
@@ -514,6 +545,24 @@ class DrawingBoard:
                 self.shapes.append(Rect(**(self.shape_args["rectangle"] | self.shape_args["style"])))
                 self.shapes[-1].export_color = self.shape_args["export"]["color"]
                 self.shapes[-1].export_outline = self.shape_args["export"]["outline"]
+            
+            #XXX CIRCLE
+            elif (self.current_shape_type == "circle"):
+                self.shape_counter["circle"] += 1
+               
+                cx, cy = self.shape_args["circle"]["center"]
+                x, y = mouse_pos
+                dx = cx - x
+                dy = cy - y
+                radius = nint(math.dist((cx, cy), (x, y)))
+                
+                args = (cx - radius, cy - radius,cx + radius,cy + radius)
+                self.canvas.create_oval(args,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], 
+                                        tags=(f"circle {self.shape_counter['circle']}",))
+                self.shape_args["circle"]["end"] = (cx + radius,cy + radius)
+                self.shapes.append(Oval(**(self.shape_args["circle"] | self.shape_args["style"])))
+
+            #XXX OVAL
             elif (self.current_shape_type == "oval"):
                 self.shape_counter["oval"] += 1
                 self.canvas.create_oval(self.shape_args["oval"]["center"] + self.shape_args["oval"]["end"], 
@@ -522,6 +571,8 @@ class DrawingBoard:
                 self.shapes.append(Oval(**(self.shape_args["oval"] | self.shape_args["style"])))
                 self.shapes[-1].export_color = self.shape_args["export"]["color"]
                 self.shapes[-1].export_outline = self.shape_args["export"]["outline"]
+
+            #XXX HIGHDEF OVAL
             elif (self.current_shape_type == "high-def oval"):
                 self.shapes.append(HighDefOval(**(self.shape_args["high-def oval"] | self.shape_args["style"])))
                 self.shape_counter["high-def oval"] += 1
@@ -534,28 +585,37 @@ class DrawingBoard:
                                                  fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"],
                                                  tags=(f"high-def oval {self.shape_counter['high-def oval']}",))
                 
-                #print(self.shape_args["high-def oval"]["center"])
-            #os.system("clear")
-            #for shape in self.shapes:
-                #print(shape)
-            #print("end dragging")
 
     def start_dragging_button1(self, event):
         if (event.type.name == "ButtonPress"):
             mouse_pos = (event.x, event.y)
             self.shape_args["rectangle"]["topleft"] = mouse_pos
             self.shape_args["oval"]["center"] = mouse_pos
+            self.shape_args["circle"]["center"] = mouse_pos
             self.shape_args["high-def oval"]["center"] = mouse_pos
         if (event.state & state_masks["button1"]):
             self.canvas.delete("overlay")
             mouse_pos = (event.x, event.y)
-            #print("dragging")
+
+            #XXX RECTANGLE OVERLAY
             if (self.current_shape_type == "rectangle"):
                 self.canvas.create_rectangle(self.shape_args["rectangle"]["topleft"] + mouse_pos,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
                 
+            #XXX OVAL OVERLAY
             elif (self.current_shape_type == "oval"):
-
                 self.canvas.create_oval(self.shape_args["oval"]["center"] + mouse_pos,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
+
+            #XXX CIRCLE OVERLAY
+            elif (self.current_shape_type == "circle"):
+                cx, cy = self.shape_args["circle"]["center"]
+                x, y = mouse_pos
+                dx = cx - x
+                dy = cy - y
+                radius = nint(math.dist((cx, cy), (x, y)))
+                args = (cx - radius, cy - radius,cx + radius,cy + radius)
+                self.canvas.create_oval(args,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
+
+            #XXX HIGHDEF OVAL OVERLAY
             elif (self.current_shape_type == "high-def oval"):
                 overlay_high_def_oval = HighDefOval(center=self.shape_args["high-def oval"]["center"], end=mouse_pos,
                                                     filled=self.shape_args["style"]["filled"], color=self.shape_args["style"]["color"],
