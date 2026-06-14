@@ -225,6 +225,11 @@ class DrawingBoard:
                             "end":None,
                             "radius":0
                           },
+                "circle": {
+                            "center":None,
+                            "end":None,
+                            "radius":0 
+                          },
                 "high-def oval": {
                                     "center":None,
                                     "end":None,
@@ -549,6 +554,7 @@ class DrawingBoard:
                 self.canvas.create_rectangle(self.shape_args["rectangle"]["topleft"] + mouse_pos,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
                 
             elif (self.current_shape_type == "oval"):
+
                 self.canvas.create_oval(self.shape_args["oval"]["center"] + mouse_pos,fill=self.shape_args["style"]["color"], outline=self.shape_args["style"]["outline"], tags=("overlay",))
             elif (self.current_shape_type == "high-def oval"):
                 overlay_high_def_oval = HighDefOval(center=self.shape_args["high-def oval"]["center"], end=mouse_pos,
