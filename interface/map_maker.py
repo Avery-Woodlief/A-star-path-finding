@@ -132,6 +132,7 @@ class WindowBuilder:
         self.build_window_title_bar(window)
         self.build_window_canvas(window)
         self.build_window_button_panel(window)
+        window.root.update_idletasks()
 
     def init_root(self, window):
         window.root = Tk()
@@ -141,7 +142,7 @@ class WindowBuilder:
             #window.root.attributes("-type", "toolbar")
 
         window.root.bind_all("<KeyPress>", window.key_pressed)
-        window.root.bind_all("<Escape>", lambda event: window.root.destroy())
+        window.root.bind_all("<Escape>", lambda event: window.terminate_entire_program(event))
         window.root.bind_all("<Control-z>", window.undo_previous_shape)
         
     def init_root_geometry(self, window):
@@ -172,7 +173,7 @@ class WindowBuilder:
         window.minimize.grid(row=0, column=1, sticky="ne")
         window.maximize = Button(window.title_bar, text="O", command=window.zoom_out, width=1)
         window.maximize.grid(row=0, column=2, sticky="ne")
-        window.title_quit = Button(window.title_bar, text="x", command=window.root.destroy, width=1)
+        window.title_quit = Button(window.title_bar, text="x", command=window.terminate_entire_program, width=1)
         window.title_quit.grid(row=0, column=3, sticky="ne")
 
     def build_window_canvas(self, window):
@@ -255,7 +256,6 @@ class DrawingBoard:
 
         WindowBuilder(self)
         
-        #self.root.bind_all("<Escape>", lambda event: self.root.destroy())
         self.bind_commands(self.canvas, {"<Motion>":self.start_dragging_button1,
                                          "<ButtonPress-1>":self.start_dragging_button1,
                                          "<ButtonRelease-1>":self.end_dragging_button1,
@@ -272,38 +272,67 @@ class DrawingBoard:
 
         self.run()
 
+    def terminate_entire_program(self, event=None):
+        self.root.attributes("-topmost", False)
+        self.root.update_idletasks()
+        self.root.update()
+        self.root.quit()
+        return
+
     def ask_name(self):
 
+        self.root.attributes("-topmost", False)
         self.file_name = ""
 
         popup = Toplevel(self.root)
+        popup.attributes("-topmost", True)
         popup.title("Map Maker")
-        popup.geometry("300x150")
-
-        label = Label(popup, text="Enter a name for map: ")
-        label.pack(pady=20)
+        try:
+            if (len(self.bad_file_name_label_text) > 0):
+                warning = Label(popup, text=self.bad_file_name_label_text)
+                warning.pack(pady=20)
+                upper_bound_width = warning.winfo_reqwidth()
+                upper_bound_height = warning.winfo_reqheight()
+                popup.geometry(f"{upper_bound_width}x{150 + upper_bound_height}")
+                label = Label(popup, text="Enter a name for map: ")
+                label.pack(pady=abs(20 - upper_bound_height))
+        except (AttributeError):
+            popup.geometry("300x150")
+            label = Label(popup, text="Enter a name for map: ")
+            label.pack(pady=20)
+        
+        
 
         entry = Entry(popup)
         entry.pack()
 
-        def submit(event):
+        def submit(event = None):
             self.file_name = entry.get()
+            bad_input = False
+            if (not bool(re.search(r"^[\w -]+$", self.file_name))):
+                self.bad_file_name_label_text = "Valid filenames must only contain 0-9, a-z, A-Z, spaces, -, or _"
+                bad_input = True
+            if (not bad_input):
+                self.bad_file_name_label_text = ""
+            self.root.attributes("-topmost", True)
+            popup.attributes("-topmost", False)
             popup.destroy()
-        def submit2():
-            self.file_name = entry.get()
-            popup.destroy()
+            if bad_input:
+                self.ask_name()
+        
 
         b = Button(
             popup,
             text="OK",
-            command=submit2
-        ).pack()
+            command=submit
+        ).pack(side="bottom")
 
-        self.root.bind_all("<Return>", submit)
+        popup.bind("<Return>", submit)
 
         popup.grab_set()
+        
         self.root.wait_window(popup)
-
+        
         return self.file_name
 
     def export_shapes(self):
@@ -496,8 +525,7 @@ class DrawingBoard:
         self.root.focus_force()
         self.canvas.focus_set()
         self.root.mainloop()
-        
-
+        self.root.destroy()
 
 
 DrawingBoard()
