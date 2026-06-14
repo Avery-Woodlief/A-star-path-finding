@@ -286,18 +286,21 @@ class DrawingBoard:
 
         popup = Toplevel(self.root)
         popup.attributes("-topmost", True)
-        popup.title("Map Maker")
+        popup.title("Map Maker - Export")
         try:
             if (len(self.bad_file_name_label_text) > 0):
-                warning = Label(popup, text=self.bad_file_name_label_text)
-                warning.pack(pady=20)
+                warning = Label(popup, text=self.bad_file_name_label_text, fg="darkred")
+                warning.pack()
                 upper_bound_width = warning.winfo_reqwidth()
                 upper_bound_height = warning.winfo_reqheight()
                 popup.geometry(f"{upper_bound_width}x{150 + upper_bound_height}")
                 label = Label(popup, text="Enter a name for map: ")
-                label.pack(pady=abs(20 - upper_bound_height))
+                if (not ("\nPlease enter a name or press the close button!" in self.bad_file_name_label_text)):
+                    label.pack(pady=abs(20 - upper_bound_height))
+                else:
+                    label.pack(pady=abs(40 - upper_bound_height))
         except (AttributeError):
-            popup.geometry("300x150")
+            popup.geometry("400x150")
             label = Label(popup, text="Enter a name for map: ")
             label.pack(pady=20)
         
@@ -310,7 +313,11 @@ class DrawingBoard:
             self.file_name = entry.get()
             bad_input = False
             if (not bool(re.search(r"^[\w -]+$", self.file_name))):
-                self.bad_file_name_label_text = "Valid filenames must only contain 0-9, a-z, A-Z, spaces, -, or _"
+                self.bad_file_name_label_text = f"The name \"{self.file_name}\" is invalid\n"
+                self.bad_file_name_label_text += "Valid filenames must only contain 0-9, a-z, A-Z, spaces, -, or _"
+                bad_input = True
+            if (len(self.file_name) == 0):
+                self.bad_file_name_label_text += "\nPlease enter a name or press the close button!"
                 bad_input = True
             if (not bad_input):
                 self.bad_file_name_label_text = ""
@@ -323,7 +330,7 @@ class DrawingBoard:
                 except (ValueError):
                     return ""
         
-        b = Button(popup, text="OK", command=submit).pack(side="bottom")
+        b = Button(popup, text="OK", command=submit).pack(pady=10)
         popup.bind("<Return>", submit)
 
         popup.grab_set()
