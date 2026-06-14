@@ -318,20 +318,20 @@ class DrawingBoard:
             popup.attributes("-topmost", False)
             popup.destroy()
             if bad_input:
-                self.ask_name()
+                try:
+                    self.ask_name()
+                except (ValueError):
+                    return ""
         
-
-        b = Button(
-            popup,
-            text="OK",
-            command=submit
-        ).pack(side="bottom")
-
+        b = Button(popup, text="OK", command=submit).pack(side="bottom")
         popup.bind("<Return>", submit)
 
         popup.grab_set()
         
         self.root.wait_window(popup)
+
+        if (len(self.file_name) == 0):
+            raise ValueError("user terminated program")
         
         return self.file_name
 
@@ -346,7 +346,11 @@ class DrawingBoard:
             elif (shape.type == "oval"):
                 exported_shapes["Circle"][shape.get_dims()] = shape.export_color
 
-        self.ask_name()
+        try:
+            self.ask_name()
+        except (ValueError):
+            print("export canceled")
+            return
         
         with open(f"maps{self.file_nav_char}{self.file_name}.json", "w") as file:
             json.dump(exported_shapes, file, indent=4)
