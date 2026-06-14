@@ -329,13 +329,40 @@ class DrawingBoard:
                     self.ask_name()
                 except (ValueError):
                     return ""
+            
+
+        def quiting(event = None):
+            
+            popup.attributes("-topmost", False)
+            self.root.attributes("-topmost", True)
+            #popup.destroy()
+            export_canceled = Toplevel(self.root)
+            
+            export_canceled.attributes("-type", "splash")
+            export_canceled.attributes("-topmost", True)
+            export_canceled.config(bg="black")
+            label = Label(export_canceled, text="Export canceled...",fg="white", bg=export_canceled.cget("bg"))
+            export_canceled.geometry(f"{label.winfo_reqwidth()}x{label.winfo_reqheight()}")
+            label.pack()
+            
+            
+            popup.after(500, popup.destroy)
+            export_canceled.wait_window(popup)
+            export_canceled.attributes("-topmost", False)
+            export_canceled.destroy()
+            #popup.destroy()
+            #raise ValueError("user terminated program")
+            self.root.bind_all("<Escape>", lambda event: self.terminate_entire_program(event))
+            return ""
         
         b = Button(popup, text="OK", command=submit).pack(pady=10)
         popup.bind("<Return>", submit)
-
         popup.grab_set()
+        popup.bind_all("<Escape>", quiting)
+        popup.protocol("WM_DELETE_WINDOW", quiting)
         
         self.root.wait_window(popup)
+        
 
         if (len(self.file_name) == 0):
             raise ValueError("user terminated program")
