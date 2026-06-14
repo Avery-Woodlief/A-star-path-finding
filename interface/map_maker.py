@@ -1,5 +1,6 @@
 from tkinter import Tk, Button, _tkinter, Label, Frame, Canvas, Event, colorchooser, StringVar, OptionMenu, Listbox, Entry, Toplevel
 #from tkinter.ttk import Widget, ComboBox
+from _tkinter import TclError
 import tkinter.ttk as ttk
 import re
 import platform
@@ -252,7 +253,8 @@ class DrawingBoard:
         self.zoom_bool = False
         self.window_event_x = 0
         self.window_event_y = 0
-       
+        self.bad_file_name_label_text = ""
+        self.export_failed = False
 
         WindowBuilder(self)
         
@@ -299,6 +301,10 @@ class DrawingBoard:
                     label.pack(pady=abs(20 - upper_bound_height))
                 else:
                     label.pack(pady=abs(40 - upper_bound_height))
+            elif (len(self.bad_file_name_label_text) == 0):
+                popup.geometry(f"{400}x{150}")
+                label = Label(popup, text="Enter a name for map: ")
+                label.pack(pady=20)
         except (AttributeError):
             popup.geometry("400x150")
             label = Label(popup, text="Enter a name for map: ")
@@ -321,27 +327,33 @@ class DrawingBoard:
                 bad_input = True
             if (not bad_input):
                 self.bad_file_name_label_text = ""
-            self.root.attributes("-topmost", True)
-            popup.attributes("-topmost", False)
-            popup.destroy()
+            
             if bad_input:
+                self.export_failed = True
+                self.root.attributes("-topmost", True)
+                popup.attributes("-topmost", False)
+                popup.destroy()
                 try:
                     self.ask_name()
                 except (ValueError):
                     return ""
-            
+            else:
+                self.export_failed = False
+                quiting()
 
         def quiting(event = None):
             
             popup.attributes("-topmost", False)
             self.root.attributes("-topmost", True)
-            #popup.destroy()
             export_canceled = Toplevel(self.root)
             
             export_canceled.attributes("-type", "splash")
             export_canceled.attributes("-topmost", True)
             export_canceled.config(bg="black")
-            label = Label(export_canceled, text="Export canceled...",fg="white", bg=export_canceled.cget("bg"))
+            if (self.export_failed or (len(self.file_name) == 0)):
+                label = Label(export_canceled, text="Export canceled...",fg="white", bg=export_canceled.cget("bg"))
+            else:
+                label = Label(export_canceled, text="Export successful!",fg="white", bg=export_canceled.cget("bg"))
             export_canceled.geometry(f"{label.winfo_reqwidth()}x{label.winfo_reqheight()}")
             label.pack()
             
@@ -383,7 +395,6 @@ class DrawingBoard:
         try:
             self.ask_name()
         except (ValueError):
-            print("export canceled")
             return
         
         with open(f"maps{self.file_nav_char}{self.file_name}.json", "w") as file:
